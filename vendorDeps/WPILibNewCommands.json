@@ -1,0 +1,37 @@
+{
+  "cppDependencies": [
+    {
+      "artifactId": "wpilibNewCommands-cpp",
+      "binaryPlatforms": [
+        "linuxathena",
+        "linuxraspbian",
+        "linuxaarch64bionic",
+        "windowsx86-64",
+        "windowsx86",
+        "linuxx86-64",
+        "osxx86-64"
+      ],
+      "groupId": "edu.wpi.first.wpilibNewCommands",
+      "headerClassifier": "headers",
+      "libName": "wpilibNewCommands",
+      "sharedLibrary": true,
+      "skipInvalidPlatforms": true,
+      "sourcesClassifier": "sources",
+      "version": "wpilib"
+    }
+  ],
+  "fileName": "WPILibNewCommands.json",
+  "javaDependencies": [
+    {
+      "artifactId": "wpilibNewCommands-java",
+      "groupId": "edu.wpi.first.wpilibNewCommands",
+      "version": "wpilib"
+    }
+  ],
+  "jniDependencies": [],
+  "jsonUrl": "",
+  "mavenUrls": [],
+  "name": "WPILib-New-Commands",
+  "uuid": "111e20f7-815e-48f8-9dd6-e675ce75b266",
+  "version": "2020.1.2"
+}
