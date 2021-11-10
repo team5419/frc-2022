@@ -1,4 +1,5 @@
 package org.team5419.frc2022
+import edu.wpi.first.wpilibj.TimedRobot
 
 public class Main {
 
@@ -10,7 +11,7 @@ public class Main {
     companion object {
         @JvmStatic
         public fun main(args: Array<String>) {
-            Robot().start()
+            TimedRobot.startRobot { Robot }
         }
     }
 }
