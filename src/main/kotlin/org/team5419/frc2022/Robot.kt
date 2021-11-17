@@ -9,6 +9,8 @@ import org.team5419.frc2022.fault.math.geometry.Pose2d
 import org.team5419.frc2022.fault.hardware.ctre.*
 import org.team5419.frc2022.fault.auto.Routine
 import com.ctre.phoenix.motorcontrol.*
+import edu.wpi.first.wpilibj.Timer
+
 
 import edu.wpi.first.wpilibj.TimedRobot
 
@@ -18,42 +20,54 @@ val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
 @SuppressWarnings("TooManyFunctions")
 
-val subsystems = mutableListOf<Subsystem>()
+val timer = Timer()
 
 object Robot : TimedRobot(0.02) {
 
-    init {
-        NetworkTableInstance.getDefault().setUpdateRate(0.01)
-        subsystems.add(Drivetrain)
-    }
+    private val subsystems = mutableListOf<Subsystem>()
+    subsystems.add(Drivetrain)
+
+    NetworkTableInstance.getDefault().setUpdateRate(0.01)
 
     override fun robotInit() {
+        timer.reset()
+        timer.start()
     }
 
     override fun robotPeriodic() {
     }
 
     override fun disabledInit() {
+        reset()
     }
 
     override fun disabledPeriodic() {
     }
 
     override fun autonomousInit() {
+        reset()
     }
 
     override fun autonomousPeriodic() {
     }
 
     override fun teleopInit() {
+        reset()
+        TeleopController.start()
     }
 
     override fun teleopPeriodic() {
+        TeleopController.update()
     }
 
     override fun testInit() {
+        reset()
     }
 
     override fun testPeriodic() {
+    }
+
+    fun reset() {
+        TeleopController.reset()
     }
 }
