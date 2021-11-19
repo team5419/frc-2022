@@ -15,19 +15,21 @@ import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.TimedRobot
 
 import org.team5419.frc2022.subsystems.*
+import org.team5419.frc2022.controllers.*
 
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
-@SuppressWarnings("TooManyFunctions")
-
 val timer = Timer()
 
+@SuppressWarnings("TooManyFunctions")
 object Robot : TimedRobot(0.02) {
 
     private val subsystems = mutableListOf<Subsystem>()
-    subsystems.add(Drivetrain)
 
-    NetworkTableInstance.getDefault().setUpdateRate(0.01)
+    init {
+        subsystems.add(Drivetrain)
+        NetworkTableInstance.getDefault().setUpdateRate(0.01)
+    }
 
     override fun robotInit() {
         timer.reset()
@@ -69,5 +71,6 @@ object Robot : TimedRobot(0.02) {
 
     fun reset() {
         TeleopController.reset()
+        Drivetrain.reset()
     }
 }
