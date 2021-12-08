@@ -27,7 +27,7 @@ object Robot : TimedRobot(0.02) {
     private val subsystems = mutableListOf<Subsystem>()
 
     init {
-        subsystems.add(Drivetrain)
+        this.subsystems.add(Drivetrain)
         NetworkTableInstance.getDefault().setUpdateRate(0.01)
     }
 
@@ -71,6 +71,8 @@ object Robot : TimedRobot(0.02) {
 
     fun reset() {
         TeleopController.reset()
-        Drivetrain.reset()
+        for(subsystem in this.subsystems) {
+            subsystem.reset()
+        }
     }
 }

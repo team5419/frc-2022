@@ -19,6 +19,10 @@ object TeleopController : Controller() {
     }
 
     private fun updateDrivetrain() {
+        println(
+            "throttle: ${DriverControls.getThrottle()}.
+            turn: ${DriverControls.getTurn()}. slow: ${DriverControls.slowMove()}."
+        );
         Drivetrain.drive(DriverControls.getThrottle(), DriverControls.getTurn(), DriverControls.slowMove())
     }
 }
