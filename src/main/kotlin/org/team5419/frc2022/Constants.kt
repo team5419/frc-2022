@@ -1,6 +1,12 @@
 package org.team5419.frc2022
+import kotlin.math.PI
 
 object DriveConstants {
+    val gearRatio: Double = (10.3333 / 1.0)
+    val ticksPerRotation: Double = (2048.0 * gearRatio)
+    const val wheelRadius = 0.0762
+    const val wheelDiameter = wheelRadius * 2.0
+    const val wheelCircumference = wheelRadius * PI
     object Ramsete {
         const val kv: Double = 2.3 // arbitrary
         const val ka: Double = 0.463

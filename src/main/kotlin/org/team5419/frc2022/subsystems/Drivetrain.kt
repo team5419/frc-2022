@@ -100,6 +100,21 @@ object Drivetrain: Subsystem("Drivetrain") {
         rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow * 0.1, 0.001))
     }
 
+    fun metersPerSecondToNativeUnits(units: Double): Double {
+        return units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10
+    }
+
+    public fun withFeedForward(left: Double, right: Double, leftFF: Double, rightFF: Double) {
+        leftLeader.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(left),
+            DemandType.ArbitraryFeedForward, leftFF / 12.0
+        )
+        rightLeader.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(right),
+            DemandType.ArbitraryFeedForward, rightFF / 12.0
+        )
+    }
+
     override public fun reset() {
         leftLeader.set(ControlMode.PercentOutput, 0.0)
         rightLeader.set(ControlMode.PercentOutput, 0.0)

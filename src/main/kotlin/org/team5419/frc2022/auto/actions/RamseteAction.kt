@@ -1,11 +1,5 @@
 package org.team5419.frc2020.auto.actions
-
 import org.team5419.frc2020.subsystems.Drivetrain
-import org.team5419.frc2020.fault.math.units.derived.*
-import org.team5419.frc2020.fault.math.units.*
-import org.team5419.frc2020.fault.math.geometry.Vector2
-import org.team5419.frc2020.fault.math.geometry.Pose2d
-import org.team5419.frc2020.fault.auto.Action
 import kotlin.math.PI
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveKinematicsConstraint
@@ -14,87 +8,62 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics
-import edu.wpi.first.wpilibj.geometry.Translation2d as WPILibTranslation2d
-import edu.wpi.first.wpilibj.geometry.Rotation2d as WPILibRotation2d
-import edu.wpi.first.wpilibj.geometry.Pose2d as WPILibPose2d
+import edu.wpi.first.wpilibj.geometry.Translation2d
+import edu.wpi.first.wpilibj.geometry.Rotation2d
+import edu.wpi.first.wpilibj.geometry.Pose2d
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward
 import edu.wpi.first.wpilibj.controller.RamseteController
 import org.team5419.frc2020.DriveConstants
 
-// refrences:
-// https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
-// https://docs.wpilib.org/en/latest/docs/software/examples-tutorials/trajectory-tutorial/index.html
 
-private fun pose2dToWPILibPose2d(pose: Pose2d): WPILibPose2d {
-    return WPILibPose2d(
-        pose.translation.x.inMeters(),
-        pose.translation.y.inMeters(),
-        WPILibRotation2d(
-            pose.rotation.radian.value
-        )
+open class RamseteAction: Action() {
+    open var poses: Array<Pose2d>
+    open var reversed: Boolean
+
+    constructor(_poses: Array<Pose2d>, _reversed: Boolean = false) {
+        this.poses = _poses
+        this.reversed = _reversed
+    }
+
+    val driveKinematics = DifferentialDriveKinematics(DriveConstants.Ramsete.trackWidth)
+
+    val feedforward = SimpleMotorFeedforward(
+        DriveConstants.Ramsete.ks, DriveConstants.Ramsete.kv, DriveConstants.Ramsete.ka
     )
-}
-
-public class RamseteAction(
-    val poses: Array<Pose2d>,
-
-    // default settings
-    val reversed: Boolean = false,
-    val maxVelocity: SIUnit<LinearVelocity> = DriveConstants.MaxVelocity,
-    val maxAcceleration: SIUnit<LinearAcceleration> = DriveConstants.MaxAcceleration,
-    val maxVoltage: SIUnit<Volt> = 12.volts,
-    val trackWidth: SIUnit<Meter> = DriveConstants.TrackWidth,
-    val beta: Double = DriveConstants.Beta,
-    val zeta: Double = DriveConstants.Zeta,
-    val kS: Double = DriveConstants.DriveKs,
-    val kV: Double = DriveConstants.DriveKv,
-    val kA: Double = DriveConstants.DriveKa
-) : Action() {
-
-    val driveKinematics = DifferentialDriveKinematics(trackWidth.inMeters())
-
-    val feedforward = SimpleMotorFeedforward(kS, kV, kA)
 
     val voltageConstraint = DifferentialDriveVoltageConstraint(
         feedforward,
         driveKinematics,
-        maxVoltage.value
+        DriveConstants.Ramsete.maxVoltage
     )
 
     val driveKinematicsConstraint = DifferentialDriveKinematicsConstraint(
         driveKinematics,
-        maxVelocity.value
+        DriveConstants.Ramsete.maxVelocity
     )
 
     val config = TrajectoryConfig(
-        maxVelocity.value,
-        maxAcceleration.value
+        DriveConstants.Ramsete.maxVelocity,
+        DriveConstants.Ramsete.maxAcceleration
     ).apply {
         setKinematics(driveKinematics)
-        setReversed(reversed)
+        setReversed(this.reversed)
         addConstraint(voltageConstraint)
         addConstraint(driveKinematicsConstraint)
         addConstraint(CentripetalAccelerationConstraint(
-            DriveConstants.MaxCentripetalAcceleration.value
+            DriveConstants.Ramsete.maxCentripetalAcceleration
         ))
     }
 
-    val trajectory = TrajectoryGenerator.generateTrajectory(
+    val trajectory = TrajectoryGenerator.generateTrajectory(poses, config)
 
-        // list of points
-        poses.map({ pose2dToWPILibPose2d(it) }),
+    val controller = RamseteController(DriveConstants.Ramsete.beta, DriveConstants.Ramsete.zeta)
 
-        // the trajectory configuration
-        config
-    )
-
-    val controller = RamseteController(beta, zeta)
-
-    var prevTime = 0.0.seconds
+    var prevTime = 0.0 // seconds
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
 
-    init {
-        finishCondition += { getTime() > trajectory.getTotalTimeSeconds() }
+    init { // CHANGE
+        this.addCondition({ this.timer.get() > trajectory.getTotalTimeSeconds() })
     }
 
     override public fun start() {
@@ -104,14 +73,14 @@ public class RamseteAction(
         println("started motion")
     }
 
-    override fun update(dt: SIUnit<Second>) {
+    override fun update(dt: Double) {
         //println("moving")
-        val time = getTime()
+        val time = this.timer.get()
 
         val chassisSpeed = controller.calculate(
             Drivetrain.pose,
 
-            trajectory.sample(time.inSeconds())
+            trajectory.sample(time)
         )
 
         val setSpeed = driveKinematics.toWheelSpeeds(chassisSpeed)
@@ -131,8 +100,8 @@ public class RamseteAction(
         Drivetrain.setVelocity(
             setSpeed.leftMetersPerSecond.meters.velocity * 2.0,
             setSpeed.rightMetersPerSecond.meters.velocity * 2.0,
-            leftFeedForward.volts,
-            rightFeedForward.volts
+            leftFeedForward,
+            rightFeedForward
         )
     }
 
