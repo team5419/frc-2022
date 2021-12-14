@@ -24,9 +24,9 @@ kt_register_toolchains()
 
 http_archive(
     name = "bazelrio",
-    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.3.0.zip",
-    sha256 = "f48dd081ccbca0f63d7577e68399d30ecbf85e935cad08dfa24f56691f4e8c85",
-    strip_prefix = "bazelRio-0.3.0/bazelrio",
+    url = "https://github.com/bazelRio/bazelRio/archive/6df8b0d843ceb515367942a7bf22969a08692583.zip",
+    sha256 = "21cff46c53d0fe6830b1284282c946f7ad49b8ccea69254878ca89b44a40b4d6",
+    strip_prefix = "bazelRio-6df8b0d843ceb515367942a7bf22969a08692583/bazelrio",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
