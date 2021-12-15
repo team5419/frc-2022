@@ -5,6 +5,6 @@ robot_java_binary(
     main_class = "frc.robot.Main",
     team_number = 5419,
     runtime_deps = [
-        "//src/main/kotlin/frc/robot:Robot",
+        "//src/main/kotlin/frc/robot:Main",
     ],
 )
