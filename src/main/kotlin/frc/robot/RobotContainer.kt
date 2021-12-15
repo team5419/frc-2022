@@ -34,7 +34,11 @@ class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  fun configureButtonBindings() {}
+  fun configureButtonBindings() {
+    private val driver: XboxController = new XboxController(0);
+    private val aButton: JoystickButton = new JoystickButton(driver, XboxController.Buttons.kA)
+    aButton.whenPressed()
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
