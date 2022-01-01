@@ -33,7 +33,9 @@ kt_jvm_library(
     visibility = ["//visibility:public"],
     deps = [
         "//src/main/kotlin/frc/robot/commands:ExampleCommand",
+        "//src/main/kotlin/frc/robot/commands:Drive",
         "//src/main/kotlin/frc/robot/subsystems:ExampleSubsystem",
+        "//src/main/kotlin/frc/robot/subsystems:Drivetrain",
         "@bazelrio//libraries/java/wpilib/new_commands",
         "@bazelrio//libraries/java/wpilib/wpilibj",
     ],

@@ -7,8 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,13 +22,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private val m_exampleSubsystem = ExampleSubsystem();
+  private val m_drivetrain = Drivetrain();
 
   private val m_autoCommand = ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   init {
     // Configure the button bindings
-    configureButtonBindings();
+    val driver = XboxController(0);
+    configureButtonBindings(driver);
+    m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
   }
 
   /**
@@ -34,10 +40,9 @@ class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  fun configureButtonBindings() {
-    private val driver: XboxController = new XboxController(0);
-    private val aButton: JoystickButton = new JoystickButton(driver, XboxController.Buttons.kA)
-    aButton.whenPressed()
+  
+  fun configureButtonBindings(driver: XboxController) {
+    val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
   }
 
   /**

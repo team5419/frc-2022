@@ -10,3 +10,15 @@ kt_jvm_library(
         #"@bazelrio//libraries/java/wpilib/wpilibj",
     ],
 )
+
+kt_jvm_library(
+    name = "Drive",
+    srcs = ["Drive.kt"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/main/kotlin/frc/robot/subsystems:Drivetrain",
+        "@bazelrio//libraries/java/wpilib/new_commands",
+        "@bazelrio//libraries/java/wpilib/wpilibj",
+        #"@bazelrio//libraries/java/wpilib/wpilibj",
+    ],
+)
