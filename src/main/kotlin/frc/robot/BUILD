@@ -24,6 +24,7 @@ kt_jvm_library(
         ":RobotContainer",
         "@bazelrio//libraries/java/wpilib/new_commands",
         "@bazelrio//libraries/java/wpilib/wpilibj",
+        "@bazelrio//libraries/java/wpilib/shuffleboard",
     ],
 )
 
@@ -38,5 +39,6 @@ kt_jvm_library(
         "//src/main/kotlin/frc/robot/subsystems:Drivetrain",
         "@bazelrio//libraries/java/wpilib/new_commands",
         "@bazelrio//libraries/java/wpilib/wpilibj",
+        "@bazelrio//libraries/java/wpilib/shuffleboard"
     ],
 )

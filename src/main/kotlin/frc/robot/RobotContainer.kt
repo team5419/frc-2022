@@ -13,16 +13,19 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-class RobotContainer {
+class RobotContainer(tab: ShuffleboardTab) {
   // The robot's subsystems and commands are defined here...
   private val m_exampleSubsystem = ExampleSubsystem();
-  private val m_drivetrain = Drivetrain();
+  private val m_drivetrain = Drivetrain(tab);
 
   private val m_autoCommand = ExampleCommand(m_exampleSubsystem);
 
@@ -32,6 +35,7 @@ class RobotContainer {
     val driver = XboxController(0);
     configureButtonBindings(driver);
     m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
+    println("set default")
   }
 
   /**
