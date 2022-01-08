@@ -24,7 +24,7 @@ kt_jvm_library(
         ":RobotContainer",
         "@bazelrio//libraries/java/wpilib/new_commands",
         "@bazelrio//libraries/java/wpilib/wpilibj",
-        "@bazelrio//libraries/java/wpilib/shuffleboard",
+        "@bazelrio//libraries/java/wpilib/shuffleboard"
     ],
 )
 

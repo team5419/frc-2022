@@ -99,9 +99,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
 
         }
-
-        tab.addNumber("left vel", { leftLeader.getSelectedSensorVelocity(0) })
-        tab.addNumber("right vel", { rightLeader.getSelectedSensorVelocity(0) })
+        tab.addNumber("left vel", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
+        tab.addNumber("right vel", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
 
     }
 
@@ -113,15 +112,16 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
-        println("drive run with throttle ${throttle}, turn ${turn}")
+        //println("drive run with throttle ${throttle}, turn ${turn}")
         val howFarOver = max(0.0, throttle + turn - 1)
         var slow: Double = 1.0
         if(isSlow) {
             slow = DriveConstants.slowMultiplier
         }
-        //leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow * 0.6, 0.001))
-        //rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow * 0.6, 0.001))
-        leftLeader.set(ControlMode.PercentOutput, 1.0)
+        //println(leftLeader)
+        leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow * 0.6, 0.001))
+        rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow * 0.6, 0.001))
+        //leftLeader.set(ControlMode.PercentOutput, 1.0)
     }
 
     override fun periodic() {

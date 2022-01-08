@@ -15,10 +15,10 @@ import kotlin.math.PI
  */
 object DriveConstants {
     object Ports {
-        val leftLeader = 1;
-        val leftFollower = 2;
-        val rightLeader = 4;
-        val rightFollower = 3;
+        val leftLeader = 3;
+        val leftFollower = 4;
+        val rightLeader = 1;
+        val rightFollower = 2;
     }
     val gearRatio: Double = (10.3333 / 1.0)
     val ticksPerRotation: Double = (2048.0 * gearRatio)

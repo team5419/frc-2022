@@ -22,7 +22,6 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController) : CommandBase() {
 
   // Called every time the scheduler runs while the command is scheduled.
   override fun execute() {
-    println("drive called")
     drivetrain.drive(driver.getY( Hand.kLeft ).toDouble(), driver.getX( Hand.kRight ).toDouble(), false);
   }
 
