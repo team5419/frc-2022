@@ -1,5 +1,8 @@
 # frc2022
 ## Getting started
+
+See clean-slate branch for info on new gradle/bazel build
+
 ### Pre-commit
 First, install the project's [pre-commit](http://pre-commit.com/) hooks (**do this immediately after cloning!**)
 ```
