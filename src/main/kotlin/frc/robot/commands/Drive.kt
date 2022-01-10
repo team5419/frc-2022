@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 
 class Drive(_drivetrain: Drivetrain, _driver: XboxController) : CommandBase() {
@@ -22,7 +21,7 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController) : CommandBase() {
 
   // Called every time the scheduler runs while the command is scheduled.
   override fun execute() {
-    drivetrain.drive(driver.getY( Hand.kLeft ).toDouble(), driver.getX( Hand.kRight ).toDouble(), false);
+    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), false);
   }
 
   // Called once the command ends or is interrupted.

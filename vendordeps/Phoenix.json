@@ -170,9 +170,9 @@
         "version": "5.19.4"
       }
     ],
-    "jsonUrl": "http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest.json",
+    "jsonUrl": "https://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest.json",
     "mavenUrls": [
-      "http://devsite.ctr-electronics.com/maven/release/"
+      "https://devsite.ctr-electronics.com/maven/release/"
     ],
     "name": "CTRE-Phoenix",
     "uuid": "ab676553-b602-441f-a38d-f1296eff6537",

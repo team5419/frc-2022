@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
-//import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.networktables.NetworkTableInstance
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
  */
 
 val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
-//NetworkTableInstance.getDefault().setUpdateRate(0.01)
 
 class Robot : TimedRobot() {
   private val m_robotContainer = RobotContainer(tab);
@@ -32,6 +31,7 @@ class Robot : TimedRobot() {
    * initialization code.
    */
   override fun robotInit() {
+    NetworkTableInstance.getDefault().setUpdateRate(0.01)
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
   }

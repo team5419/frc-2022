@@ -112,7 +112,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
-        //println("drive run with throttle ${throttle}, turn ${turn}")
+        println("drive run with throttle ${throttle}, turn ${turn}")
         val howFarOver = max(0.0, throttle + turn - 1)
         var slow: Double = 1.0
         if(isSlow) {

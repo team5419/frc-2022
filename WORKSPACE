@@ -22,11 +22,9 @@ kt_register_toolchains()
 
 # BazelRIO
 
-http_archive(
+local_repository(
     name = "bazelrio",
-    url = "https://github.com/bazelRio/bazelRio/archive/6df8b0d843ceb515367942a7bf22969a08692583.zip",
-    sha256 = "21cff46c53d0fe6830b1284282c946f7ad49b8ccea69254878ca89b44a40b4d6",
-    strip_prefix = "bazelRio-6df8b0d843ceb515367942a7bf22969a08692583/bazelrio",
+    path = "../bazelRio/bazelrio",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
