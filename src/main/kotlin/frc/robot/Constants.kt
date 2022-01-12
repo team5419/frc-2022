@@ -19,6 +19,8 @@ object DriveConstants {
         val leftFollower = 4;
         val rightLeader = 1;
         val rightFollower = 2;
+        val gyroPort = 20
+
     }
     val gearRatio: Double = (10.3333 / 1.0)
     val ticksPerRotation: Double = (2048.0 * gearRatio)

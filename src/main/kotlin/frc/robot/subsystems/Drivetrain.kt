@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.sensors.PigeonIMU
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
@@ -24,6 +26,9 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
 
     private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
+
+    public val gyro = PigeonIMU(DriveConstants.Ports.gyroPort)
+
 
     init {
         leftFollower.apply {
@@ -96,13 +101,46 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
 
             setNeutralMode(NeutralMode.Coast)
-
-
         }
+
+         gyro.apply {
+            configFactoryDefault(100)
+            setFusedHeading(0.0, 100)
+        }
+
         tab.addNumber("left vel", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
         tab.addNumber("right vel", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
 
     }
+
+    val angle: Double
+            get() = -gyro.getFusedHeading()
+
+    var odometry = DifferentialDriveOdometry(Rotation2d(angle))
+
+    val pose
+        get() = odometry.getPoseMeters()
+
+    fun setVelocity(
+        leftVelocity: Double,
+        rightVelocity: Double,
+        leftFF: Double,
+        rightFF: Double
+    ) {
+
+        leftLeader.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity),
+            DemandType.ArbitraryFeedForward, leftFF / 12.0
+        )
+        rightLeader.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity),
+            DemandType.ArbitraryFeedForward, rightFF / 12.0
+        )
+    }
+
+    fun metersPerSecondToNativeUnits(units: Double)
+        = (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
+
 
     fun withDeadband(movement: Double, deadband: Double): Double {
         if(abs(movement) <= deadband) {

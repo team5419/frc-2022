@@ -22,3 +22,15 @@ kt_jvm_library(
         #"@bazelrio//libraries/java/wpilib/wpilibj",
     ],
 )
+
+kt_jvm_library(
+    name = "RamseteAction",
+    srcs = ["RamseteAction.kt"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/main/kotlin/frc/robot/subsystems:Drivetrain",
+        "@bazelrio//libraries/java/wpilib/new_commands",
+        "@bazelrio//libraries/java/wpilib/wpilibj", 
+        "//src/main/kotlin/frc/robot:Constants"
+    ],
+)

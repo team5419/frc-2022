@@ -3,7 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import frc.robot.auto.Baseline
+import frc.robot.auto.TestDrive
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +31,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_drivetrain = Drivetrain(tab);
 
   private val m_autoCommand = ExampleCommand(m_exampleSubsystem);
+  private val m_baseline = Baseline(object {})
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   init {
@@ -36,6 +40,13 @@ class RobotContainer(tab: ShuffleboardTab) {
     configureButtonBindings(driver);
     m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
     println("set default")
+    private val autoSelector = SendableChooser<SequentialCommandGroup>()
+    tab.add("Auto Selector", autoSelector)
+    autoSelector.setDefaultOption("Baseline", m_baseline)
+    autoSelector.addOption("Baseline", m_baseline)
+    autoSelector.addOption("Test Drive", TestDrive(object {
+        val drivetrain: m_drivetrain
+    }))
   }
 
   /**
@@ -55,7 +66,8 @@ class RobotContainer(tab: ShuffleboardTab) {
    * @return the command to run in autonomous
    */
   fun getAutonomousCommand(): Command {
+
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return autoSelector.getSelected() ?: m_baseline
   }
 }
