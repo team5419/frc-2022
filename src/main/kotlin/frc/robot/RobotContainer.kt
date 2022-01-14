@@ -31,8 +31,9 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_drivetrain = Drivetrain(tab);
 
   private val m_autoCommand = ExampleCommand(m_exampleSubsystem);
-  private val m_baseline = Baseline(object {})
-
+  private val m_baseline = Baseline()
+  
+  val autoSelector = SendableChooser<SequentialCommandGroup>()
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   init {
     // Configure the button bindings
@@ -40,13 +41,10 @@ class RobotContainer(tab: ShuffleboardTab) {
     configureButtonBindings(driver);
     m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
     println("set default")
-    private val autoSelector = SendableChooser<SequentialCommandGroup>()
     tab.add("Auto Selector", autoSelector)
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
-    autoSelector.addOption("Test Drive", TestDrive(object {
-        val drivetrain: m_drivetrain
-    }))
+    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain))
   }
 
   /**

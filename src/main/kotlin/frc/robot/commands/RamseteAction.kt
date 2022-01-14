@@ -1,3 +1,4 @@
+package frc.robot.commands
 
 import kotlin.math.PI
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint
@@ -23,20 +24,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
 // https://docs.wpilib.org/en/latest/docs/software/examples-tutorials/trajectory-tutorial/index.html
 
-class RamseteAction(m_subsystem: Drivetrain, m_poses: Array<Pose2d>, m_reversed: Boolean = false) : CommandBase() {
+class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: Boolean = false) : CommandBase() {
     private val drivetrain: Drivetrain = m_subsystem
-    private val poses: Array<Pose2d> = m_poses
-    private val reversed: Boolean = reversed
-    private val maxVelocity: Double = DriveConstants.MaxVelocity
-    private val maxAcceleration: Double = DriveConstants.MaxAcceleration
-    private val maxVoltage: Double = 12.volts
-    private val trackWidth: Double = DriveConstants.TrackWidth
-    private val beta: Double = DriveConstants.Beta
-    private val zeta: Double = DriveConstants.Zeta
-    private val kS: Double = DriveConstants.DriveKs
-    private val kV: Double = DriveConstants.DriveKv
-    private val kA: Double = DriveConstants.DriveKa
-    val prevTime: Double = 0.0
+    private val poses: List<Pose2d> = m_poses
+    private val reversed: Boolean = m_reversed
+    private val maxVelocity: Double = DriveConstants.Ramsete.maxVelocity
+    private val maxAcceleration: Double = DriveConstants.Ramsete.maxAcceleration
+    private val maxVoltage: Double = 12.0 // volts
+    private val trackWidth: Double = DriveConstants.Ramsete.trackWidth
+    private val beta: Double = DriveConstants.Ramsete.beta
+    private val zeta: Double = DriveConstants.Ramsete.zeta
+    private val kS: Double = DriveConstants.Ramsete.ks
+    private val kV: Double = DriveConstants.Ramsete.kv
+    private val kA: Double = DriveConstants.Ramsete.ka
         
     val driveKinematics = DifferentialDriveKinematics(trackWidth)
 
@@ -62,7 +62,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: Array<Pose2d>, m_reversed:
         addConstraint(voltageConstraint)
         addConstraint(driveKinematicsConstraint)
         addConstraint(CentripetalAccelerationConstraint(
-            DriveConstants.MaxCentripetalAcceleration
+            DriveConstants.Ramsete.maxCentripetalAcceleration
         ))
     }
 
@@ -71,6 +71,9 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: Array<Pose2d>, m_reversed:
     val controller = RamseteController(beta, zeta)
 
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
+    var prevTime: Double = 0.0
+    var timer: Timer = Timer()
+    
 
     init {
         addRequirements(m_subsystem);
