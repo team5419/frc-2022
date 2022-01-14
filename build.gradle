@@ -95,6 +95,10 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
+deployArtifact.jarTask = jar
+wpi.java.configureExecutableTasks(jar)
+wpi.java.configureTestTasks(test)
+
 wrapper {
     gradleVersion = '7.3.3'
     distributionType = Wrapper.DistributionType.BIN

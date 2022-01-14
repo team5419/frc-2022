@@ -15,6 +15,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward
 import edu.wpi.first.math.controller.RamseteController
 import frc.robot.subsystems.Drivetrain
 import frc.robot.DriveConstants
+import edu.wpi.first.math.spline.SplineHelper
 
 import edu.wpi.first.wpilibj.Timer
 
