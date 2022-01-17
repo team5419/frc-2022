@@ -48,3 +48,16 @@ object DriveConstants {
     }
 }
 
+object ShooterConstants {
+    object Ports {
+        val leader = 6;
+        val follower = 7;
+    }
+}
+
+object PrototypeMotorConstants {
+    object Ports {
+        val motor = 5;
+    }
+}
+

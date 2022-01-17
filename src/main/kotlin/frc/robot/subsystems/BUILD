@@ -22,3 +22,29 @@ kt_jvm_library(
         #"@bazelrio//libraries/java/wpilib/wpilibj",
     ],
 )
+
+kt_jvm_library(
+    name = "Shooter",
+    srcs = ["Shooter.kt"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@bazelrio//libraries/java/wpilib/new_commands",
+        "@bazelrio//libraries/java/ctre/phoenix",
+        "//src/main/kotlin/frc/robot:Constants",
+        "@bazelrio//libraries/java/wpilib/shuffleboard"
+        #"@bazelrio//libraries/java/wpilib/wpilibj",
+    ],
+)
+
+kt_jvm_library(
+    name = "PrototypeMotor",
+    srcs = ["PrototypeMotor.kt"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@bazelrio//libraries/java/wpilib/new_commands",
+        "@bazelrio//libraries/java/ctre/phoenix",
+        "//src/main/kotlin/frc/robot:Constants",
+        "@bazelrio//libraries/java/wpilib/shuffleboard"
+        #"@bazelrio//libraries/java/wpilib/wpilibj",
+    ],
+)

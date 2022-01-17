@@ -9,8 +9,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Drive;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.PrototypeSpin;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.PrototypeMotor;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -29,6 +33,8 @@ class RobotContainer(tab: ShuffleboardTab) {
   // The robot's subsystems and commands are defined here...
   private val m_exampleSubsystem = ExampleSubsystem();
   private val m_drivetrain = Drivetrain(tab);
+  private val m_shooter = Shooter(tab);
+  private val m_protomotor = PrototypeMotor(tab);
 
   private val m_autoCommand = ExampleCommand(m_exampleSubsystem);
   private val m_baseline = Baseline()
@@ -56,6 +62,11 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController) {
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
+    aButton.whenHeld(Shoot(m_shooter, 0.0));
+    val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
+    bButton.whenHeld(Shoot(m_shooter, 1000.0));
+    val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
+    xButton.whenHeld(PrototypeSpin(m_protomotor));
   }
 
   /**
