@@ -52,12 +52,15 @@ class Robot : TimedRobot() {
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
-  override fun disabledInit() {}
+  override fun disabledInit() {
+    m_robotContainer.onTeleop()
+  }
 
   override fun disabledPeriodic() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   override fun autonomousInit() {
+    m_robotContainer.onAuto()
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     if(m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -68,6 +71,7 @@ class Robot : TimedRobot() {
   override fun autonomousPeriodic() {}
 
   override fun teleopInit() {
+    m_robotContainer.onTeleop()
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

@@ -27,7 +27,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
 
-    public val gyro = PigeonIMU(DriveConstants.Ports.gyroPort)
+    public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
 
 
     init {
@@ -150,7 +150,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
-        println("drive run with throttle ${throttle}, turn ${turn}")
+        //println("drive run with throttle ${throttle}, turn ${turn}")
         val howFarOver = max(0.0, throttle + turn - 1)
         var slow: Double = 1.0
         if(isSlow) {
@@ -162,7 +162,20 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         //leftLeader.set(ControlMode.PercentOutput, 1.0)
     }
 
+    public var brakeMode = false
+        set(value: Boolean) {
+            if(value == field) return
+            if(value) {
+                leftLeader.setNeutralMode(NeutralMode.Brake)
+                rightLeader.setNeutralMode(NeutralMode.Brake)
+            } else {
+                leftLeader.setNeutralMode(NeutralMode.Coast)
+                rightLeader.setNeutralMode(NeutralMode.Coast)
+            }
+        }
+
     override fun periodic() {
+        println(pose)
     // This method will be called once per scheduler run
     }
 

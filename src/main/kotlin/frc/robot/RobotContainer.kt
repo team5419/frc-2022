@@ -50,7 +50,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     tab.add("Auto Selector", autoSelector)
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
-    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain))
+    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter))
   }
 
   /**
@@ -59,12 +59,20 @@ class RobotContainer(tab: ShuffleboardTab) {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+
+  fun onAuto() {
+    m_drivetrain.brakeMode = true
+  }
+
+  fun onTeleop() {
+    m_drivetrain.brakeMode = false
+  }
   
   fun configureButtonBindings(driver: XboxController) {
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
     aButton.whenHeld(Shoot(m_shooter, 0.0));
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
-    bButton.whenHeld(Shoot(m_shooter, 1000.0));
+    bButton.whenHeld(Shoot(m_shooter));
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     xButton.whenHeld(PrototypeSpin(m_protomotor));
   }

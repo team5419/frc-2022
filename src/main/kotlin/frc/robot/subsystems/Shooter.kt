@@ -7,6 +7,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import edu.wpi.first.networktables.NetworkTableEntry
+import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
 
@@ -18,6 +22,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     val leaderMotor = TalonFX(ShooterConstants.Ports.leader)
     val followerMotor = TalonFX(ShooterConstants.Ports.follower)
+    var defaultVelocity: Double = 0.0
 
     init {
         leaderMotor.apply {
@@ -67,6 +72,11 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
         tab.addNumber("Attempted Velocity", { setpoint })
         tab.addNumber("Real Velocity", { flyWheelVelocity() })
+        tab.add("B button shooter velocity", 0.0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(mapOf("min" to 0, "max" to 5000))
+            .getEntry()
+            .addListener({ value: EntryNotification -> this.defaultVelocity = value.value.getDouble() }, EntryListenerFlags.kUpdate)
     }
 
     public var setpoint = 0.0
@@ -85,10 +95,16 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun shoot(velocity: Double) {
-        if(velocity < 0 || velocity == setpoint) {
+        if(velocity == setpoint) {
             return
         }
-        setpoint = velocity
+        if(velocity == -1.0) {
+            setpoint = this.defaultVelocity
+        } else if(velocity < 0) {
+            return
+        } else {
+            setpoint = velocity
+        }
         println("Setting Velocity: ${setpoint}")
         leaderMotor.set(ControlMode.Velocity, setpoint)
     }

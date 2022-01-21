@@ -17,6 +17,8 @@ kt_jvm_library(
     deps = [
         "//src/main/kotlin/frc/robot/commands:RamseteAction",
         "//src/main/kotlin/frc/robot/subsystems:Drivetrain",
+        "//src/main/kotlin/frc/robot/subsystems:Shooter",
+        "//src/main/kotlin/frc/robot/commands:Shoot",
         "@bazelrio//libraries/java/wpilib/new_commands",
         "@bazelrio//libraries/java/wpilib/wpilibj"
     ],

@@ -59,7 +59,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
         maxAcceleration
     ).apply {
         setKinematics(driveKinematics)
-        setReversed(reversed)
+        setReversed(!reversed) // our motors are weird
         addConstraint(voltageConstraint)
         addConstraint(driveKinematicsConstraint)
         addConstraint(CentripetalAccelerationConstraint(
@@ -91,9 +91,12 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
   // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
         val time = timer.get()
-
         val chassisSpeed = controller.calculate(
-            drivetrain.pose,
+            Pose2d(
+                drivetrain.leftDistance.inMeters(),
+                drivetrain.rightDistance.inMeters(),
+                Rotation2d(drivetrain.robotPosition.rotation.radian.value)
+            ),
             trajectory.sample(time)
         )
 
@@ -113,8 +116,8 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
         prevTime = time
 
         drivetrain.setVelocity(
-            setSpeed.leftMetersPerSecond,
-            setSpeed.rightMetersPerSecond,
+            setSpeed.leftMetersPerSecond * 0.4,
+            setSpeed.rightMetersPerSecond * 0.4,
             leftFeedForward,
             rightFeedForward
         )
@@ -123,6 +126,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
   // Called once the command ends or is interrupted.
     override fun end(interrupted: Boolean) {
         println("Done driving")
+        drivetrain.drive(0.0, 0.0, false)
     }
 
   // Returns true when the command should end.

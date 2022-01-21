@@ -31,8 +31,9 @@ kt_jvm_library(
         "@bazelrio//libraries/java/wpilib/new_commands",
         "@bazelrio//libraries/java/ctre/phoenix",
         "//src/main/kotlin/frc/robot:Constants",
-        "@bazelrio//libraries/java/wpilib/shuffleboard"
-        #"@bazelrio//libraries/java/wpilib/wpilibj",
+        "@bazelrio//libraries/java/wpilib/shuffleboard",
+        "@bazelrio//libraries/java/wpilib/ntcore",
+        "@bazelrio//libraries/java/wpilib/wpilibj"
     ],
 )
 

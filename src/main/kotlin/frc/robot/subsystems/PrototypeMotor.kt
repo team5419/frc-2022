@@ -74,7 +74,7 @@ class PrototypeMotor(tab: ShuffleboardTab) : SubsystemBase() {
         }
         setpoint = velocity
         println("Setting Velocity: ${setpoint}")
-        motor.set(ControlMode.Velocity, setpoint)
+        //motor.set(ControlMode.Velocity, setpoint)
     }
 
     override fun periodic() {
