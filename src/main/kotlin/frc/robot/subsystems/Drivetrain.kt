@@ -121,6 +121,27 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     val pose
         get() = odometry.getPoseMeters()
 
+    fun nativeUnitsToMeters(units: Double): Double =
+        (DriveConstants.wheelCircumference * units.toDouble() / DriveConstants.ticksPerRotation)
+
+    fun nativeUnitsToMetersPerSecond(units: Double) =
+        units * 10.0 / DriveConstants.ticksPerRotation * DriveConstants.wheelCircumference
+
+    val leftDistance: Double
+        get() = nativeUnitsToMeters(leftLeader.getSelectedSensorPosition(0))
+
+    val rightDistance: Double
+        get() = nativeUnitsToMeters(rightLeader.getSelectedSensorPosition(0))
+
+    val leftVelocity: Double // meters per second
+        get() = nativeUnitsToMetersPerSecond(leftLeader.getSelectedSensorVelocity(0))
+
+    val rightVelocity: Double
+        get() = nativeUnitsToMetersPerSecond(rightLeader.getSelectedSensorVelocity(0))
+
+    val averageSpeed: Double // meters per second
+        get() = ((Math.abs(leftVelocity) + Math.abs(leftVelocity))/2)
+
     fun setVelocity(
         leftVelocity: Double,
         rightVelocity: Double,
@@ -140,7 +161,6 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     fun metersPerSecondToNativeUnits(units: Double)
         = (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
-
 
     fun withDeadband(movement: Double, deadband: Double): Double {
         if(abs(movement) <= deadband) {
@@ -175,7 +195,13 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         }
 
     override fun periodic() {
-        println(pose)
+        odometry.update(
+            Rotation2d.fromDegrees(angle),
+            leftDistance,
+            rightDistance
+        )
+        //println("Left distance " + leftDistance + " Right distance " + rightDistance + " angle " + angle)
+        //println("Pose " + pose)
     // This method will be called once per scheduler run
     }
 

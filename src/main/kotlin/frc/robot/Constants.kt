@@ -61,3 +61,29 @@ object PrototypeMotorConstants {
     }
 }
 
+object VisionConstants {
+    public val cameraAngle = 10.0 // degrees
+    public val cameraHeight = 0.23495 // meters
+
+    public val targetHeight = 2.28 // meters
+
+    public val tolerance = 3.0 // arbitrary
+
+    public val maxAutoAlignSpeed = 0.15
+
+    public val targetOffset = 0.0
+
+    public const val maxOffsetFor2XZoom = 10.0
+
+    object PID {
+        public const val P = 0.01
+        public const val I = 0.006
+        public const val D = 0.0005
+    }
+
+    object PID2 {
+        public const val P = 0.015
+        public const val I = 0.003
+        public const val D = 0.0005
+    }
+}

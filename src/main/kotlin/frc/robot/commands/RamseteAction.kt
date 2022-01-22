@@ -92,11 +92,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
     override fun execute() {
         val time = timer.get()
         val chassisSpeed = controller.calculate(
-            Pose2d(
-                drivetrain.leftDistance.inMeters(),
-                drivetrain.rightDistance.inMeters(),
-                Rotation2d(drivetrain.robotPosition.rotation.radian.value)
-            ),
+            drivetrain.pose,
             trajectory.sample(time)
         )
 
