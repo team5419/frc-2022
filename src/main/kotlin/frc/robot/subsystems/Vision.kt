@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +14,6 @@ import frc.robot.VisionConstants
 class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
     private val mLimelight = NetworkTableInstance.getDefault().getTable("limelight")
-
 
     val inverted: Boolean = false
     private val mTargetHeight: Double = VisionConstants.targetHeight // both meters v

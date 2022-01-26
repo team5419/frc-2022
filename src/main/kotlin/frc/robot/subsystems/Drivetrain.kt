@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,7 +24,6 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
 
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
-
 
     init {
         leftFollower.apply {
@@ -183,8 +178,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             slow = DriveConstants.slowMultiplier
         }
         //println(leftLeader)
-        leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow * 0.6, 0.001))
-        rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow * 0.6, 0.001))
+        leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow, 0.001))
+        rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow, 0.001))
         //leftLeader.set(ControlMode.PercentOutput, 1.0)
     }
 
