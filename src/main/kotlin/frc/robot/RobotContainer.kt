@@ -58,7 +58,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     tab.add("Auto Selector", autoSelector)
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
-    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter))
+    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter, m_vision))
 
     var m_field = Field2d()
 

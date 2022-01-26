@@ -22,7 +22,6 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain) : CommandBase() {
 
   // Called every time the scheduler runs while the command is scheduled.
   override fun execute() {
-    val alignOutput = vision.autoAlign()
     drivetrain.setPercent(vision.autoAlign().left, vision.autoAlign().right)
   }
 
