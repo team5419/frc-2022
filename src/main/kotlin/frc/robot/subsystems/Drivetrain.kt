@@ -142,6 +142,12 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     val averageSpeed: Double // meters per second
         get() = ((Math.abs(leftVelocity) + Math.abs(leftVelocity))/2)
 
+    fun setPercent(left: Double, right: Double){
+        leftLeader.set(ControlMode.PercentOutput, left)
+        rightLeader.set(ControlMode.PercentOutput, right)
+    }
+
+
     fun setVelocity(
         leftVelocity: Double,
         rightVelocity: Double,
