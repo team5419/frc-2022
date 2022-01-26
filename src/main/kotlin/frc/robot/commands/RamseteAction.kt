@@ -75,6 +75,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
     var prevTime: Double = 0.0
     var timer: Timer = Timer()
     
+    //add "checkForObsticles()" function, if returns true, split the path at the midpoint and call two seperate ramsete actions (do this recursively)
 
     init {
         addRequirements(m_subsystem);

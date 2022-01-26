@@ -114,7 +114,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     val angle: Double
-            get() = -gyro.getFusedHeading()
+        get() = -gyro.getFusedHeading()
 
     var odometry = DifferentialDriveOdometry(Rotation2d(angle))
 

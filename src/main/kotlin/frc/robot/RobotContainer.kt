@@ -3,15 +3,20 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import frc.robot.auto.Baseline
-import frc.robot.auto.TestDrive
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+
+import frc.robot.auto.Baseline
+import frc.robot.auto.TestDrive
+import frc.robot.auto.PathToShooter
+
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.PrototypeSpin;
 import frc.robot.commands.AutoAlign;
+
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
@@ -87,14 +92,17 @@ class RobotContainer(tab: ShuffleboardTab) {
   }
   
   fun configureButtonBindings(driver: XboxController) {
+    //val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
+    //aButton.whenHeld(Shoot(m_shooter, 0.0));
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButton.whenHeld(Shoot(m_shooter, 0.0));
+    aButton.whenPressed(PathToShooter(m_drivetrain))
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
     bButton.whenHeld(Shoot(m_shooter));
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     xButton.whenHeld(PrototypeSpin(m_protomotor));
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(AutoAlign(m_vision, m_drivetrain))
+
   }
 
   /**
