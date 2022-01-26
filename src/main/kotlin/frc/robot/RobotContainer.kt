@@ -23,6 +23,11 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+import frc.robot.commands.RamseteAction
+import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.wpilibj.smartdashboard.Field2d
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -51,6 +56,16 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
     autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter))
+
+    var m_field = Field2d()
+
+    tab.add("field", m_field)
+
+    m_field.getObject("traj").setTrajectory(
+      RamseteAction(m_drivetrain, listOf( // negative x is forward, positive x is backward, positive y is left, negative y is right
+      Pose2d(0.0, 0.0, Rotation2d(0.0)), 
+      Pose2d(0.8, 0.0, Rotation2d(0.0))
+      ), true).trajectory)
   }
 
   /**
