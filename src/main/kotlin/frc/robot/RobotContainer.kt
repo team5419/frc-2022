@@ -79,7 +79,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     xButton.whenHeld(PrototypeSpin(m_protomotor));
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
-    yButton.whenHeld(AutoAlign(m_vision, m_drivetrain))
+    yButton.toggleWhenPressed(AutoAlign(m_vision, m_drivetrain))
   }
 
   /**
