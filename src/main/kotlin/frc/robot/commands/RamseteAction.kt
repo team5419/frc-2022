@@ -16,14 +16,8 @@ import edu.wpi.first.math.controller.RamseteController
 import frc.robot.subsystems.Drivetrain
 import frc.robot.DriveConstants
 import edu.wpi.first.math.spline.SplineHelper
-
 import edu.wpi.first.wpilibj.Timer
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-// refrences:
-// https://github.com/wpilibsuite/allwpilib/blob/master/wpilibNewCommands/src/main/java/edu/wpi/first/wpilibj2/command/RamseteCommand.java
-// https://docs.wpilib.org/en/latest/docs/software/examples-tutorials/trajectory-tutorial/index.html
 
 class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: Boolean = false) : CommandBase() {
     private val drivetrain: Drivetrain = m_subsystem
@@ -32,32 +26,15 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
     private val maxVelocity: Double = DriveConstants.Ramsete.maxVelocity
     private val maxAcceleration: Double = DriveConstants.Ramsete.maxAcceleration
     private val maxVoltage: Double = 12.0 // volts
-    private val trackWidth: Double = DriveConstants.Ramsete.trackWidth
-    private val beta: Double = DriveConstants.Ramsete.beta
-    private val zeta: Double = DriveConstants.Ramsete.zeta
-    private val kS: Double = DriveConstants.Ramsete.ks
-    private val kV: Double = DriveConstants.Ramsete.kv
-    private val kA: Double = DriveConstants.Ramsete.ka
-        
-    val driveKinematics = DifferentialDriveKinematics(trackWidth)
+    
+    // wpilib stuff - just trust it
+    val driveKinematics = DifferentialDriveKinematics(DriveConstants.Ramsete.trackWidth)
+    val feedforward = SimpleMotorFeedforward(DriveConstants.Ramsete.ks, DriveConstants.Ramsete.kv, DriveConstants.Ramsete.ka)
+    val voltageConstraint = DifferentialDriveVoltageConstraint(feedforward, driveKinematics, maxVoltage)
+    val driveKinematicsConstraint = DifferentialDriveKinematicsConstraint(driveKinematics, maxVelocity)
 
-    val feedforward = SimpleMotorFeedforward(kS, kV, kA)
-
-    val voltageConstraint = DifferentialDriveVoltageConstraint(
-        feedforward,
-        driveKinematics,
-        maxVoltage
-    )
-
-    val driveKinematicsConstraint = DifferentialDriveKinematicsConstraint(
-        driveKinematics,
-        maxVelocity
-    )
-
-    val config = TrajectoryConfig(
-        maxVelocity,
-        maxAcceleration
-    ).apply {
+    // again, just trust it
+    val config = TrajectoryConfig(maxVelocity, maxAcceleration).apply {
         setKinematics(driveKinematics)
         setReversed(!reversed) // our motors are weird
         addConstraint(voltageConstraint)
@@ -67,9 +44,10 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
         ))
     }
 
+    // calculate a trajectory based on a list of positions (starting and ending)
     val trajectory = TrajectoryGenerator.generateTrajectory(poses, config)
 
-    val controller = RamseteController(beta, zeta)
+    val controller = RamseteController(DriveConstants.Ramsete.beta, DriveConstants.Ramsete.zeta)
 
     var prevSpeed = DifferentialDriveWheelSpeeds(0.0, 0.0)
     var prevTime: Double = 0.0
@@ -81,29 +59,21 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
         addRequirements(m_subsystem);
     }
 
-    // Called when the command is initially scheduled.
     override fun initialize() {
-
         timer.reset()
         timer.start()
-    
     }
 
-  // Called every time the scheduler runs while the command is scheduled.
     override fun execute() {
         val time = timer.get()
-        val chassisSpeed = controller.calculate(
-            drivetrain.pose,
-            trajectory.sample(time)
-        )
-
+        // find the speed that the robot should be at at a specific time in the path
+        val chassisSpeed = controller.calculate(drivetrain.pose, trajectory.sample(time))
         val setSpeed = driveKinematics.toWheelSpeeds(chassisSpeed)
-
+        // calculate the feedforwards of both sides
         val leftFeedForward = feedforward.calculate(
             setSpeed.leftMetersPerSecond,
             (setSpeed.leftMetersPerSecond - prevSpeed.leftMetersPerSecond) / (time - prevTime)
         )
-
         val rightFeedForward = feedforward.calculate(
             setSpeed.rightMetersPerSecond,
             (setSpeed.rightMetersPerSecond - prevSpeed.rightMetersPerSecond) / (time - prevTime)
@@ -112,6 +82,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
         prevSpeed = setSpeed
         prevTime = time
 
+        // set velocity of drivetrain
         drivetrain.setVelocity(
             setSpeed.leftMetersPerSecond * 0.4,
             setSpeed.rightMetersPerSecond * 0.4,
@@ -120,14 +91,13 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
         )
     }
 
-  // Called once the command ends or is interrupted.
     override fun end(interrupted: Boolean) {
-        println("Done driving")
+        println("Done driving!")
         drivetrain.drive(0.0, 0.0, false)
     }
 
-  // Returns true when the command should end.
     override fun isFinished(): Boolean {
+        // end command if enough time has passed
         return timer.get() >= trajectory.getTotalTimeSeconds()
     }
 }

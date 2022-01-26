@@ -15,45 +15,15 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
 class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
+    // declare motors and ports
     val leftLeader: TalonFX = TalonFX(DriveConstants.Ports.leftLeader)
-
     private val leftFollower: TalonFX = TalonFX(DriveConstants.Ports.leftFollower)
-
     val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
-
     private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
-
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
 
+    // configure the motors and add to shuffleboard
     init {
-        leftFollower.apply {
-            configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
-
-            // follow the master
-            follow(leftLeader)
-            setInverted(InvertType.FollowMaster)
-
-            configVoltageCompSaturation(12.0, 100)
-            enableVoltageCompensation(true)
-            
-            configClosedLoopPeakOutput(0, 0.1, 100)
-        }
-
-        rightFollower.apply {
-            configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
-
-            // follow the master
-            follow(rightLeader)
-            setInverted(InvertType.FollowMaster)
-
-            configVoltageCompSaturation(12.0, 100)
-            enableVoltageCompensation(true)
-
-            configClosedLoopPeakOutput(0, 0.1, 100)
-        }
-
         leftLeader.apply {
             configFactoryDefault(100)
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
@@ -98,58 +68,82 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             setNeutralMode(NeutralMode.Coast)
         }
 
+        leftFollower.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+            // follow the master
+            follow(leftLeader)
+            setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+            
+            configClosedLoopPeakOutput(0, 0.1, 100)
+        }
+
+        rightFollower.apply {
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+            // follow the master
+            follow(rightLeader)
+            setInverted(InvertType.FollowMaster)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+
+            configClosedLoopPeakOutput(0, 0.1, 100)
+        }
+
          gyro.apply {
             configFactoryDefault(100)
             setFusedHeading(0.0, 100)
         }
 
-        tab.addNumber("left vel", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
-        tab.addNumber("right vel", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
-
+        tab.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
+        tab.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
     }
 
+    // get angle from gyro
     val angle: Double
         get() = -gyro.getFusedHeading()
 
+    // constructs object with angle from gyro (assuming starting position is (0,0))
     var odometry = DifferentialDriveOdometry(Rotation2d(angle))
 
+    // returns the x and y position of the robot
     val pose
         get() = odometry.getPoseMeters()
 
+    // unit conversion functions
     fun nativeUnitsToMeters(units: Double): Double =
         (DriveConstants.wheelCircumference * units.toDouble() / DriveConstants.ticksPerRotation)
-
     fun nativeUnitsToMetersPerSecond(units: Double) =
         units * 10.0 / DriveConstants.ticksPerRotation * DriveConstants.wheelCircumference
+    fun metersPerSecondToNativeUnits(units: Double)
+        = (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
 
+    // get distances and velocities of both sides of the robot from the encoders
     val leftDistance: Double
         get() = nativeUnitsToMeters(leftLeader.getSelectedSensorPosition(0))
-
     val rightDistance: Double
         get() = nativeUnitsToMeters(rightLeader.getSelectedSensorPosition(0))
-
     val leftVelocity: Double // meters per second
         get() = nativeUnitsToMetersPerSecond(leftLeader.getSelectedSensorVelocity(0))
-
     val rightVelocity: Double
         get() = nativeUnitsToMetersPerSecond(rightLeader.getSelectedSensorVelocity(0))
-
     val averageSpeed: Double // meters per second
-        get() = ((Math.abs(leftVelocity) + Math.abs(leftVelocity))/2)
+        get() = ((Math.abs(leftVelocity) + Math.abs(rightVelocity))/2)
 
+    // set the percent output of the drivetrain motors
     fun setPercent(left: Double, right: Double){
         leftLeader.set(ControlMode.PercentOutput, left)
         rightLeader.set(ControlMode.PercentOutput, right)
     }
 
-
-    fun setVelocity(
-        leftVelocity: Double,
-        rightVelocity: Double,
-        leftFF: Double,
-        rightFF: Double
-    ) {
-
+    // set the velocity of the drivetrain motors
+    fun setVelocity(leftVelocity: Double, rightVelocity: Double, leftFF: Double, rightFF: Double) {
         leftLeader.set(
             ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity),
             DemandType.ArbitraryFeedForward, leftFF / 12.0
@@ -160,27 +154,21 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         )
     }
 
-    fun metersPerSecondToNativeUnits(units: Double)
-        = (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
-
+    // maintains a deadband
     fun withDeadband(movement: Double, deadband: Double): Double {
-        if(abs(movement) <= deadband) {
-            return 0.0;
-        }
+        if(abs(movement) <= deadband) return 0.0;
         return movement;
     }
 
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
-        //println("drive run with throttle ${throttle}, turn ${turn}")
+        // this makes turning at full speed easier (one wheel stays at full throttle, the other is reduced by double the turn)
         val howFarOver = max(0.0, throttle + turn - 1)
+        // set slow multiplier
         var slow: Double = 1.0
-        if(isSlow) {
-            slow = DriveConstants.slowMultiplier
-        }
-        //println(leftLeader)
+        if(isSlow) slow = DriveConstants.slowMultiplier
+        // set percent outputs of drivetrain motors
         leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow, 0.001))
         rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow, 0.001))
-        //leftLeader.set(ControlMode.PercentOutput, 1.0)
     }
 
     public var brakeMode = false
@@ -196,17 +184,10 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         }
 
     override fun periodic() {
-        odometry.update(
-            Rotation2d.fromDegrees(angle),
-            leftDistance,
-            rightDistance
-        )
-        //println("Left distance " + leftDistance + " Right distance " + rightDistance + " angle " + angle)
-        //println("Pose " + pose)
-    // This method will be called once per scheduler run
+        // update the odometry of the field with new gyro and encoder values
+        odometry.update(Rotation2d.fromDegrees(angle), leftDistance, rightDistance)
     }
 
     override fun simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
     }
 }

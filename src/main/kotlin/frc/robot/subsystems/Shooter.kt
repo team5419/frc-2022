@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,10 +16,14 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
 class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
+    // declare motors and ports
     val leaderMotor = TalonFX(ShooterConstants.Ports.leader)
     val followerMotor = TalonFX(ShooterConstants.Ports.follower)
-    var defaultVelocity: Double = 0.0
 
+    var defaultVelocity: Double = 0.0
+    public var setpoint = 0.0
+
+    // configure the motors and add to shuffleboard
     init {
         leaderMotor.apply {
             configFactoryDefault(100)
@@ -79,12 +79,12 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             .addListener({ value: EntryNotification -> this.defaultVelocity = value.value.getDouble() }, EntryListenerFlags.kUpdate)
     }
 
-    public var setpoint = 0.0
-
+    // get velocity of flywheel
     public fun flyWheelVelocity(): Double {
         return leaderMotor.getSelectedSensorVelocity(0)
     }
 
+    //check if flywheel velocity is at target
     public fun isSpedUp(): Boolean {
         return setpoint != 0.0 && flyWheelVelocity() >= setpoint
     }
@@ -95,25 +95,16 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun shoot(velocity: Double) {
-        if(velocity == setpoint) {
-            return
-        }
-        if(velocity == -1.0) {
-            setpoint = this.defaultVelocity
-        } else if(velocity < 0) {
-            return
-        } else {
-            setpoint = velocity
-        }
+        // set setpoint to velocity
+        if(velocity > 0 && velocity != setpoint) setpoint = velocity
         println("Setting Velocity: ${setpoint}")
+        // spin flywheel at selected velocity
         leaderMotor.set(ControlMode.Velocity, setpoint)
     }
 
     override fun periodic() {
-    // This method will be called once per scheduler run
     }
 
     override fun simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
     }
 }

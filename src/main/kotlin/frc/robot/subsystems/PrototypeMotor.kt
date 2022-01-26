@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,31 +12,30 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
 class PrototypeMotor(tab: ShuffleboardTab) : SubsystemBase() {
 
+    // declare motor and port
     val motor = TalonFX(PrototypeMotorConstants.Ports.motor)
 
+    // configure the motor
     init {
         motor.apply {
             configFactoryDefault(100)
-
             setNeutralMode(NeutralMode.Coast)
             setSensorPhase(false)
             setInverted(true)
-
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
-            // bang bang PID
             config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
             config_kD(0, 0.0, 100)
             config_kF(0, 0.0, 100)
 
-            // velocity controlle PID
+            // velocity control PID
             config_kP(1, 0.5, 100)
             config_kI(1, 0.0, 100)
             config_kD(1, 0.0, 100)
             config_kF(1, 0.06, 100)
 
-            // we want to use velocity controlle
+            // we want to use velocity control
             selectProfileSlot(1, 0)
 
             setSelectedSensorPosition(0.0, 0, 100)
@@ -55,10 +50,12 @@ class PrototypeMotor(tab: ShuffleboardTab) : SubsystemBase() {
 
     public var setpoint = 0.0
 
+    // get velocity of motor
     public fun flyWheelVelocity(): Double {
         return motor.getSelectedSensorVelocity(0)
     }
 
+    // check if motor velocity is at target
     public fun isSpedUp(): Boolean {
         return setpoint != 0.0 && flyWheelVelocity() >= setpoint
     }
@@ -68,20 +65,15 @@ class PrototypeMotor(tab: ShuffleboardTab) : SubsystemBase() {
         motor.set(ControlMode.PercentOutput, 0.0)
     }
 
+    // run motor
     public fun shoot(velocity: Double) {
-        if(velocity < 0 || velocity == setpoint) {
-            return
-        }
-        setpoint = velocity
-        println("Setting Velocity: ${setpoint}")
-        //motor.set(ControlMode.Velocity, setpoint)
+        if(velocity > 0 && velocity != setpoint) setpoint = velocity
+        motor.set(ControlMode.Velocity, setpoint)
     }
 
     override fun periodic() {
-    // This method will be called once per scheduler run
     }
 
     override fun simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
     }
 }

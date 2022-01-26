@@ -16,7 +16,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     private val mLimelight = NetworkTableInstance.getDefault().getTable("limelight")
 
     val inverted: Boolean = false
-    private val mTargetHeight: Double = VisionConstants.targetHeight // both meters v
+    private val mTargetHeight: Double = VisionConstants.targetHeight
     private val mCameraHeight: Double = VisionConstants.cameraHeight
     private val mCameraAngle: Double = VisionConstants.cameraAngle
     public val maxSpeed = VisionConstants.maxAutoAlignSpeed
@@ -24,7 +24,8 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     fun getHorizontalOffset(): Double {
         if (inverted) {
             return -mLimelight.getEntry("tx").getDouble(0.0)
-        } else {
+        } 
+        else {
             return mLimelight.getEntry("tx").getDouble(0.0)
         }
     }
@@ -32,12 +33,14 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     fun getVerticalOffset(): Double {
         if (inverted) {
             return -mLimelight.getEntry("ty").getDouble(0.0)
-        } else {
+        } 
+        else {
             return mLimelight.getEntry("ty").getDouble(0.0)
         }
     }
 
-    fun getHorizontalDistance(): Double { // meters
+    // calculate horizontal distance based on verticle and horizontal offset
+    fun getHorizontalDistance(): Double { 
         return (mTargetHeight - mCameraHeight) / Math.tan(Math.toRadians(mCameraAngle + getVerticalOffset()))
     }
 
@@ -51,15 +54,14 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
             setTolerance(VisionConstants.tolerance)
         }
 
-    // add the pid controller to shuffleboard
+    // add the PID controller to shuffleboard
     init {
         tab.addNumber("Offset", { getHorizontalOffset() })
         tab.addBoolean("Aligned", { aligned() })
         tab.addNumber("Horizontal Distance", { getHorizontalDistance() })
     }
 
-    // auto alignment
-
+    // check if the limelight is picking up on the target
     public fun isTargetFound(): Boolean {
         return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() != 0.0
     }
@@ -75,7 +77,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         // get the pid loop output
         var output = calculate()
 
-        // can we align / do we need to allign?
+        // can we align / do we need to align?
         if ( !isTargetFound() || aligned() )
             return DriveSignal(0.0, 0.0)
 
