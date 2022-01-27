@@ -96,7 +96,9 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     public fun shoot(velocity: Double) {
         // set setpoint to velocity
-        if(velocity > 0 && velocity != setpoint) setpoint = velocity
+        if(velocity != setpoint) {
+            setpoint = if (velocity == -1.0) this.defaultVelocity else velocity
+        }
         println("Setting Velocity: ${setpoint}")
         // spin flywheel at selected velocity
         leaderMotor.set(ControlMode.Velocity, setpoint)
