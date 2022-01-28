@@ -10,7 +10,7 @@ import frc.robot.auto.PathToShooter
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.PrototypeSpin;
-import frc.robot.commands.AutoAlign;
+import frc.robot.commands.AutoAlignTurn;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
@@ -93,7 +93,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // auto-align on xz-plane (press Y)
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
-    yButton.toggleWhenPressed(AutoAlign(m_vision, m_drivetrain))
+    yButton.toggleWhenPressed(AutoAlignTurn(m_vision, m_drivetrain))
   }
 
   // select autonomous command

@@ -8,7 +8,7 @@ import frc.robot.subsystems.Shooter
 import frc.robot.subsystems.Vision
 
 import frc.robot.commands.RamseteAction
-import frc.robot.commands.AutoAlign
+import frc.robot.commands.AutoAlignTurn
 import frc.robot.commands.Shoot
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,7 +23,7 @@ class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision) 
                 Pose2d(0.0, 0.0, Rotation2d(0.0)), 
                 Pose2d(0.8, 0.0, Rotation2d(0.0))
             ), true),
-            AutoAlign(vision, drivetrain),
+            AutoAlignTurn(vision, drivetrain),
             Shoot(shooter, 1000.0, 5.0),
             RamseteAction(drivetrain, listOf(
                 Pose2d(0.8, 0.0, Rotation2d(0.0)), 

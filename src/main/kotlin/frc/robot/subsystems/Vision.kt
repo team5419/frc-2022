@@ -72,13 +72,13 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     public fun calculate() = controller.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
 
-    public fun autoAlign() : DriveSignal {
+    public fun autoAlignTurn() : DriveSignal {
 
         // get the pid loop output
         var output = calculate()
 
         // can we align / do we need to align?
-        if ( !isTargetFound() || aligned() )
+        if ( isTargetFound() && aligned() )
             return DriveSignal(0.0, 0.0)
 
         // limit the output
@@ -86,6 +86,15 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         if (output < -maxSpeed) output = -maxSpeed
 
         return DriveSignal(output, -output)
+    }
+
+    public fun autoAlignThrottle(distance : Double) : DriveSignal {
+        var output = calculate()
+
+        if(getHorizontalDistance() > distance) return DriveSignal(output, output)
+        else if(getHorizontalDistance() < distance) return DriveSignal(-output, -output)
+
+        return DriveSignal(0.0, 0.0)
     }
 
     enum class LightMode { On, Off, Blink }
