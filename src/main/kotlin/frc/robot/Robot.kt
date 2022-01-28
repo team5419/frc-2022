@@ -34,8 +34,9 @@ class Robot : TimedRobot() {
     m_robotContainer.onAuto()
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     if(m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      m_autonomousCommand.commandgroup.schedule();
     }
+    m_robotContainer.m_drivetrain.setOdometry(m_autonomousCommand.startingpose)
   }
 
   override fun autonomousPeriodic() {}
@@ -44,7 +45,7 @@ class Robot : TimedRobot() {
     m_robotContainer.onTeleop()
     // cancel all autonomous commands when teleop starts
     if(m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+      m_autonomousCommand.commandgroup.cancel();
     }
   }
 

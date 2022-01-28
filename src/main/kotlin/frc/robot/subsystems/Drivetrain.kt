@@ -12,6 +12,7 @@ import kotlin.math.*
 import frc.robot.DriveConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.math.geometry.Pose2d
 
 class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
@@ -110,10 +111,15 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         get() = -gyro.getFusedHeading()
 
     // constructs object with angle from gyro (assuming starting position is (0,0))
-    var odometry = DifferentialDriveOdometry(Rotation2d(angle))
+    var odometry = DifferentialDriveOdometry(Rotation2d(angle), pose)
+
+    public fun setOdometry(newPose: Pose2d)
+    {
+        odometry = DifferentialDriveOdometry(Rotation2d(angle), newPose)
+    }
 
     // returns the x and y position of the robot
-    val pose
+    val pose: Pose2d
         get() = odometry.getPoseMeters()
 
     // unit conversion functions
