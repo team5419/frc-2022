@@ -20,7 +20,7 @@ object DriveConstants {
         const val kv: Double = 2.3 // arbitrary
         const val ka: Double = 0.463
         const val ks: Double = 0.191
-        const val maxVelocity: Double = 3.0 // all in meters v
+        const val maxVelocity: Double = 3.0 // all in m/?
         const val maxAcceleration: Double = 1.5
         const val maxCentripetalAcceleration: Double = 3.0
         const val maxVoltage: Double = 12.0 // volts

@@ -44,6 +44,9 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         return (mTargetHeight - mCameraHeight) / Math.tan(Math.toRadians(mCameraAngle + getVerticalOffset()))
     }
 
+    //calculate which setpoint is closest
+    public fun getShotSetpoint() = Lookup.get(getHorizontalDistance())
+
     // PID loop controller
     public val controller: PIDController =
         PIDController(
