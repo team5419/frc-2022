@@ -20,7 +20,12 @@ class AutoAlignThrottle(_vision: Vision, _drivetrain: Drivetrain) : CommandBase(
   }
 
   override fun execute() {
-    drivetrain.setPercent(vision.autoAlignThrottle(1.0).left, vision.autoAlignThrottle(1.0).right)
+    var distance = 0.0
+    vision.getShotSetpoint()?.let { distance = it.distance }
+    if(distance!=0.0)
+    {
+      drivetrain.setPercent(vision.autoAlignThrottle(distance).left, vision.autoAlignThrottle(distance).right)
+    }
   }
 
   override fun end(interrupted: Boolean) {

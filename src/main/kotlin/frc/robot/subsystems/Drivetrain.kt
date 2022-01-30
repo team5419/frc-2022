@@ -111,12 +111,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         get() = -gyro.getFusedHeading()
 
     // constructs object with angle from gyro (assuming starting position is (0,0))
-    var odometry = DifferentialDriveOdometry(Rotation2d(angle), pose)
-
-    public fun setOdometry(newPose: Pose2d)
-    {
-        odometry = DifferentialDriveOdometry(Rotation2d(angle), newPose)
-    }
+    var odometry = DifferentialDriveOdometry(Rotation2d(angle))
 
     // returns the x and y position of the robot
     val pose: Pose2d

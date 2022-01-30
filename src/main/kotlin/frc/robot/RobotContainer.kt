@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.auto.Baseline
 import frc.robot.auto.TestDrive
-import frc.robot.auto.PathToShooter
 
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
@@ -29,21 +28,20 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
 
-import frc.robot.classes.Routine
-
 // robot structure declared here (subsystems, commands, button mappings)
 class RobotContainer(tab: ShuffleboardTab) {
 
-  // creates a tab in shuffleboard to select autonomous routine
-  val autoSelector = SendableChooser<Routine>()
   // subsystems
-  public val m_drivetrain = Drivetrain(tab);
+  private val m_drivetrain = Drivetrain(tab);
   private val m_shooter = Shooter(tab);
   private val m_protomotor = PrototypeMotor(tab);
   private val m_vision = Vision(tab, m_drivetrain);
 
   // default autonomous routine
   private val m_baseline = Baseline()
+
+  // creates a tab in shuffleboard to select autonomous routine
+  val autoSelector = SendableChooser<SequentialCommandGroup>()
 
   init {
 
@@ -80,10 +78,6 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController) {
 
-    // go to shoot position autonomously (press A)
-    val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButton.whenPressed(PathToShooter(m_drivetrain).commandgroup) 
-
     // shoot (hold B)
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
     bButton.whenHeld(Shoot(m_shooter)); 
@@ -92,13 +86,13 @@ class RobotContainer(tab: ShuffleboardTab) {
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     xButton.whenHeld(PrototypeSpin(m_protomotor));
 
-    // auto-align on xz-plane (press Y)
+    // auto-align
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(AutoAlignTurn(m_vision, m_drivetrain))
   }
 
   // select autonomous command
-  fun getAutonomousCommand(): Routine {
+  fun getAutonomousCommand(): Command {
     return autoSelector.getSelected() ?: m_baseline
   }
 }
