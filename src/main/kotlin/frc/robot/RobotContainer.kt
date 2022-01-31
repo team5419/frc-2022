@@ -10,11 +10,13 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.PrototypeSpin;
 import frc.robot.commands.AutoAlignTurn;
+import frc.robot.commands.Feed;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.PrototypeMotor;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Feeder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -36,6 +38,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_shooter = Shooter(tab);
   private val m_protomotor = PrototypeMotor(tab);
   private val m_vision = Vision(tab, m_drivetrain);
+  private val m_feeder = Feeder(tab);
 
   // default autonomous routine
   private val m_baseline = Baseline()
@@ -88,7 +91,10 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // auto-align
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
-    yButton.toggleWhenPressed(AutoAlignTurn(m_vision, m_drivetrain))
+    yButton.toggleWhenPressed(AutoAlignTurn(m_vision, m_drivetrain, m_shooter))
+
+    val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
+    aButton.whenHeld(Feed(m_feeder))
   }
 
   // select autonomous command

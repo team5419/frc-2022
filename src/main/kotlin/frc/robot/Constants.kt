@@ -3,11 +3,11 @@ import kotlin.math.PI
 
 object DriveConstants {
     object Ports {
-        val leftLeader = 3;
-        val leftFollower = 4;
-        val rightLeader = 1;
-        val rightFollower = 2;
-        val gyroPort = 20
+        val leftLeader = 2;
+        val leftFollower = 3;
+        val rightLeader = 4;
+        val rightFollower = 5;
+        val gyroPort = 1
     }
     
     val gearRatio: Double = (10.3333 / 1.0)
@@ -41,14 +41,22 @@ object DriveConstants {
 
 object ShooterConstants {
     object Ports {
-        val leader = 6;
-        val follower = 7;
+        val front = 6;
+        val back = 7;
     }
+    val frontToBackRatio: Double = -1.0; // arbitrary
+}
+
+object FeederConstants {
+    object Ports {
+        val motor = 8;
+    }
+    val outputPercent: Double = 0.25; // x / 1
 }
 
 object PrototypeMotorConstants {
     object Ports {
-        val motor = 5;
+        val motor = 20;
     }
 }
 

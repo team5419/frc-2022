@@ -29,27 +29,21 @@ object Lookup {
         }
     }
 
-    fun get(distance: Double): LookupEntry? {
+    fun get(distance: Double): LookupEntry {
         for (i in 0..table.size-1) {
             val entry = table.get(i)
 
             val prevEntery = table.get(i - 1)
 
-            val percent = (distance - entry.distance) / (prevEntery.distance - entry.distance)
-
-            val invertedPercent = percent - 1.0
-
-            if (entry.distance < distance) {
+            if (entry.distance > distance) {
                 if (i == 0) {
-                    println("Distance is too large.")
-                    return null
+                    return entry
                 }
 
-                return LookupEntry(distance, entry.velocity * percent + prevEntery.velocity * invertedPercent)
+                return if (Math.abs(entry.distance - distance) > Math.abs(prevEntery.distance - distance)) prevEntery else entry
             }
         }
 
-        println("Distance is too small.")
-        return null
+        return table.get(table.size - 1)
     }
 }

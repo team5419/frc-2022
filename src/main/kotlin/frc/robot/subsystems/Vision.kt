@@ -81,7 +81,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         var output = calculate()
 
         // can we align / do we need to align?
-        if ( isTargetFound() && aligned() )
+        if ( (!isTargetFound()) || aligned() )
             return DriveSignal(0.0, 0.0)
 
         // limit the output

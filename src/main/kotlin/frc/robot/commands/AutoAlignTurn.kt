@@ -4,12 +4,14 @@ import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Drivetrain
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.classes.DriveSignal;
+import frc.robot.subsystems.Shooter;
 
-import frc.robot.commands.AutoAlignThrottle;
-
-class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain) : CommandBase() {
+class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : CommandBase() {
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
+  private val shooter: Shooter = _shooter;
+  private var isThrottling: Boolean = false;
 
   init {
     addRequirements(_vision);
@@ -22,12 +24,22 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain) : CommandBase() {
   }
 
   override fun execute() {
-    drivetrain.setPercent(vision.autoAlignTurn().left, vision.autoAlignTurn().right)
+    var output: DriveSignal;
+    if(isThrottling) {
+      val setpoint = vision.getShotSetpoint();
+      shooter.defaultVelocity = setpoint.velocity;
+      output = vision.autoAlignThrottle(setpoint.distance);
+    } else {
+      output = vision.autoAlignTurn();
+      if(output.left == 0.0 && output.right == 0.0) {
+        isThrottling = true;
+      }
+    }
+    drivetrain.setPercent(output.left, output.right)
   }
 
   override fun end(interrupted: Boolean) {
-      vision.off()
-      drivetrain.brakeMode = true;
-      AutoAlignThrottle(vision, drivetrain)
+      vision.off();
+      drivetrain.brakeMode = false;
   }
 }
