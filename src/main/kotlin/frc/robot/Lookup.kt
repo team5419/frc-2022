@@ -32,14 +32,12 @@ object Lookup {
         for (i in 0..table.size-1) {
             val entry = table.get(i)
 
-            val prevEntery = table.get(i - 1)
-
             if (entry.distance > distance) {
                 if (i == 0) {
                     return entry
                 }
-
-                return if (Math.abs(entry.distance - distance) > Math.abs(prevEntery.distance - distance)) prevEntery else entry
+                val prevEntry = table.get(i - 1)
+                return if (Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) prevEntry else entry
             }
         }
 

@@ -21,6 +21,7 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
   override fun initialize() {
     vision.on();
     drivetrain.brakeMode = true;
+    println("started aligning")
   }
 
   override fun execute() {
@@ -28,19 +29,20 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
     if(isThrottling) {
       val setpoint = vision.getShotSetpoint();
       shooter.defaultVelocity = setpoint.velocity;
-      output = vision.autoAlignThrottle(setpoint.distance);
+      output = vision.autoAlignThrottle(0.5 /*setpoint.distance*/);
+      println("output ${output.left}, ${output.right}")
     } else {
       output = vision.autoAlignTurn();
-      if(output.left == 0.0 && output.right == 0.0) {
-        println("done turning")
-        isThrottling = true;
-      }
     }
-    drivetrain.setPercent(output.left, output.right)
+    if(output.left == 0.0 && output.right == 0.0) {
+      println("switched auto align to ${!isThrottling}")
+      isThrottling = !isThrottling;
+    }
+    //drivetrain.setPercent(output.left, output.right)
   }
 
   override fun end(interrupted: Boolean) {
-      println("done throttling")
+      println("done aligning")
       vision.off();
       drivetrain.brakeMode = false;
   }

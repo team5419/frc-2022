@@ -3,10 +3,10 @@ import kotlin.math.PI
 
 object DriveConstants {
     object Ports {
-        val leftLeader = 2;
-        val leftFollower = 3;
-        val rightLeader = 4;
-        val rightFollower = 5;
+        val leftLeader = 2; //2
+        val leftFollower = 3; //3
+        val rightLeader = 4; //4
+        val rightFollower = 5; // 1
         val gyroPort = 1
     }
     
@@ -64,7 +64,7 @@ object VisionConstants {
 
     public val cameraAngle = 10.0 // degrees
     public val cameraHeight = 0.23495 // meters
-    public val targetHeight = 2.28 // meters
+    public val targetHeight = 0.5 // meters
     public val tolerance = 3.0 // arbitrary
     public val maxAutoAlignSpeed = 0.15
     public val targetOffset = 0.0

@@ -66,7 +66,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     // check if the limelight is picking up on the target
     public fun isTargetFound(): Boolean {
-        return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() != 0.0
+        return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() > 0.0
     }
 
     public fun aligned(): Boolean {
@@ -92,10 +92,16 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public fun autoAlignThrottle(distance : Double) : DriveSignal {
+
         var output = calculate()
 
-        if(getHorizontalDistance() > distance) return DriveSignal(output, output)
-        else if(getHorizontalDistance() < distance) return DriveSignal(-output, -output)
+        if ( (!isTargetFound()) )
+            return DriveSignal(0.0, 0.0)
+
+        println(getHorizontalDistance())
+
+        if(getHorizontalDistance() > distance) return DriveSignal(-output, -output)
+        else if(getHorizontalDistance() < distance) return DriveSignal(output, output)
 
         return DriveSignal(0.0, 0.0)
     }
