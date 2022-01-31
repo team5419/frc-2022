@@ -7,10 +7,9 @@ object Lookup {
 
     init {
         table = mutableListOf<LookupEntry>()
-        add(0.5, 2000.0)
-        add(1.0, 2100.0)
-        add(5.0, 3000.0)
-        add(10.0, 6000.0)
+        add(0.5, 0.0)
+        add(1.0, 1.0)
+        add(5.0, 2.0)
     }
 
     fun add(distance: Double, velocity: Double) {

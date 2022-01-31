@@ -44,14 +44,14 @@ object ShooterConstants {
         val front = 6;
         val back = 7;
     }
-    val frontToBackRatio: Double = -1.0; // arbitrary
+    // 10587 velocity, 1.64 ratio is good
 }
 
 object FeederConstants {
     object Ports {
         val motor = 8;
     }
-    val outputPercent: Double = 0.25; // x / 1
+    val outputPercent: Double = 1.0; // x / 1
 }
 
 object PrototypeMotorConstants {
@@ -80,5 +80,16 @@ object VisionConstants {
         public const val P = 0.015
         public const val I = 0.003
         public const val D = 0.0005
+    }
+}
+
+object ClimberConstants {
+    object Ports {
+        val left1 = 9
+        val right1 = 10
+        val left2 = 11
+        val right2 = 12
+        val left3 = 13
+        val right3 = 14
     }
 }

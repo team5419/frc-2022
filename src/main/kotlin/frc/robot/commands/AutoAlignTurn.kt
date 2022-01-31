@@ -32,6 +32,7 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
     } else {
       output = vision.autoAlignTurn();
       if(output.left == 0.0 && output.right == 0.0) {
+        println("done turning")
         isThrottling = true;
       }
     }
@@ -39,6 +40,7 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
   }
 
   override fun end(interrupted: Boolean) {
+      println("done throttling")
       vision.off();
       drivetrain.brakeMode = false;
   }

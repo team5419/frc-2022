@@ -21,6 +21,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     val frontMotor = TalonFX(ShooterConstants.Ports.front)
 
     public var defaultVelocity: Double = 0.0
+    var frontToBackRatio: Double = 1.25
     public var setpoint = 0.0
 
     // configure the motors and add to shuffleboard
@@ -30,9 +31,9 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
             setNeutralMode(NeutralMode.Coast)
             setSensorPhase(false)
-            setInverted(true)
+            setInverted(false)
 
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            //configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             // bang bang PID
             config_kP(0, 10000.0, 100)
@@ -65,7 +66,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             setSensorPhase(false)
             setInverted(true)
 
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            //configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             // bang bang PID
             config_kP(0, 10000.0, 100)
@@ -95,14 +96,26 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         tab.addNumber("Real Velocity", { flyWheelVelocity() })
         tab.add("Default shooter velocity", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(mapOf("min" to 0, "max" to 5000))
+            .withProperties(mapOf("min" to 0, "max" to 22000))
             .getEntry()
             .addListener({ value: EntryNotification -> this.defaultVelocity = value.value.getDouble() }, EntryListenerFlags.kUpdate)
+        tab.add("Front to back ratio", 1.25)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(mapOf("min" to 0, "max" to 5))
+            .getEntry()
+            .addListener({ value: EntryNotification -> this.frontToBackRatio = value.value.getDouble() }, EntryListenerFlags.kUpdate)
     }
 
     // get velocity of flywheel
     public fun flyWheelVelocity(): Double {
         return frontMotor.getSelectedSensorVelocity(0)
+    }
+
+    public fun onStart() {
+        /*val shuffleList = tab.getComponents()
+        val velocityIndex = shuffleList.filter(
+            ()
+        )*/
     }
 
     //check if flywheel velocity is at target
@@ -124,7 +137,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         println("Setting Velocity: ${setpoint}")
         // spin flywheel at selected velocity
         frontMotor.set(ControlMode.Velocity, setpoint)
-        backMotor.set(ControlMode.Velocity, setpoint * ShooterConstants.frontToBackRatio)
+        backMotor.set(ControlMode.Velocity, setpoint * this.frontToBackRatio)
     }
 
     override fun periodic() {
