@@ -25,11 +25,15 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : C
   }
 
   override fun execute() {
+    // get closest shot setpoint
     val setpoint = vision.getShotSetpoint();
+    // set the velocities of the shooting motors based on shot setpoint
     shooter.mainVelocity = setpoint.mainVelocity;
     shooter.kickerVelocity = setpoint.kickerVelocity;
+    // use pid loops to calculate throttle and turn output to autoalign
     var throttleOutput = vision.autoAlignThrottle(1.2);
     var turnOutput = vision.autoAlignTurn();
+    // set drivetrain velocity to integrate throttle and turn outputs
     var output = DriveSignal(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
     drivetrain.setPercent(output.left, output.right)
     println("output ${output.left}, ${output.right}")
