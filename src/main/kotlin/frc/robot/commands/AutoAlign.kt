@@ -11,8 +11,7 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : C
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
-  private var isThrottling: Boolean = false;
-
+  
   init {
     addRequirements(_vision);
     addRequirements(_drivetrain);
