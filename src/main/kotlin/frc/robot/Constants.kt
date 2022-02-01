@@ -3,11 +3,11 @@ import kotlin.math.PI
 
 object DriveConstants {
     object Ports {
-        val leftLeader = 2; //2
-        val leftFollower = 3; //3
-        val rightLeader = 4; //4
-        val rightFollower = 5; // 1
-        val gyroPort = 1
+        val leftLeader = 3; //2
+        val leftFollower = 4; //3
+        val rightLeader = 1; //4
+        val rightFollower = 2; // 1
+        val gyroPort = 20;
     }
     
     val gearRatio: Double = (10.3333 / 1.0)
@@ -45,7 +45,6 @@ object ShooterConstants {
         val kicker = 7;
     }
     // 10587 velocity, 1.64 ratio is good
-    // 10436, 1.69 also good
 }
 
 object FeederConstants {
@@ -63,8 +62,8 @@ object PrototypeMotorConstants {
 
 object VisionConstants {
 
-    public val cameraAngle = 10.0 // degrees
-    public val cameraHeight = 0.23495 // meters
+    public val cameraAngle = 17.0 // degrees
+    public val cameraHeight = 0.254 // meters
     public val targetHeight = 0.5 // meters
     public val tolerance = 3.0 // arbitrary
     public val maxAutoAlignSpeed = 0.15

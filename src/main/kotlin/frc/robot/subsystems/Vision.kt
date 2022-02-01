@@ -94,14 +94,18 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     public fun autoAlignThrottle(distance : Double) : DriveSignal {
 
         var output = calculate()
+        var deadband = 0.05
 
         if ( (!isTargetFound()) )
             return DriveSignal(0.0, 0.0)
 
         println(getHorizontalDistance())
 
-        if(getHorizontalDistance() > distance) return DriveSignal(-output, -output)
-        else if(getHorizontalDistance() < distance) return DriveSignal(output, output)
+        if(Math.abs(getHorizontalDistance()-distance) > deadband)
+        {
+            if(getHorizontalDistance() > distance) return DriveSignal(-output, -output)
+            else if(getHorizontalDistance() < distance) return DriveSignal(output, output)
+        }
 
         return DriveSignal(0.0, 0.0)
     }
