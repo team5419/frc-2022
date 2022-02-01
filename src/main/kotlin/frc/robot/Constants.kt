@@ -41,10 +41,11 @@ object DriveConstants {
 
 object ShooterConstants {
     object Ports {
-        val front = 6;
-        val back = 7;
+        val main = 6;
+        val kicker = 7;
     }
     // 10587 velocity, 1.64 ratio is good
+    // 10436, 1.69 also good
 }
 
 object FeederConstants {

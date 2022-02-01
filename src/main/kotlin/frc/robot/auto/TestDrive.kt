@@ -24,12 +24,12 @@ class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision) 
                 Pose2d(0.8, 0.0, Rotation2d(0.0))
             ), true),
             AutoAlignTurn(vision, drivetrain, shooter),
-            Shoot(shooter, 1000.0, 5.0),
+            Shoot(shooter, 1000.0, 1000.0, 5.0),
             RamseteAction(drivetrain, listOf(
                 Pose2d(0.8, 0.0, Rotation2d(0.0)), 
                 Pose2d(-0.2, 1.3, Rotation2d.fromDegrees(45.0))
             ), true), 
-            Shoot(shooter, 1000.0, 5.0)
+            Shoot(shooter, 1000.0, 1000.0, 5.0)
         )
     }
 }

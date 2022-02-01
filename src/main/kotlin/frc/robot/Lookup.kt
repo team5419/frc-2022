@@ -1,4 +1,4 @@
-data class LookupEntry(val distance: Double, val velocity: Double) {
+data class LookupEntry(val distance: Double, val mainVelocity: Double, val kickerVelocity: Double) {
 }
 
 object Lookup {
@@ -7,14 +7,14 @@ object Lookup {
 
     init {
         table = mutableListOf<LookupEntry>()
-        add(0.5, 0.0)
-        add(1.0, 1.0)
-        add(5.0, 2.0)
+        add(0.5, 0.0, 0.0)
+        add(1.0, 1.0, 1.0)
+        add(5.0, 2.0, 2.0)
     }
 
-    fun add(distance: Double, velocity: Double) {
+    fun add(distance: Double, mainVelocity: Double, kickerVelocity: Double) {
         if (table.size == 0) {
-            table.add(LookupEntry(distance, velocity))
+            table.add(LookupEntry(distance, mainVelocity, kickerVelocity))
             return
         }
 
@@ -22,7 +22,7 @@ object Lookup {
             val entry = table.get(i)
 
             if (entry.distance < distance) {
-                table.add(i, LookupEntry(distance, velocity))
+                table.add(i, LookupEntry(distance, mainVelocity, kickerVelocity))
                 break
             }
         }

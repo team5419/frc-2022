@@ -28,7 +28,8 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
     var output: DriveSignal;
     if(isThrottling) {
       val setpoint = vision.getShotSetpoint();
-      shooter.defaultVelocity = setpoint.velocity;
+      shooter.mainVelocity = setpoint.mainVelocity;
+      shooter.kickerVelocity = setpoint.kickerVelocity;
       output = vision.autoAlignThrottle(0.5 /*setpoint.distance*/);
       println("output ${output.left}, ${output.right}")
     } else {

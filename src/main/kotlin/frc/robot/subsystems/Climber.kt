@@ -24,9 +24,6 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         LeaderFollower(TalonFX(ClimberConstants.Ports.left3), TalonFX(ClimberConstants.Ports.right3))
     )
 
-    public var defaultVelocity: Double = 0.0
-    public var setpoint = 0.0
-
     // configure the motors and add to shuffleboard
     init {
         for(pair in pairs) {

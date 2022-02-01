@@ -6,9 +6,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 
 
-class Shoot(_shooter: Shooter, _velocity: Double = -1.0, _time: Double = 0.0) : CommandBase() {
+class Shoot(_shooter: Shooter, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0) : CommandBase() {
   private val shooter: Shooter = _shooter;
-  private val velocity: Double = _velocity;
+  private val main: Double = _main;
+  private val kicker: Double = _kicker;
   private val time: Double = _time;
   private val timer: Timer = Timer()
 
@@ -22,7 +23,7 @@ class Shoot(_shooter: Shooter, _velocity: Double = -1.0, _time: Double = 0.0) : 
   }
 
   override fun execute() {
-    shooter.shoot(velocity);
+    shooter.shoot(main, kicker);
   }
 
   // end command if time has elapsed

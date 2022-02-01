@@ -17,16 +17,17 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val backMotor = TalonFX(ShooterConstants.Ports.back)
-    val frontMotor = TalonFX(ShooterConstants.Ports.front)
+    val kickerMotor = TalonFX(ShooterConstants.Ports.kicker)
+    val mainMotor = TalonFX(ShooterConstants.Ports.main)
 
-    public var defaultVelocity: Double = 0.0
-    var frontToBackRatio: Double = 1.25
-    public var setpoint = 0.0
+    public var mainVelocity: Double = 0.0
+    public var kickerVelocity: Double = 0.0
+    public var setpointMain = 0.0
+    public var setpointKicker = 0.0
 
     // configure the motors and add to shuffleboard
     init {
-        backMotor.apply {
+        kickerMotor.apply {
             configFactoryDefault(100)
 
             setNeutralMode(NeutralMode.Coast)
@@ -56,10 +57,10 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             configClosedLoopPeriod(0, 1, 100)
 
             configPeakOutputForward(1.0, 100)
-            configPeakOutputReverse(0.0, 100)
+            configPeakOutputReverse(-1.0, 100)
         }
 
-        frontMotor.apply {
+        mainMotor.apply {
             configFactoryDefault(100)
 
             setNeutralMode(NeutralMode.Coast)
@@ -89,55 +90,52 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             configClosedLoopPeriod(0, 1, 100)
 
             configPeakOutputForward(1.0, 100)
-            configPeakOutputReverse(0.0, 100)
+            configPeakOutputReverse(-1.0, 100)
         }
 
-        tab.addNumber("Attempted Velocity", { setpoint })
-        tab.addNumber("Real Velocity", { flyWheelVelocity() })
-        tab.add("Default shooter velocity", 0.0)
+        tab.addNumber("Attempted Velocity", { setpointMain })
+        tab.addNumber("Real Velocity", { flyWheelVelocity(mainMotor) })
+        tab.add("Main shooter velocity", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(mapOf("min" to 0, "max" to 22000))
+            .withProperties(mapOf("min" to -15000, "max" to 22000))
             .getEntry()
-            .addListener({ value: EntryNotification -> this.defaultVelocity = value.value.getDouble() }, EntryListenerFlags.kUpdate)
-        tab.add("Front to back ratio", 1.25)
+            .addListener({ value: EntryNotification -> this.mainVelocity = value.value.getDouble() }, EntryListenerFlags.kUpdate)
+        tab.add("Kicker shooter velocity", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(mapOf("min" to 0, "max" to 5))
+            .withProperties(mapOf("min" to -15000, "max" to 22000))
             .getEntry()
-            .addListener({ value: EntryNotification -> this.frontToBackRatio = value.value.getDouble() }, EntryListenerFlags.kUpdate)
+            .addListener({ value: EntryNotification -> this.kickerVelocity = value.value.getDouble() }, EntryListenerFlags.kUpdate)
     }
 
     // get velocity of flywheel
-    public fun flyWheelVelocity(): Double {
-        return frontMotor.getSelectedSensorVelocity(0)
-    }
-
-    public fun onStart() {
-        /*val shuffleList = tab.getComponents()
-        val velocityIndex = shuffleList.filter(
-            ()
-        )*/
+    public fun flyWheelVelocity(motor: TalonFX): Double {
+        return motor.getSelectedSensorVelocity(0)
     }
 
     //check if flywheel velocity is at target
     public fun isSpedUp(): Boolean {
-        return setpoint != 0.0 && flyWheelVelocity() >= setpoint
+        return flyWheelVelocity(mainMotor) >= setpointMain && flyWheelVelocity(kickerMotor) >= setpointKicker && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 
     public fun stop() {
-        setpoint = 0.0
-        frontMotor.set(ControlMode.PercentOutput, 0.0)
-        backMotor.set(ControlMode.PercentOutput, 0.0)
+        setpointMain = 0.0
+        setpointKicker = 0.0
+        mainMotor.set(ControlMode.PercentOutput, 0.0)
+        kickerMotor.set(ControlMode.PercentOutput, 0.0)
     }
 
-    public fun shoot(velocity: Double) {
+    public fun shoot(main: Double, kicker: Double) {
         // set setpoint to velocity
-        if(velocity != setpoint) {
-            setpoint = if (velocity == -1.0) this.defaultVelocity else velocity
+        if(main != setpointMain) {
+            setpointMain = if (main == -1.0) this.mainVelocity else main
         }
-        println("Setting Velocity: ${setpoint}")
+        if(kicker != setpointKicker) {
+            setpointKicker = if (kicker == -1.0) this.kickerVelocity else kicker
+        }
+        println("Setting Velocity: ${setpointMain}")
         // spin flywheel at selected velocity
-        frontMotor.set(ControlMode.Velocity, setpoint)
-        backMotor.set(ControlMode.Velocity, setpoint * this.frontToBackRatio)
+        mainMotor.set(ControlMode.Velocity, setpointMain)
+        kickerMotor.set(ControlMode.Velocity, setpointKicker)
     }
 
     override fun periodic() {
