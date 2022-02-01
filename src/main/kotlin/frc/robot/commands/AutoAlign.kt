@@ -29,7 +29,7 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : C
     shooter.mainVelocity = setpoint.mainVelocity;
     shooter.kickerVelocity = setpoint.kickerVelocity;
     var throttleOutput = vision.autoAlignThrottle(1.2);
-    var turnOutput =vision.autoAlignTurn();
+    var turnOutput = vision.autoAlignTurn();
     var output = DriveSignal(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
     drivetrain.setPercent(output.left, output.right)
     println("output ${output.left}, ${output.right}")
