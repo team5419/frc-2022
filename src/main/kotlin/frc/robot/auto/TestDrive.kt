@@ -8,7 +8,7 @@ import frc.robot.subsystems.Shooter
 import frc.robot.subsystems.Vision
 
 import frc.robot.commands.RamseteAction
-import frc.robot.commands.AutoAlignTurn
+import frc.robot.commands.AutoAlign
 import frc.robot.commands.Shoot
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;

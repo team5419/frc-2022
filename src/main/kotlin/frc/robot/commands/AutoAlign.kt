@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.classes.DriveSignal;
 import frc.robot.subsystems.Shooter;
 
-class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : CommandBase() {
+class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : CommandBase() {
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
@@ -25,21 +25,14 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
   }
 
   override fun execute() {
-    var output: DriveSignal;
-    if(isThrottling) {
-      val setpoint = vision.getShotSetpoint();
-      shooter.mainVelocity = setpoint.mainVelocity;
-      shooter.kickerVelocity = setpoint.kickerVelocity;
-      output = vision.autoAlignThrottle(1.2 /*setpoint.distance*/);
-      println("output ${output.left}, ${output.right}")
-    } else {
-      output = vision.autoAlignTurn();
-    }
-    if(output.left == 0.0 && output.right == 0.0) {
-      println("switched auto align to ${!isThrottling}")
-      isThrottling = !isThrottling;
-    }
+    val setpoint = vision.getShotSetpoint();
+    shooter.mainVelocity = setpoint.mainVelocity;
+    shooter.kickerVelocity = setpoint.kickerVelocity;
+    var throttleOutput = vision.autoAlignThrottle(1.2);
+    var turnOutput =vision.autoAlignTurn();
+    var output = DriveSignal(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
     drivetrain.setPercent(output.left, output.right)
+    println("output ${output.left}, ${output.right}")
   }
 
   override fun end(interrupted: Boolean) {

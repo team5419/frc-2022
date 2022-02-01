@@ -9,7 +9,7 @@ import frc.robot.auto.TestDrive
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.PrototypeSpin;
-import frc.robot.commands.AutoAlignTurn;
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.Feed;
 import frc.robot.commands.Climb;
 
@@ -59,7 +59,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // call drive command by default
     m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
-    //m_climber.setDefaultCommand(Climb(m_climber, codriver, cocodriver));
+    m_climber.setDefaultCommand(Climb(m_climber, codriver, cocodriver));
 
     // create and add autonomous routines to selector in shuffleboard
     tab.add("Auto Selector", autoSelector)
