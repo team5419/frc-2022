@@ -15,7 +15,7 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController) : CommandBase() {
   override fun initialize() {}
 
   override fun execute() {
-    drivetrain.drive(driver.getLeftY().toDouble() * 0.25, driver.getRightX().toDouble() * 0.25, false);
+    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), false);
   }
 
   override fun end(interrupted: Boolean) {}
