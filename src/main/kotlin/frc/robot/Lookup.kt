@@ -1,3 +1,5 @@
+package frc.robot;
+
 data class LookupEntry(val distance: Double, val mainVelocity: Double, val kickerVelocity: Double) {
 }
 

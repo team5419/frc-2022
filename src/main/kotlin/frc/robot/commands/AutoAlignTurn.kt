@@ -6,12 +6,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.classes.DriveSignal;
 import frc.robot.subsystems.Shooter;
+import frc.robot.LookupEntry;
 
 class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : CommandBase() {
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
-  private var isThrottling: Boolean = false;
+  private var setpoint: LookupEntry = LookupEntry(0.0, 0.0, 0.0)
 
   init {
     addRequirements(_vision);
@@ -22,24 +23,15 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
     vision.on();
     drivetrain.brakeMode = true;
     println("started aligning")
+    setpoint = vision.getShotSetpoint();
+    shooter.mainVelocity = setpoint.mainVelocity;
+    shooter.kickerVelocity = setpoint.kickerVelocity;
   }
 
   override fun execute() {
-    var output: DriveSignal;
-    if(isThrottling) {
-      val setpoint = vision.getShotSetpoint();
-      shooter.mainVelocity = setpoint.mainVelocity;
-      shooter.kickerVelocity = setpoint.kickerVelocity;
-      output = vision.autoAlignThrottle(1.2 /*setpoint.distance*/);
-      println("output ${output.left}, ${output.right}")
-    } else {
-      output = vision.autoAlignTurn();
-    }
-    if(output.left == 0.0 && output.right == 0.0) {
-      println("switched auto align to ${!isThrottling}")
-      isThrottling = !isThrottling;
-    }
-    drivetrain.setPercent(output.left, output.right)
+    var throttleOutput: DriveSignal = vision.autoAlignThrottle(1.2 /*setpoint.distance*/);
+    println("throttle output ${throttleOutput.left}, ${throttleOutput.right}")
+    //drivetrain.setPercent(throttleOutput.left, throttleOutput.right)
   }
 
   override fun end(interrupted: Boolean) {

@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.controller.PIDController
 import frc.robot.classes.DriveSignal
 import frc.robot.VisionConstants
+import frc.robot.Lookup
 
 class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
@@ -48,13 +49,22 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     public fun getShotSetpoint() = Lookup.get(getHorizontalDistance())
 
     // PID loop controller
-    public val controller: PIDController =
+    public val turnController: PIDController =
         PIDController(
-            VisionConstants.PID.P,
-            VisionConstants.PID.I,
-            VisionConstants.PID.D
+            VisionConstants.TurnPID.P,
+            VisionConstants.TurnPID.I,
+            VisionConstants.TurnPID.D
         ).apply {
-            setTolerance(VisionConstants.tolerance)
+            setTolerance(VisionConstants.turnTolerance)
+        }
+
+    public val throttleController: PIDController = 
+        PIDController(
+            VisionConstants.ThrottlePID.P, 
+            VisionConstants.ThrottlePID.I, 
+            VisionConstants.ThrottlePID.D
+        ).apply {
+            setTolerance(VisionConstants.throttleTolerance)
         }
 
     // add the PID controller to shuffleboard
@@ -70,15 +80,13 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public fun aligned(): Boolean {
-        return isTargetFound() && controller.atSetpoint() && m_drivetrain.averageSpeed < 0.1
+        return isTargetFound() && turnController.atSetpoint() && m_drivetrain.averageSpeed < 0.1
     }
-
-    public fun calculate() = controller.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
 
     public fun autoAlignTurn() : DriveSignal {
 
         // get the pid loop output
-        var output = calculate()
+        var output = turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
 
         // can we align / do we need to align?
         if ( (!isTargetFound()) || aligned() )
@@ -93,15 +101,12 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     public fun autoAlignThrottle(distance : Double) : DriveSignal {
 
-        var output = calculate()
+        var output = throttleController.calculate(getHorizontalDistance() - distance)
         var deadband = 0.05
 
-        if ( (!isTargetFound()) )
-            return DriveSignal(0.0, 0.0)
-
         println(getHorizontalDistance())
-
-        if(Math.abs(getHorizontalDistance()-distance) > deadband)
+        println("vertical ${getVerticalOffset()}")
+        if(Math.abs(getHorizontalDistance() - distance) > deadband && isTargetFound())
         {
             if(getHorizontalDistance() > distance) return DriveSignal(-output, -output)
             else if(getHorizontalDistance() < distance) return DriveSignal(output, output)
