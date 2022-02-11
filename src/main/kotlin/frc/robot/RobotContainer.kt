@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.auto.Baseline
 import frc.robot.auto.TestDrive
+import frc.robot.auto.PreMatchCheck
 
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
@@ -19,6 +20,7 @@ import frc.robot.subsystems.PrototypeMotor;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Climber;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -31,6 +33,7 @@ import frc.robot.commands.RamseteAction
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
+
 
 // robot structure declared here (subsystems, commands, button mappings)
 class RobotContainer(tab: ShuffleboardTab) {
@@ -66,6 +69,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
     autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter, m_vision))
+
+    
+    autoSelector.addOption("Pre Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_feeder))
 
     // field simulation (in progress)
     var m_field = Field2d()
