@@ -106,6 +106,15 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         tab.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
     }
 
+    fun getAllVelocities() : Array<Double> {
+        return arrayOf(
+            leftLeader.getSelectedSensorVelocity(0),
+            leftFollower.getSelectedSensorVelocity(0),
+            rightLeader.getSelectedSensorVelocity(0),
+            rightFollower.getSelectedSensorVelocity(0)
+        );
+    }
+
     // get angle from gyro
     val angle: Double
         get() = -gyro.getFusedHeading()

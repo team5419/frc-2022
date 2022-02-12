@@ -9,7 +9,8 @@ object DriveConstants {
         val rightFollower = 2; // 1
         val gyroPort = 20;
     }
-    
+
+    val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     val gearRatio: Double = (10.3333 / 1.0)
     val ticksPerRotation: Double = (2048.0 * gearRatio)
     const val wheelRadius = 0.0762
