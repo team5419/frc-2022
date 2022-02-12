@@ -8,28 +8,35 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.commands.Feed
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-class Shoot(_shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _main: Double = -1.0, _kicker: Double = -1.0) : SequentialCommandGroup() {
+
+class StopShooting(_shooter: Shooter, _indexer: Indexer, _feeder: Feeder) : CommandBase() {
   private val shooter: Shooter = _shooter;
   private val indexer: Indexer = _indexer;
   private val feeder: Feeder = _feeder;
-  private val main: Double = _main;
-  private val kicker: Double = _kicker;
 
   init {
-    addRequirements(_shooter, _indexer, _feeder)
+      addRequirements(_shooter, _indexer, _feeder)
   }
 
   override fun initialize() {
-    addCommands(
-      Wait(shooter, 2.0), 
-      Index(indexer)
-    )
   }
 
   override fun execute() {
-    shooter.shoot(main, kicker);
-    feeder.feed(FeederConstants.activePercent);
+  }
+
+  // end command if time has elapsed
+  override fun isFinished(): Boolean {
+    return true
+  }
+
+  override fun end(interrupted: Boolean) {
+    if(feeder.idling) {
+        Feed(feeder).schedule()
+    } else {
+        feeder.stop()
+    }
+    shooter.stop()
+    indexer.stop()
   }
 }

@@ -4,34 +4,31 @@ import frc.robot.subsystems.Feeder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
+import frc.robot.FeederConstants;
 
 
-class Feed(_feeder: Feeder, _time: Double = 0.0) : CommandBase() {
+class Feed(_feeder: Feeder) : CommandBase() {
   private val feeder: Feeder = _feeder
-  private val time: Double = _time
-  private val timer: Timer = Timer()
 
   init {
     addRequirements(_feeder);
+    feeder.idling = true
   }
 
   override fun execute() {
-    feeder.feed();
+    feeder.feed(FeederConstants.idlePercent);
   }
 
   override fun end(interrupted: Boolean) {
-    feeder.stop()
-    timer.stop()
-  }
-
-  override fun initialize() {
-    timer.reset()
-    timer.start()
+    if(!interrupted) {
+        feeder.stop()
+    }
+    feeder.idling = interrupted;
   }
 
   // end command if time has elapsed
   override fun isFinished(): Boolean {
-    return (time != 0.0 && timer.get() >= time)
+    return false
   }
 
 }

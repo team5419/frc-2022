@@ -48,11 +48,27 @@ object ShooterConstants {
     // 10587 velocity, 1.64 ratio is good
 }
 
-object FeederConstants {
+object IndexerConstants {
     object Ports {
         val motor = 8;
     }
     val outputPercent: Double = 1.0; // x / 1
+    val ticksPerIndex: Double = 1.0;
+}
+
+object FeederConstants {
+    object Ports {
+        val motor = 15;
+    }
+    val idlePercent = 0.2;
+    val activePercent = 0.9;
+}
+
+object IntakeConstants {
+    object Ports {
+        val motor = 16;
+    }
+    val outputPercent = 0.9;
 }
 
 object PrototypeMotorConstants {

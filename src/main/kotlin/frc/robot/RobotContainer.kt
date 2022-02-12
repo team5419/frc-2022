@@ -7,19 +7,8 @@ import frc.robot.auto.Baseline
 import frc.robot.auto.TestDrive
 import frc.robot.auto.PreMatchCheck
 
-import frc.robot.commands.Drive;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.PrototypeSpin;
-import frc.robot.commands.AutoAlignTurn;
-import frc.robot.commands.Feed;
-import frc.robot.commands.Climb;
-
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.PrototypeMotor;
-import frc.robot.subsystems.Vision;
-import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Climber;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -43,8 +32,10 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_shooter = Shooter(tab);
   private val m_protomotor = PrototypeMotor(tab);
   private val m_vision = Vision(tab, m_drivetrain);
-  private val m_feeder = Feeder(tab);
+  private val m_indexer = Indexer(tab);
   private val m_climber = Climber(tab);
+  private val m_feeder = Feeder(tab);
+  private val m_intake = Intake(tab);
 
   // default autonomous routine
   private val m_baseline = Baseline()
@@ -68,10 +59,10 @@ class RobotContainer(tab: ShuffleboardTab) {
     tab.add("Auto Selector", autoSelector)
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
-    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter, m_vision))
+    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder))
 
     
-    autoSelector.addOption("Pre Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_feeder))
+    autoSelector.addOption("Pre Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
 
     // field simulation (in progress)
     var m_field = Field2d()
@@ -93,20 +84,26 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController) {
 
-    // shoot (hold B)
+    // shoot (hold right bumber)
+    val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
+    rBumper.whileHeld(Shoot(m_shooter, m_indexer, m_feeder)); 
+    rBumper.whenReleased(StopShooting(m_shooter, m_indexer, m_feeder));
+
+    // intake and run feeder (hold B)
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
-    bButton.whenHeld(Shoot(m_shooter)); 
+    bButton.whenHeld(RunIntake(m_intake, m_feeder))
 
-    // spin prototype motor (hold B)
+    // toggle idle feeding (press X)
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
-    xButton.whenHeld(PrototypeSpin(m_protomotor));
+    xButton.toggleWhenPressed(Feed(m_feeder));
 
-    // auto-align
+    // auto-align (toggle Y)
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(AutoAlignTurn(m_vision, m_drivetrain, m_shooter))
 
+    // manual indexing (press A)
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButton.whenHeld(Feed(m_feeder))
+    aButton.whenPressed(Index(m_indexer))
   }
 
   // select autonomous command
