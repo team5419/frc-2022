@@ -16,6 +16,8 @@ class Shoot(_shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _main: Double
   private val feeder: Feeder = _feeder;
   private val main: Double = _main;
   private val kicker: Double = _kicker;
+  private val timer: Timer = Timer()
+  private val startingIndexerPosition: Double = _indexer.encoder.getPosition()
 
   init {
     addRequirements(_shooter, _indexer, _feeder)
@@ -29,6 +31,7 @@ class Shoot(_shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _main: Double
   }
 
   override fun execute() {
+    if(timer.get() > 0.5 && shooter.isSpedUp())
     shooter.shoot(main, kicker);
     feeder.feed(FeederConstants.activePercent);
   }
