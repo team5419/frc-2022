@@ -55,7 +55,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun index() {
-        motor.set(IndexerConstants.outputPercent)
+        motor.set(IndexerConstants.outputPercent * 0.5)
     }
 
     override fun periodic() {

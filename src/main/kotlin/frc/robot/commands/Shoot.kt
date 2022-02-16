@@ -22,10 +22,10 @@ class Shoot(_shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _main: Double
   }
 
   override fun initialize() {
-    addCommands(
-      Wait(shooter, 2.0), 
+    /*addCommands(
+      Wait(shooter, 0.5), 
       Index(indexer)
-    )
+    )*/
   }
 
   override fun execute() {

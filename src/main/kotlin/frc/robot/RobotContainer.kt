@@ -23,6 +23,8 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
 
+import frc.robot.ShooterConstants
+
 
 // robot structure declared here (subsystems, commands, button mappings)
 class RobotContainer(tab: ShuffleboardTab) {
@@ -84,9 +86,9 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController) {
 
-    // shoot (hold right bumber)
+    // shoot and run feeder/indexer(hold right bumper) 
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
-    rBumper.whileHeld(Shoot(m_shooter, m_indexer, m_feeder)); 
+    rBumper.whileHeld(Shoot(m_shooter, m_indexer, m_feeder, ShooterConstants.mainVelocity, ShooterConstants.kickerVelocity)); 
     rBumper.whenReleased(StopShooting(m_shooter, m_indexer, m_feeder));
 
     // intake and run feeder (hold B)

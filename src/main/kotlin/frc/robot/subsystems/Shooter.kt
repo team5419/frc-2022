@@ -134,8 +134,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         }
         println("Setting Velocity: ${setpointMain}")
         // spin flywheel at selected velocity
-        mainMotor.set(ControlMode.Velocity, setpointMain)
-        kickerMotor.set(ControlMode.Velocity, setpointKicker)
+        mainMotor.set(ControlMode.Velocity, setpointMain * 0.5 )
+        kickerMotor.set(ControlMode.Velocity, setpointKicker * 0.5 )
     }
 
     override fun periodic() {

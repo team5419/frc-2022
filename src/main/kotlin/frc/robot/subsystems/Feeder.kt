@@ -56,7 +56,7 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun feed(percent: Double) {
-        motor.set(percent)
+        motor.set(percent * 0.5)
     }
 
     override fun periodic() {

@@ -45,6 +45,8 @@ object ShooterConstants {
         val main = 6;
         val kicker = 7;
     }
+    val mainVelocity = 10587
+    val kickerVelocity = 17362
     // 10587 velocity, 1.64 ratio is good
 }
 
