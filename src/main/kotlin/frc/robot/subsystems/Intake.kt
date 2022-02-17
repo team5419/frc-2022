@@ -29,7 +29,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         motor.apply {
             restoreFactoryDefaults()
             setIdleMode(IdleMode.kCoast)
-            setInverted(false)
+            setInverted(true)
             //setSensorPhase(false)
             setSmartCurrentLimit(40)
             setClosedLoopRampRate(1.0)
@@ -38,7 +38,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
         val controller = motor.getPIDController()
         controller.apply {
-            setP(0.5, 1)
+            setP(1.0, 1)
             setI(0.0, 1)
             setD(0.0, 1)
         }
@@ -55,7 +55,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun intake() {
-        motor.set(-IntakeConstants.outputPercent)
+        motor.set(IntakeConstants.outputPercent)
     }
 
     override fun periodic() {

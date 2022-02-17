@@ -4,7 +4,7 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 
-class Drive(_drivetrain: Drivetrain, _driver: XboxController) : CommandBase() {
+class Drive(_drivetrain: Drivetrain, _driver: XboxController, _isSlow: Boolean = false) : CommandBase() {
   private val drivetrain: Drivetrain = _drivetrain;
   private val driver: XboxController = _driver;
 
@@ -15,7 +15,7 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController) : CommandBase() {
   override fun initialize() {}
 
   override fun execute() {
-    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), false);
+    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), _isSlow);
   }
 
   override fun end(interrupted: Boolean) {}

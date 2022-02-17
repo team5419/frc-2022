@@ -38,7 +38,6 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_climber = Climber(tab);
   private val m_feeder = Feeder(tab);
   private val m_intake = Intake(tab);
-
   // default autonomous routine
   private val m_baseline = Baseline()
 
@@ -87,10 +86,14 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController) {
 
-    // shoot and run feeder/indexer(hold right bumper) 
+    // shoot and run feeder/indexer (hold right bumper) 
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
     rBumper.whileHeld(CycleIndexer(m_indexer, m_shooter));
     rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder));
+
+    // enable drivetrain slow mode (hold left bumper)
+    val lBumper = JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+    lBumper.whenHeld(Drive(m_drivetrain, driver, true))
 
     // intake and run feeder (hold B)
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)

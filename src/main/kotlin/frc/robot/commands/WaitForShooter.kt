@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.commands.Feed
 
 
-class Wait(_shooter: Shooter, _time: Double) : CommandBase() {
+class WaitForShooter(_shooter: Shooter, _time: Double) : CommandBase() {
   private val shooter: Shooter = _shooter;
   private val time: Double = _time;
   private val timer: Timer = Timer()

@@ -38,7 +38,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
 
         val controller = motor.getPIDController()
         controller.apply {
-            setP(0.5, 1)
+            setP(1.0, 1)
             setI(0.0, 1)
             setD(0.0, 1)
         }

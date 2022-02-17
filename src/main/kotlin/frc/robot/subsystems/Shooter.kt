@@ -20,8 +20,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     val kickerMotor = TalonFX(ShooterConstants.Ports.kicker)
     val mainMotor = TalonFX(ShooterConstants.Ports.main)
 
-    public var mainVelocity: Double = 10587.0
-    public var kickerVelocity: Double = 17363.0
+    public var mainVelocity: Double = ShooterConstants.mainVelocity
+    public var kickerVelocity: Double = ShooterConstants.kickerVelocity
     public var setpointMain = 0.0
     public var setpointKicker = 0.0
 
@@ -34,7 +34,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             setSensorPhase(false)
             setInverted(false)
 
-            //configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             // bang bang PID
             config_kP(0, 10000.0, 100)
@@ -48,8 +48,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             config_kD(1, 0.0, 100)
             config_kF(1, 0.06, 100)
 
-            // we want to use velocity controlle
-            selectProfileSlot(1, 0)
+            // bang bang PID control
+            selectProfileSlot(0, 0)
 
             setSelectedSensorPosition(0.0, 0, 100)
             configClosedloopRamp(1.0, 100)
@@ -67,7 +67,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             setSensorPhase(false)
             setInverted(true)
 
-            //configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             // bang bang PID
             config_kP(0, 10000.0, 100)
@@ -81,8 +81,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             config_kD(1, 0.0, 100)
             config_kF(1, 0.06, 100)
 
-            // we want to use velocity controlle
-            selectProfileSlot(1, 0)
+            // bang bang PID
+            selectProfileSlot(0, 0)
 
             setSelectedSensorPosition(0.0, 0, 100)
             configClosedloopRamp(1.0, 100)

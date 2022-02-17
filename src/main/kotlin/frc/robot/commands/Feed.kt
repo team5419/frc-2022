@@ -9,16 +9,23 @@ import frc.robot.FeederConstants;
 
 class Feed(_feeder: Feeder) : CommandBase() {
   private val feeder: Feeder = _feeder
+  private val previousVel: Double = feeder.currentVel
+
 
   init {
     addRequirements(_feeder);
   }
 
-  override fun execute() {
-    feeder.feed();
+  override fun initialize() {
+    feeder.currentVel = FeederConstants.activePercent
   }
 
+  override fun execute() {
+    
+    }
+
   override fun end(interrupted: Boolean) {
+    feeder.currentVel = previousVel
   }
 
   // end command if time has elapsed
