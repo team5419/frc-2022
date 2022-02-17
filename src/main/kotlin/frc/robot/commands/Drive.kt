@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 class Drive(_drivetrain: Drivetrain, _driver: XboxController, _isSlow: Boolean = false) : CommandBase() {
   private val drivetrain: Drivetrain = _drivetrain;
   private val driver: XboxController = _driver;
+  private val isSlow: Boolean = _isSlow;
 
   init {
     addRequirements(_drivetrain);
@@ -15,7 +16,7 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController, _isSlow: Boolean =
   override fun initialize() {}
 
   override fun execute() {
-    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), _isSlow);
+    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), isSlow);
   }
 
   override fun end(interrupted: Boolean) {}

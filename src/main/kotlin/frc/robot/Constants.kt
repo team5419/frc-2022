@@ -45,7 +45,7 @@ object ShooterConstants {
         val main = 6;
         val kicker = 7;
     }
-    val mainVelocity = 10587
+    val mainVelocity = 10587.0
     val kickerVelocity = 1.64 * mainVelocity
 }
 

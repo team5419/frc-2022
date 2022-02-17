@@ -92,7 +92,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder));
 
     // enable drivetrain slow mode (hold left bumper)
-    val lBumper = JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+    val lBumper : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
     lBumper.whenHeld(Drive(m_drivetrain, driver, true))
 
     // intake and run feeder (hold B)
