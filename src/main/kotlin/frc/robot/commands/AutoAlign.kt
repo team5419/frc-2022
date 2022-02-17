@@ -8,7 +8,7 @@ import frc.robot.classes.DriveSignal;
 import frc.robot.subsystems.Shooter;
 import frc.robot.LookupEntry;
 
-class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : CommandBase() {
+class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : CommandBase() {
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
