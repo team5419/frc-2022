@@ -52,7 +52,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun setPair(pair: Int, velocity: Double) {
-        println("setting ${pair} at ${velocity} climber")
+        //println("setting ${pair} at ${velocity} climber")
         pairs[pair].leader.set(ControlMode.PercentOutput, velocity)
     }
 

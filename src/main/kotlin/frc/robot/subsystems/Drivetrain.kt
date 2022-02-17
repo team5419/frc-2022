@@ -178,7 +178,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         var slow: Double = 1.0
         if(isSlow) slow = DriveConstants.slowMultiplier
         // set percent outputs of drivetrain motors
-        println("throttle output ${throttle - turn - howFarOver}, ${throttle + turn - howFarOver}")
+        //println("throttle output ${throttle - turn - howFarOver}, ${throttle + turn - howFarOver}")
         leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow * 0.5, 0.001))
         rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow * 0.5, 0.001))
     }

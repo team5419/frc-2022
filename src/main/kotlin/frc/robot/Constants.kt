@@ -3,10 +3,10 @@ import kotlin.math.PI
 
 object DriveConstants {
     object Ports {
-        val leftLeader = 3; //2
-        val leftFollower = 4; //3
-        val rightLeader = 1; //4
-        val rightFollower = 2; // 1
+        val leftLeader = 2; //2
+        val leftFollower = 3; //3
+        val rightLeader = 4; //4
+        val rightFollower = 5; // 1
         val gyroPort = 20;
     }
 
@@ -15,7 +15,7 @@ object DriveConstants {
     val ticksPerRotation: Double = (2048.0 * gearRatio)
     const val wheelRadius = 0.0762
     const val wheelDiameter = wheelRadius * 2.0
-    const val wheelCircumference = wheelRadius * PI
+    const val wheelCircumference = wheelDiameter * PI
 
     object Ramsete {
         const val kv: Double = 2.3 // arbitrary
@@ -45,8 +45,6 @@ object ShooterConstants {
         val main = 6;
         val kicker = 7;
     }
-    val mainVelocity = 10587.0
-    val kickerVelocity = 17362.0
     // 10587 velocity, 1.64 ratio is good
 }
 
@@ -55,7 +53,7 @@ object IndexerConstants {
         val motor = 8;
     }
     val outputPercent: Double = 1.0; // x / 1
-    val ticksPerIndex: Double = 1.0;
+    val ticksPerIndex: Double = 100.0;
 }
 
 object FeederConstants {
@@ -70,7 +68,7 @@ object IntakeConstants {
     object Ports {
         val motor = 16;
     }
-    val outputPercent = 0.9;
+    val outputPercent = 1.0;
 }
 
 object PrototypeMotorConstants {

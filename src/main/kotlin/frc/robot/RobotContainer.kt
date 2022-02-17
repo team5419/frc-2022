@@ -56,6 +56,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     // call drive command by default
     m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
     m_climber.setDefaultCommand(Climb(m_climber, codriver, cocodriver));
+    m_feeder.setDefaultCommand(Feed(m_feeder));
 
     // create and add autonomous routines to selector in shuffleboard
     tab.add("Auto Selector", autoSelector)
@@ -88,8 +89,8 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // shoot and run feeder/indexer(hold right bumper) 
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
-    rBumper.whileHeld(Shoot(m_shooter, m_indexer, m_feeder, ShooterConstants.mainVelocity, ShooterConstants.kickerVelocity)); 
-    rBumper.whenReleased(StopShooting(m_shooter, m_indexer, m_feeder));
+    rBumper.whileHeld(CycleIndexer(m_indexer, m_shooter));
+    rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder));
 
     // intake and run feeder (hold B)
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)

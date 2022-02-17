@@ -19,7 +19,7 @@ class Climb(_climber: Climber, _codriver: XboxController, _cocodriver: XboxContr
     climber.setPair(0, codriver.getLeftY())
     climber.setPair(1, codriver.getRightY())
     climber.setPair(2, cocodriver.getLeftY())
-    println("trying to climb")
+    //println("trying to climb")
   }
 
   override fun end(interrupted: Boolean) {}

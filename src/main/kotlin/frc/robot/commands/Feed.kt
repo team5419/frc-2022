@@ -12,18 +12,13 @@ class Feed(_feeder: Feeder) : CommandBase() {
 
   init {
     addRequirements(_feeder);
-    feeder.idling = true
   }
 
   override fun execute() {
-    feeder.feed(FeederConstants.idlePercent);
+    feeder.feed();
   }
 
   override fun end(interrupted: Boolean) {
-    if(!interrupted) {
-        feeder.stop()
-    }
-    feeder.idling = interrupted;
   }
 
   // end command if time has elapsed

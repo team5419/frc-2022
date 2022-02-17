@@ -20,8 +20,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     val kickerMotor = TalonFX(ShooterConstants.Ports.kicker)
     val mainMotor = TalonFX(ShooterConstants.Ports.main)
 
-    public var mainVelocity: Double = 0.0
-    public var kickerVelocity: Double = 0.0
+    public var mainVelocity: Double = 10587.0
+    public var kickerVelocity: Double = 17363.0
     public var setpointMain = 0.0
     public var setpointKicker = 0.0
 
@@ -93,8 +93,10 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             configPeakOutputReverse(-1.0, 100)
         }
 
-        tab.addNumber("Attempted Velocity", { setpointMain })
-        tab.addNumber("Real Velocity", { flyWheelVelocity(mainMotor) })
+        tab.addNumber("Attempted Main Velocity", { setpointMain })
+        tab.addNumber("Attempted Kicker Velocity", { setpointKicker })
+        tab.addNumber("Real Main Velocity", { flyWheelVelocity(mainMotor) })
+        tab.addNumber("Real Kicker Velocity", { flyWheelVelocity(kickerMotor) })
         tab.add("Main shooter velocity", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(mapOf("min" to -15000, "max" to 22000))
@@ -132,10 +134,10 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         if(kicker != setpointKicker) {
             setpointKicker = if (kicker == -1.0) this.kickerVelocity else kicker
         }
-        println("Setting Velocity: ${setpointMain}")
+        //println("Setting Velocity: ${setpointMain}")
         // spin flywheel at selected velocity
-        mainMotor.set(ControlMode.Velocity, setpointMain * 0.5 )
-        kickerMotor.set(ControlMode.Velocity, setpointKicker * 0.5 )
+        mainMotor.set(ControlMode.Velocity, setpointMain)
+        kickerMotor.set(ControlMode.Velocity, setpointKicker)
     }
 
     override fun periodic() {

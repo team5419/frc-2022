@@ -104,8 +104,8 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         var output = throttleController.calculate(getHorizontalDistance() - distance)
         var deadband = 0.05
 
-        println(getHorizontalDistance())
-        println("vertical ${getVerticalOffset()}")
+        //println(getHorizontalDistance())
+        //println("vertical ${getVerticalOffset()}")
         if(Math.abs(getHorizontalDistance() - distance) > deadband && isTargetFound())
         {
             return DriveSignal(output, output)

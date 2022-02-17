@@ -10,33 +10,30 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.commands.Feed
 
 
-class StopShooting(_shooter: Shooter, _indexer: Indexer, _feeder: Feeder) : CommandBase() {
+class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _main: Double = -1.0, _kicker: Double = -1.0) : CommandBase() {
   private val shooter: Shooter = _shooter;
-  private val indexer: Indexer = _indexer;
+  private val main: Double = _main;
   private val feeder: Feeder = _feeder;
-
+  private val kicker: Double = _kicker;
+  private val previousVel: Double = feeder.currentVel
   init {
-      addRequirements(_shooter, _indexer, _feeder)
+    addRequirements(_shooter)
   }
 
   override fun initialize() {
+    feeder.currentVel = FeederConstants.activePercent
+    shooter.shoot(main, kicker)
   }
 
   override fun execute() {
   }
 
-  // end command if time has elapsed
   override fun isFinished(): Boolean {
-    return true
+      return false;
   }
 
   override fun end(interrupted: Boolean) {
-    if(feeder.idling) {
-        Feed(feeder).schedule()
-    } else {
-        feeder.stop()
-    }
-    shooter.stop()
-    indexer.stop()
+      feeder.currentVel = previousVel
+      shooter.stop()
   }
 }

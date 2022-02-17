@@ -29,7 +29,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
         motor.apply {
             restoreFactoryDefaults()
             setIdleMode(IdleMode.kCoast)
-            setInverted(true)
+            setInverted(false)
             //setSensorPhase(false)
             setSmartCurrentLimit(40)
             setClosedLoopRampRate(1.0)
@@ -55,7 +55,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun index() {
-        motor.set(IndexerConstants.outputPercent * 0.5)
+        motor.set(IndexerConstants.outputPercent)
     }
 
     override fun periodic() {

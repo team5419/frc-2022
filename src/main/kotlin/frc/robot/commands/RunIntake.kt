@@ -13,30 +13,26 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0) : Command
   private val feeder: Feeder = _feeder
   private val time: Double = _time
   private val timer: Timer = Timer()
+  private val previousVel: Double = feeder.currentVel
 
   init {
-    addRequirements(_intake);
-    addRequirements(_feeder)
+    addRequirements(_intake)
   }
 
   override fun initialize() {
       timer.reset()
       timer.start()
+      feeder.currentVel = FeederConstants.activePercent
   }
 
   override fun execute() {
     intake.intake();
-    feeder.feed(FeederConstants.activePercent)
   }
 
   override fun end(interrupted: Boolean) {
     intake.stop()
     timer.stop()
-    if(feeder.idling) {
-      Feed(feeder).schedule()
-    } else {
-      feeder.stop()
-    }
+    feeder.currentVel = previousVel
   }
 
   // end command if time has elapsed

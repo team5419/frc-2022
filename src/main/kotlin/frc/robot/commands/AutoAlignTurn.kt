@@ -22,7 +22,7 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
   override fun initialize() {
     vision.on();
     drivetrain.brakeMode = true;
-    println("started aligning")
+    //println("started aligning")
     setpoint = vision.getShotSetpoint();
     shooter.mainVelocity = setpoint.mainVelocity;
     shooter.kickerVelocity = setpoint.kickerVelocity;
@@ -31,13 +31,13 @@ class AutoAlignTurn(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter)
   override fun execute() {
     var throttleOutput: DriveSignal = vision.autoAlignThrottle(2.0 /*setpoint.distance*/);
     var turnOutput: DriveSignal = vision.autoAlignTurn();
-    println("throttle output ${throttleOutput.left}, ${throttleOutput.right}")
-    println("turn output ${turnOutput.left}, ${turnOutput.right}")
+    //println("throttle output ${throttleOutput.left}, ${throttleOutput.right}")
+    //println("turn output ${turnOutput.left}, ${turnOutput.right}")
     drivetrain.setPercent(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
   }
 
   override fun end(interrupted: Boolean) {
-      println("done aligning")
+      //println("done aligning")
       vision.off();
       drivetrain.brakeMode = false;
   }

@@ -8,7 +8,6 @@ import frc.robot.subsystems.Indexer
 
 import frc.robot.commands.check.AutoDrive
 import frc.robot.commands.Index
-import frc.robot.commands.Shoot
 
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
