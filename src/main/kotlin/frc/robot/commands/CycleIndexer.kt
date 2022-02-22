@@ -17,7 +17,7 @@ class CycleIndexer(_indexer: Indexer, _shooter: Shooter) : SequentialCommandGrou
 
   init {
     addCommands(
-      WaitForShooter(shooter, 0.5), 
+      WaitForShooter(shooter, 1.0), 
       Index(indexer)  
     )
   }

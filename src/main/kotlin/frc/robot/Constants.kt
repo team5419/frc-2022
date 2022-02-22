@@ -54,7 +54,7 @@ object IndexerConstants {
         val motor = 8;
     }
     val outputPercent: Double = 1.0; // x / 1
-    val ticksPerIndex: Double = 100.0;
+    val ticksPerIndex: Double = 10.0;
 }
 
 object FeederConstants {
