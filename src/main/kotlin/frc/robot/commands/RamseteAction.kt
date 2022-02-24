@@ -84,8 +84,8 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
 
         // set velocity of drivetrain
         drivetrain.setVelocity(
-            setSpeed.leftMetersPerSecond * 0.4,
-            setSpeed.rightMetersPerSecond * 0.4,
+            setSpeed.leftMetersPerSecond,
+            setSpeed.rightMetersPerSecond,
             leftFeedForward,
             rightFeedForward
         )

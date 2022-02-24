@@ -55,6 +55,7 @@ class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, 
             // autoalign and index/shoot second ball
             AutoAlign(vision, drivetrain, shooter),
             ParallelCommandGroup(
+                RunIntake(intake, feeder, 4.0)
                 ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),
                 Index2(indexer, shooter, 4.0)
             )
