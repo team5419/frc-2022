@@ -30,23 +30,34 @@ class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, 
     val intake: Intake = m_intake
     init {
         addCommands(
+            // run intake and move to first shoot position
             ParallelCommandGroup(
                 RunIntake(intake, feeder, 2.0),
-                RamseteAction(drivetrain, listOf( // negative x is forward, positive x is backward, positive y is left, negative y is right
+                RamseteAction(drivetrain, listOf(
                     Pose2d(0.0, 0.0, Rotation2d(0.0)), 
                     Pose2d(-1.0, 0.0, Rotation2d(0.0))
                 ), false)
             ),
-            /*AutoAlign(vision, drivetrain, shooter),
+            // autoalign and index/shoot first 2 balls
+            AutoAlign(vision, drivetrain, shooter),
             ParallelCommandGroup(
                 ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),
                 Index2(indexer, shooter, 4.0)
-            ),*/
-            RamseteAction(drivetrain, listOf(
-                Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
-                Pose2d(0.0, 1.3, Rotation2d.fromDegrees(45.0))
-            ), false)
-            //ShootAndFeed(shooter, feeder, 10587.0, 16000.0, 2.0)
+            ),
+            // run intake and move to second shoot position
+            ParallelCommandGroup(
+                RunIntake(intake, feeder, 3.0)
+                RamseteAction(drivetrain, listOf(
+                    Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
+                    Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0))
+                ), true)
+            ),
+            // autoalign and index/shoot second ball
+            AutoAlign(vision, drivetrain, shooter),
+            ParallelCommandGroup(
+                ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),
+                Index2(indexer, shooter, 4.0)
+            )
         )
     }
 }
