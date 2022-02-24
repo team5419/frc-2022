@@ -25,7 +25,6 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
     public val encoder = motor.getEncoder() 
     public var currentVel: Double = FeederConstants.idlePercent
 
-
     // configure the motors and add to shuffleboard
     init {
         motor.apply {

@@ -116,7 +116,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     //check if flywheel velocity is at target
     public fun isSpedUp(): Boolean {
-        return flyWheelVelocity(mainMotor) >= setpointMain && flyWheelVelocity(kickerMotor) >= setpointKicker && (setpointMain != 0.0 || setpointKicker != 0.0)
+        return flyWheelVelocity(mainMotor) + 1000.0 >= setpointMain && flyWheelVelocity(kickerMotor) + 1000.0 >= setpointKicker && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 
     public fun stop() {

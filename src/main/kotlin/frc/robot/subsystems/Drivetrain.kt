@@ -27,7 +27,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     init {
         leftLeader.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             setSensorPhase(false)
             setInverted(false)
@@ -50,7 +50,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
         rightLeader.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             setSensorPhase(true)
             setInverted(true)
@@ -71,7 +71,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
         leftFollower.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             // follow the master
             follow(leftLeader)
@@ -85,7 +85,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
         rightFollower.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             // follow the master
             follow(rightLeader)

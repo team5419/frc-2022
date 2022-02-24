@@ -14,6 +14,8 @@ class Feed(_feeder: Feeder) : CommandBase() {
 
   init {
     addRequirements(_feeder);
+    feeder.currentVel = FeederConstants.idlePercent
+
   }
 
   override fun initialize() {
@@ -21,7 +23,7 @@ class Feed(_feeder: Feeder) : CommandBase() {
   }
 
   override fun execute() {
-    
+      feeder.feed()
     }
 
   override fun end(interrupted: Boolean) {
