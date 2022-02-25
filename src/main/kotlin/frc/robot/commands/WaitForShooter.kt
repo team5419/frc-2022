@@ -24,7 +24,7 @@ class WaitForShooter(_shooter: Shooter, _time: Double) : CommandBase() {
   }
 
   override fun execute() {
-    println("waiting")
+    //println("waiting")
   }
 
   // end command if time has elapsed

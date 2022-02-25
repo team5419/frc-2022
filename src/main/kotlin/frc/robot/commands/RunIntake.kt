@@ -23,10 +23,10 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0) : Command
       timer.reset()
       timer.start()
       feeder.currentVel = FeederConstants.activePercent
+      intake.intake()
   }
 
   override fun execute() {
-    intake.intake();
   }
 
   override fun end(interrupted: Boolean) {

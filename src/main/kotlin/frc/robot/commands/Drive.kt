@@ -16,7 +16,7 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController, _isSlow: Boolean =
   override fun initialize() {}
 
   override fun execute() {
-    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), isSlow);
+    drivetrain.drive(-1 * driver.getLeftY().toDouble(), driver.getRightX().toDouble() * 0.33, isSlow);
   }
 
   override fun end(interrupted: Boolean) {}

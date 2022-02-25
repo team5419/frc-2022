@@ -9,14 +9,19 @@ import frc.robot.IndexerConstants
 
 class Index(_indexer: Indexer) : CommandBase() {
   private val indexer: Indexer = _indexer
-  private val startingPosition: Double = _indexer.encoder.getPosition()
+  private var startingPosition: Double = 0.0
 
   init {
     addRequirements(_indexer);
   }
 
-  override fun execute() {
+  override fun initialize() {
+    startingPosition = indexer.encoder.getPosition();
     indexer.index();
+  }
+
+  override fun execute() {
+    
   }
 
   override fun end(interrupted: Boolean) {

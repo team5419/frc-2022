@@ -53,8 +53,8 @@ object IndexerConstants {
     object Ports {
         val motor = 8;
     }
-    val outputPercent: Double = 1.0; // x / 1
-    val ticksPerIndex: Double = 10.0;
+    val outputPercent: Double = 0.6; // x / 1
+    val ticksPerIndex: Double = 3.5;
 }
 
 object FeederConstants {
@@ -69,7 +69,7 @@ object IntakeConstants {
     object Ports {
         val motor = 16;
     }
-    val outputPercent = 1.0;
+    val outputPercent = 0.5;
 }
 
 object PrototypeMotorConstants {

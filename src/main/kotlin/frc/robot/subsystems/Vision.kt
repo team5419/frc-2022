@@ -108,7 +108,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         //println("vertical ${getVerticalOffset()}")
         if(Math.abs(getHorizontalDistance() - distance) > deadband && isTargetFound())
         {
-            return DriveSignal(output, output)
+            return DriveSignal(-output, -output)
         }
 
         return DriveSignal(0.0, 0.0)
@@ -121,7 +121,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
             if (value == field) return
             when (value) {
                 LightMode.On -> mLimelight.getEntry("ledMode").setNumber(3)
-                LightMode.Off -> mLimelight.getEntry("ledMode").setNumber(1)
+                LightMode.Off -> mLimelight.getEntry("ledMode").setNumber(1) // 1
                 LightMode.Blink -> mLimelight.getEntry("ledMode").setNumber(2)
             }
             field = value

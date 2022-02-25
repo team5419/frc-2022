@@ -28,7 +28,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
     init {
         motor.apply {
             restoreFactoryDefaults()
-            setIdleMode(IdleMode.kCoast)
+            setIdleMode(IdleMode.kBrake)
             setInverted(false)
             //setSensorPhase(false)
             setSmartCurrentLimit(40)

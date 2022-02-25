@@ -17,11 +17,11 @@ class Feed(_feeder: Feeder) : CommandBase() {
   }
 
   override fun initialize() {
-    feeder.currentVel = FeederConstants.activePercent
+    feeder.currentVel = FeederConstants.idlePercent
   }
 
   override fun execute() {
-    
+    feeder.feed()
     }
 
   override fun end(interrupted: Boolean) {
