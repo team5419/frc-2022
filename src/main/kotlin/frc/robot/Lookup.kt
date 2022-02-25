@@ -29,7 +29,7 @@ object Lookup {
         }
     }
 
-    fun get(distance: Double): LookupEntry {
+    fun getClosest(distance: Double): LookupEntry {
         for (i in 0..table.size-1) {
             val entry = table.get(i)
 
@@ -38,7 +38,8 @@ object Lookup {
                     return entry
                 }
                 val prevEntry = table.get(i - 1)
-                return if (Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) prevEntry else entry
+                if(Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) return prevEntry 
+                else return entry
             }
         }
 

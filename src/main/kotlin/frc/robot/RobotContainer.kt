@@ -56,12 +56,12 @@ class RobotContainer(tab: ShuffleboardTab) {
     m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
     m_climber.setDefaultCommand(Climb(m_climber, codriver, cocodriver));
     m_feeder.setDefaultCommand(Feed(m_feeder));
-
+    
     // create and add autonomous routines to selector in shuffleboard
     tab.add("Auto Selector", autoSelector)
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
-    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder))
+    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
 
     
     autoSelector.addOption("Pre Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
@@ -84,7 +84,6 @@ class RobotContainer(tab: ShuffleboardTab) {
     m_drivetrain.brakeMode = false
   }
   
-
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {
 
     // shoot and run feeder/indexer (hold right bumper) 

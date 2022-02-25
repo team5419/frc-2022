@@ -33,11 +33,16 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter) : C
     var turnOutput: DriveSignal = vision.autoAlignTurn();
     //println("throttle output ${throttleOutput.left}, ${throttleOutput.right}")
     //println("turn output ${turnOutput.left}, ${turnOutput.right}")
-    drivetrain.setPercent(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
+    drivetrain.setPercent(/*throttleOutput.left + */  turnOutput.left, /*throttleOutput.right + */ turnOutput.right)
+  }
+
+  override fun isFinished() : Boolean {
+    println(vision.aligned())
+    return vision.aligned()
   }
 
   override fun end(interrupted: Boolean) {
-      //println("done aligning")
+      println("done aligning")
       vision.off();
       drivetrain.brakeMode = false;
   }

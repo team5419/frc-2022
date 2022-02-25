@@ -30,7 +30,7 @@ class WaitForShooter(_shooter: Shooter, _time: Double) : CommandBase() {
   // end command if time has elapsed
   override fun isFinished(): Boolean {
     println("done spinning up: ${shooter.isSpedUp()}")
-    return (time != 0.0 && timer.get() >= time) && shooter.isSpedUp()
+    return (time != 0.0 && timer.get() >= time) /*&& shooter.isSpedUp()*/
   }
 
   override fun end(interrupted: Boolean) {

@@ -46,7 +46,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     //calculate which setpoint is closest
-    public fun getShotSetpoint() = Lookup.get(getHorizontalDistance())
+    public fun getShotSetpoint() = Lookup.getClosest(getHorizontalDistance())
 
     // PID loop controller
     public val turnController: PIDController =
@@ -102,7 +102,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     public fun autoAlignThrottle(distance : Double) : DriveSignal {
 
         var output = throttleController.calculate(getHorizontalDistance() - distance)
-        var deadband = 0.05
+        var deadband = 0.1
 
         //println(getHorizontalDistance())
         //println("vertical ${getVerticalOffset()}")
