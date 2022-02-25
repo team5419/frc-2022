@@ -108,7 +108,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         //println("vertical ${getVerticalOffset()}")
         if(Math.abs(getHorizontalDistance() - distance) > deadband && isTargetFound())
         {
-            return DriveSignal(-output, -output)
+            return DriveSignal(output, output)
         }
 
         return DriveSignal(0.0, 0.0)
