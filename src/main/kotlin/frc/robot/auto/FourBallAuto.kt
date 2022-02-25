@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 
-class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake) : SequentialCommandGroup() {
+class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake) : SequentialCommandGroup() {
     val drivetrain: Drivetrain = m_drivetrain
     val shooter: Shooter = m_shooter
     val vision: Vision = m_vision
@@ -46,7 +46,7 @@ class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, 
             ),
             // run intake and move to second shoot position
             ParallelCommandGroup(
-                RunIntake(intake, feeder, 3.0)
+                RunIntake(intake, feeder, 3.0),
                 RamseteAction(drivetrain, listOf(
                     Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
                     Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0))
@@ -55,7 +55,7 @@ class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, 
             // autoalign and index/shoot second ball
             AutoAlign(vision, drivetrain, shooter),
             ParallelCommandGroup(
-                RunIntake(intake, feeder, 4.0)
+                RunIntake(intake, feeder, 4.0),
                 ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),
                 Index2(indexer, shooter, 4.0)
             )

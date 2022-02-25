@@ -20,8 +20,7 @@ import frc.robot.commands.Index2
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
-
-class TestDrive(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake) : SequentialCommandGroup() {
+class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake) : SequentialCommandGroup() {
     val drivetrain: Drivetrain = m_drivetrain
     val shooter: Shooter = m_shooter
     val vision: Vision = m_vision

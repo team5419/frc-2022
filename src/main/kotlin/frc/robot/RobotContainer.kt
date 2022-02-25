@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.auto.Baseline
-import frc.robot.auto.TestDrive
+import frc.robot.auto.TwoBallAuto
 import frc.robot.auto.PreMatchCheck
 
 import frc.robot.commands.*;
@@ -61,7 +61,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     tab.add("Auto Selector", autoSelector)
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
-    autoSelector.addOption("Test Drive", TestDrive(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
+    autoSelector.addOption("Test Drive", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
 
     
     autoSelector.addOption("Pre Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
