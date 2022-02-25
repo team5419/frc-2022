@@ -42,7 +42,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
             AutoAlign(vision, drivetrain, shooter),
             ParallelCommandGroup(
                 ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),
-                Index2(indexer, shooter, 4.0)
+                AutoIndex(indexer, shooter, 4.0)
             ),
             // run intake and move to second shoot position
             ParallelCommandGroup(
@@ -57,7 +57,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
             ParallelCommandGroup(
                 RunIntake(intake, feeder, 4.0),
                 ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),
-                Index2(indexer, shooter, 4.0)
+                AutoIndex(indexer, shooter, 4.0)
             )
         )
     }
