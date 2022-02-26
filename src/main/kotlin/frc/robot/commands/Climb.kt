@@ -4,16 +4,21 @@ import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 
-class Climb(_climber: Climber, _codriver: XboxController, _cocodriver: XboxController) : CommandBase() {
+class Climb(_climber: Climber, _codriver: XboxController, _cocodriver: XboxController, _time: Double = 0.0) : CommandBase() {
   private val climber: Climber = _climber;
   private val codriver: XboxController = _codriver;
   private val cocodriver: XboxController = _cocodriver;
+  private val time: Double = _time
+  private val timer: Timer = Timer()
 
   init {
     addRequirements(_climber);
   }
 
-  override fun initialize() {}
+  override fun initialize() {
+    timer.reset()
+    timer.start()
+  }
 
   override fun execute() {
     climber.setPair(0, codriver.getLeftY())
@@ -22,9 +27,11 @@ class Climb(_climber: Climber, _codriver: XboxController, _cocodriver: XboxContr
     //println("trying to climb")
   }
 
-  override fun end(interrupted: Boolean) {}
+  override fun end(interrupted: Boolean) {
+    timer.stop()
+  }
 
   override fun isFinished(): Boolean {
-    return false;
+    return time > 0.0 && timer.get() >= time;
   }
 }

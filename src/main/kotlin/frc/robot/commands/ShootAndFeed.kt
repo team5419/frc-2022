@@ -13,8 +13,8 @@ import frc.robot.commands.Feed
 class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
   private val shooter: Shooter = _shooter;
   private val main: Double = _main;
-  private val feeder: Feeder = _feeder;
   private val kicker: Double = _kicker;
+  private val feeder: Feeder = _feeder;
   private val previousVel: Double = feeder.currentVel
   private val time: Double = _time
   private val timer: Timer = Timer()

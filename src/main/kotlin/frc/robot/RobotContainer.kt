@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.auto.Baseline
 import frc.robot.auto.TwoBallAuto
+import frc.robot.auto.FourBallAuto
 import frc.robot.auto.PreMatchCheck
 
 import frc.robot.commands.*;
@@ -32,8 +33,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   // subsystems
   private val m_drivetrain = Drivetrain(tab);
   private val m_shooter = Shooter(tab);
-  private val m_protomotor = PrototypeMotor(tab);
-  private val m_vision = Vision(tab, m_drivetrain);
+    private val m_vision = Vision(tab, m_drivetrain);
   private val m_indexer = Indexer(tab);
   private val m_climber = Climber(tab);
   private val m_feeder = Feeder(tab);
@@ -61,10 +61,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     tab.add("Auto Selector", autoSelector)
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
-    autoSelector.addOption("Test Drive", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
-
-    
-    autoSelector.addOption("Pre Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
+    autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
+    autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
+    autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
 
     // field simulation (in progress)
     var m_field = Field2d()

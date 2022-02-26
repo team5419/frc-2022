@@ -9,7 +9,7 @@ object Lookup {
 
     init {
         table = mutableListOf<LookupEntry>()
-        add(1.68, 13000.0, 16900.0)
+        add(1.65, 13000.0, 16900.0)
         add(2.55, 20000.0, 16000.0)
     }
 
