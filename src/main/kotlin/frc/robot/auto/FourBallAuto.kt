@@ -15,7 +15,7 @@ import frc.robot.commands.AutoAlign
 import frc.robot.commands.RunIntake
 import frc.robot.commands.ShootAndFeed
 import frc.robot.commands.CycleIndexer
-import frc.robot.commands.Index2
+import frc.robot.commands.AutoIndex
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -39,7 +39,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                 ), false)
             ),
             // autoalign and index/shoot first 2 balls
-            AutoAlign(vision, drivetrain, shooter),
+            //AutoAlign(vision, drivetrain, shooter),
             ParallelCommandGroup(
                 ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),
                 AutoIndex(indexer, shooter, 4.0)
@@ -53,7 +53,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                 ), true)
             ),
             // autoalign and index/shoot second ball
-            AutoAlign(vision, drivetrain, shooter),
+            //AutoAlign(vision, drivetrain, shooter),
             ParallelCommandGroup(
                 RunIntake(intake, feeder, 4.0),
                 ShootAndFeed(shooter, feeder, 14000.0, 18000.0, 4.0),

@@ -11,15 +11,18 @@ import frc.robot.commands.WaitForShooter
 import frc.robot.commands.Index
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-class CycleIndexer(_indexer: Indexer, _shooter: Shooter) : SequentialCommandGroup() {
+class CycleIndexer(_indexer: Indexer, _shooter: Shooter, _times: Int = 1) : SequentialCommandGroup() {
   private val indexer: Indexer = _indexer;
   private val shooter: Shooter = _shooter;
+  private val times: Int = _times;
 
   init {
-    addCommands(
-      WaitForShooter(shooter, 0.5), 
-      Index(indexer)  
-    )
+    for(i in 0..times) {
+      addCommands(
+        WaitForShooter(shooter, 0.5), 
+        Index(indexer)  
+      )
+    }
   }
 
   override fun end(interrupted: Boolean) {

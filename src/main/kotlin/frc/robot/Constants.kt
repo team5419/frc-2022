@@ -54,7 +54,7 @@ object IndexerConstants {
         val motor = 8;
     }
     val outputPercent: Double = 1.0; // x / 1
-    val ticksPerIndex: Double = 100.0;
+    val ticksPerIndex: Double = 3.5;
 }
 
 object FeederConstants {
@@ -97,8 +97,8 @@ object VisionConstants {
 
     object ThrottlePID {
         public const val P = 0.5
-        public const val I = 0.0
-        public const val D = 0.0
+        public const val I = 0.006
+        public const val D = 0.0005
     }
 }
 

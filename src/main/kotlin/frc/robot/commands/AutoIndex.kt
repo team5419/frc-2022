@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.IndexerConstants
 
 
-class Index2(_indexer: Indexer, _shooter: Shooter, _time: Double = 0.0) : CommandBase() {
+class AutoIndex(_indexer: Indexer, _shooter: Shooter, _time: Double = 0.0) : CommandBase() {
   private val indexer: Indexer = _indexer
   private val shooter: Shooter = _shooter
   private val time: Double = _time
@@ -24,7 +24,7 @@ class Index2(_indexer: Indexer, _shooter: Shooter, _time: Double = 0.0) : Comman
   }
 
   override fun execute() {
-    if(shooter.isSpedUp()) 
+    if(true)//(shooter.isSpedUp()) 
     {
       indexer.index();
     }

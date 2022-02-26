@@ -3,6 +3,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Timer
 
 class Climb(_climber: Climber, _codriver: XboxController, _cocodriver: XboxController, _time: Double = 0.0) : CommandBase() {
   private val climber: Climber = _climber;

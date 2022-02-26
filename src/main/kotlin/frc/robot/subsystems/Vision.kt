@@ -11,7 +11,7 @@ import edu.wpi.first.math.controller.PIDController
 import frc.robot.classes.DriveSignal
 import frc.robot.VisionConstants
 import frc.robot.Lookup
-
+import frc.robot.LookupEntry
 class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
     private val mLimelight = NetworkTableInstance.getDefault().getTable("limelight")
@@ -46,7 +46,9 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     //calculate which setpoint is closest
-    public fun getShotSetpoint() = Lookup.getClosest(getHorizontalDistance())
+    public fun getShotSetpoint(): LookupEntry {
+        return Lookup.getClosest(getHorizontalDistance())
+    }
 
     // PID loop controller
     public val turnController: PIDController =
@@ -96,16 +98,16 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         if (output >  maxSpeed) output =  maxSpeed
         if (output < -maxSpeed) output = -maxSpeed
 
-        return DriveSignal(output, -output)
+        return DriveSignal(-output, output)
     }
 
     public fun autoAlignThrottle(distance : Double) : DriveSignal {
 
         var output = throttleController.calculate(getHorizontalDistance() - distance)
-        var deadband = 0.1
+        var deadband = 0.05
 
-        //println(getHorizontalDistance())
-        //println("vertical ${getVerticalOffset()}")
+        println(getHorizontalDistance())
+        println("vertical ${getVerticalOffset()}")
         if(Math.abs(getHorizontalDistance() - distance) > deadband && isTargetFound())
         {
             return DriveSignal(output, output)
@@ -116,12 +118,12 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     enum class LightMode { On, Off, Blink }
 
-    var lightMode: LightMode = LightMode.Off
+    var lightMode: LightMode = LightMode.On
         set(value) {
             if (value == field) return
             when (value) {
                 LightMode.On -> mLimelight.getEntry("ledMode").setNumber(3)
-                LightMode.Off -> mLimelight.getEntry("ledMode").setNumber(1) // 1
+                LightMode.Off -> mLimelight.getEntry("ledMode").setNumber(3) // 1
                 LightMode.Blink -> mLimelight.getEntry("ledMode").setNumber(2)
             }
             field = value
