@@ -17,12 +17,16 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.IndexerConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.DigitalInput
 
 class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = CANSparkMax(IndexerConstants.Ports.motor, MotorType.kBrushless)
     public val encoder = motor.getEncoder()    
+    public val sensor1 = DigitalInput(IndexerConstants.Ports.sensor1)
+    public val sensor2 = DigitalInput(IndexerConstants.Ports.sensor1)
+
 
     // configure the motors and add to shuffleboard
     init {
