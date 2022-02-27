@@ -72,7 +72,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     // add the PID controller to shuffleboard
     init {
         tab.addNumber("Offset", { getHorizontalOffset() })
-        tab.addBoolean("Aligned", { aligned() })
+        tab.addBoolean("Aligned", { turnAligned() })
         tab.addNumber("Horizontal Distance", { getHorizontalDistance() })
     }
 
@@ -81,34 +81,30 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() > 0.0
     }
 
-    public fun aligned(): Boolean {
+    public fun turnAligned(): Boolean {
         return isTargetFound() && turnController.atSetpoint() && m_drivetrain.averageSpeed < 0.1
     }
 
-    public fun autoAlignTurn() : DriveSignal {
+    public fun throttleAligned(distance : Double): Boolean {
+        return isTargetFound() && Math.abs(getHorizontalDistance() - distance) > 0.05
+    }
 
+    public fun autoAlignTurn() : DriveSignal {
         // get the pid loop output
         var output = turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
 
-        // can we align / do we need to align?
-        if ( (!isTargetFound()) || aligned() )
-            return DriveSignal(0.0, 0.0)
+        // do we need to align / can we align?
+        if(!turnAligned() && isTargetFound()) {
+            return DriveSignal(-output, output)
+        }
 
-        // limit the output
-        if (output >  maxSpeed) output =  maxSpeed
-        if (output < -maxSpeed) output = -maxSpeed
-
-        return DriveSignal(-output, output)
+        return DriveSignal(0.0, 0.0)
     }
 
     public fun autoAlignThrottle(distance : Double) : DriveSignal {
-
         var output = throttleController.calculate(getHorizontalDistance() - distance)
-        var deadband = 0.05
 
-        println(getHorizontalDistance())
-        println("vertical ${getVerticalOffset()}")
-        if(Math.abs(getHorizontalDistance() - distance) > deadband && isTargetFound())
+        if(!throttleAligned(distance) && isTargetFound())
         {
             return DriveSignal(output, output)
         }
