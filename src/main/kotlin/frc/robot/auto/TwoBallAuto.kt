@@ -14,11 +14,10 @@ import frc.robot.commands.RamseteAction
 import frc.robot.commands.AutoAlign
 import frc.robot.commands.RunIntake
 import frc.robot.commands.ShootAndFeed
-import frc.robot.commands.CycleIndexer
-import frc.robot.commands.AutoIndex
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
 class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake) : SequentialCommandGroup() {
     val drivetrain: Drivetrain = m_drivetrain
@@ -30,19 +29,16 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
     init {
         addCommands(
             // run intake and move to first shoot position
-            ParallelCommandGroup(
-                RunIntake(intake, feeder, 2.0),
+            ParallelRaceGroup(
+                RunIntake(intake, feeder, 3.0),
                 RamseteAction(drivetrain, listOf(
                     Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                    Pose2d(1.0, 0.0, Rotation2d(0.0))
-                ), true)
+                    Pose2d(-1.0, 0.0, Rotation2d(0.0))
+                ), false)
             ),
             // autoalign and index/shoot first 2 balls
             AutoAlign(vision, drivetrain, shooter, 2.0, false),
-            ParallelCommandGroup(
-                ShootAndFeed(shooter, feeder, -1.0, -1.0, 4.0),
-                CycleIndexer(indexer, shooter, 2)
-            )
+            ShootAndFeed(shooter, feeder, indexer, -1.0, -1.0, 4.0)
         )
     }
 }

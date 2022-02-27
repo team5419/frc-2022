@@ -52,11 +52,12 @@ object ShooterConstants {
 object IndexerConstants {
     object Ports {
         val motor = 8;
-        val sensor1 = 15;
-        val sensor2 = 16;
+        val sensor1 = 0;
+        val sensor2 = 2;
+        val sensor3 = 1;
     }
     val outputPercent: Double = 1.0; // x / 1
-    val ticksPerIndex: Double = 3.5;
+    val ticksPerIndex: Double = 4.0;
 }
 
 object FeederConstants {

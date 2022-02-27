@@ -17,15 +17,16 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.IndexerConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
-import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.AnalogInput
 
 class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = CANSparkMax(IndexerConstants.Ports.motor, MotorType.kBrushless)
     public val encoder = motor.getEncoder()    
-    public val sensor1 = DigitalInput(IndexerConstants.Ports.sensor1)
-    public val sensor2 = DigitalInput(IndexerConstants.Ports.sensor1)
+    public val sensor1 = AnalogInput(IndexerConstants.Ports.sensor1)
+    public val sensor2 = AnalogInput(IndexerConstants.Ports.sensor2)
+    public val sensor3 = AnalogInput(IndexerConstants.Ports.sensor3)
 
 
     // configure the motors and add to shuffleboard
@@ -52,14 +53,29 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
         }
 
         tab.addNumber("Indexer Velocity", { encoder.getVelocity() })
+        tab.addNumber("Sensor 1", { sensor1.getValue().toDouble() })
+        tab.addNumber("Sensor 2", { sensor2.getValue().toDouble() })
+        tab.addNumber("Sensor 3", { sensor3.getValue().toDouble() })
     }
 
     public fun stop() {
         motor.set(0.0)
     }
 
-    public fun index() {
-        motor.set(IndexerConstants.outputPercent)
+    public fun atPositionOne() : Boolean{
+        return sensor1.getValue().toDouble() > 1000.0
+    }
+
+    public fun atPositionTwo() : Boolean {
+        return sensor2.getValue().toDouble() > 1000.0
+    }
+
+    public fun atPositionThree() : Boolean {
+        return sensor3.getValue().toDouble() > 1000.0
+    }
+
+    public fun index(percent: Double = 1.0) {
+        motor.set(IndexerConstants.outputPercent * percent)
     }
 
     override fun periodic() {

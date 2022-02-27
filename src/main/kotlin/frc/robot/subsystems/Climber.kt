@@ -21,8 +21,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // declare motors and ports
     val pairs: Array<LeaderFollower> = arrayOf(
         LeaderFollower(TalonFX(ClimberConstants.Ports.left1), true, VictorSPX(ClimberConstants.Ports.right1), false),
-        LeaderFollower(TalonFX(ClimberConstants.Ports.left2), false, VictorSPX(ClimberConstants.Ports.right2), true),
-        LeaderFollower(TalonFX(ClimberConstants.Ports.left3), false, VictorSPX(ClimberConstants.Ports.right3), false)
+        LeaderFollower(TalonFX(ClimberConstants.Ports.left2), false, VictorSPX(ClimberConstants.Ports.right2), true)
     )
 
     // configure the motors and add to shuffleboard

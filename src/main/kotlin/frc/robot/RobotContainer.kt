@@ -49,13 +49,13 @@ class RobotContainer(tab: ShuffleboardTab) {
     // configure the button bindings
     val driver = XboxController(0);
     val codriver = XboxController(1);
-    val cocodriver = XboxController(2);
     configureButtonBindings(driver, codriver);
 
     // call drive command by default
     m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
-    m_climber.setDefaultCommand(Climb(m_climber, codriver, cocodriver));
+    m_climber.setDefaultCommand(Climb(m_climber, codriver));
     m_feeder.setDefaultCommand(Feed(m_feeder));
+    m_indexer.setDefaultCommand(DefaultIndex(m_indexer));
     
     // create and add autonomous routines to selector in shuffleboard
     tab.add("Auto Selector", autoSelector)
@@ -87,8 +87,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // shoot and run feeder/indexer (hold right bumper) 
     val rBumper: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)
-    rBumper.whileHeld(CycleIndexer(m_indexer, m_shooter));
-    rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder));
+    rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer));
 
     // enable drivetrain slow mode (hold left bumper)
     val lBumper : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
@@ -105,10 +104,6 @@ class RobotContainer(tab: ShuffleboardTab) {
     // auto-align (toggle Y)
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(AutoAlign(m_vision, m_drivetrain, m_shooter))
-
-    // manual indexing (press A)
-    val aButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton.whenPressed(Index(m_indexer))
   }
 
   // select autonomous command

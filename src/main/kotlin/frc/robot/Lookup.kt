@@ -10,7 +10,7 @@ object Lookup {
     init {
         table = mutableListOf<LookupEntry>()
         add(1.65, 13000.0, 16900.0)
-        add(2.0, 20000.0, 16000.0)
+        add(2.0, 17000.0, 16000.0)
     }
 
     fun add(distance: Double, mainVelocity: Double, kickerVelocity: Double) {

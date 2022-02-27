@@ -7,7 +7,6 @@ import frc.robot.subsystems.Vision
 import frc.robot.subsystems.Indexer
 
 import frc.robot.commands.check.AutoDrive
-import frc.robot.commands.Index
 
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
@@ -25,8 +24,7 @@ class PreMatchCheck(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
     init {
         addCommands(
             AutoDrive(drivetrain, 5.0, checkTab)
-            // Shoot(shooter, 1000.0, 1000.0, 5.0),
-            // Index(indexer)
+            // Shoot(shooter, 1000.0, 1000.0, 5.0)
         )
     }
 }

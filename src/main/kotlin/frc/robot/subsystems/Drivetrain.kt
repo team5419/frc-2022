@@ -30,7 +30,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             setSensorPhase(false)
-            setInverted(true)
+            setInverted(false)
 
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )
@@ -53,7 +53,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             setSensorPhase(true)
-            setInverted(false)
+            setInverted(true)
 
             config_kP( 0, DriveConstants.PID.P , 100 )
             config_kI( 0, DriveConstants.PID.I , 100 )

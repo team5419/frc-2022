@@ -8,36 +8,31 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.IndexerConstants
 
 
-class AutoIndex(_indexer: Indexer, _shooter: Shooter, _time: Double = 0.0) : CommandBase() {
+class DefaultIndex(_indexer: Indexer) : CommandBase() {
   private val indexer: Indexer = _indexer
-  private val shooter: Shooter = _shooter
-  private val time: Double = _time
-  private val timer: Timer = Timer()
 
   init {
     addRequirements(_indexer);
   }
 
   override fun initialize() {
-    timer.reset()
-    timer.start()
   }
 
   override fun execute() {
-    if(true)//(shooter.isSpedUp()) 
-    {
-      indexer.index();
+    if(indexer.atPositionOne() && (!indexer.atPositionThree())) {
+        indexer.index(0.3);
+    } else {
+        indexer.stop();
     }
   }
 
   override fun end(interrupted: Boolean) {
     indexer.stop()
-    timer.stop()
   }
 
   // end command if time has elapsed
   override fun isFinished(): Boolean {
-    return time > 0.0 && timer.get() >= time
+    return false
   }
 
 }

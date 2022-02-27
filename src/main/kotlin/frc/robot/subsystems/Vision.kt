@@ -95,7 +95,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
         // do we need to align / can we align?
         if(!turnAligned() && isTargetFound()) {
-            return DriveSignal(-output, output)
+            return DriveSignal(output, -output)
         }
 
         return DriveSignal(0.0, 0.0)
@@ -106,7 +106,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
         if(!throttleAligned(distance) && isTargetFound())
         {
-            return DriveSignal(output, output)
+            return DriveSignal(-output, -output)
         }
 
         return DriveSignal(0.0, 0.0)
