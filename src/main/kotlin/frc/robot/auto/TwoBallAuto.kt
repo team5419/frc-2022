@@ -41,7 +41,7 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
             AutoAlign(vision, drivetrain, shooter, 2.0, false),
             ParallelCommandGroup(
                 ShootAndFeed(shooter, feeder, -1.0, -1.0, 4.0),
-                CycleIndexer(indexer, shooter, 4)
+                CycleIndexer(indexer, shooter, 2)
             )
         )
     }

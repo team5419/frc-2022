@@ -37,7 +37,8 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _ti
   }
 
   override fun execute() {
-    var throttleOutput: DriveSignal = vision.autoAlignThrottle(setpoint.distance);
+    var throttleOutput: DriveSignal = DriveSignal(0.0, 0.0)
+    if(throttling) throttleOutput = vision.autoAlignThrottle(setpoint.distance);
     var turnOutput: DriveSignal = vision.autoAlignTurn();
     drivetrain.setPercent(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
   }
