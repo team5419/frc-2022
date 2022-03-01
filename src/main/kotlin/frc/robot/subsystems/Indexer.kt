@@ -17,6 +17,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.IndexerConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.wpilibj.AnalogInput
 
 class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
@@ -28,7 +30,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
     public val sensor2 = AnalogInput(IndexerConstants.Ports.sensor2)
     public val sensor3 = AnalogInput(IndexerConstants.Ports.sensor3)
 
-
+    private val layout: ShuffleboardLayout = tab.getLayout("Indexer", BuiltInLayouts.kList);
     // configure the motors and add to shuffleboard
     init {
         motor.apply {
@@ -52,10 +54,10 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
             setPosition(0.0)
         }
 
-        tab.addNumber("Indexer Velocity", { encoder.getVelocity() })
-        tab.addNumber("Sensor 1", { sensor1.getValue().toDouble() })
-        tab.addNumber("Sensor 2", { sensor2.getValue().toDouble() })
-        tab.addNumber("Sensor 3", { sensor3.getValue().toDouble() })
+        layout.addNumber("Velocity", { encoder.getVelocity() })
+        layout.addNumber("Sensor 1", { sensor1.getValue().toDouble() })
+        layout.addNumber("Sensor 2", { sensor2.getValue().toDouble() })
+        layout.addNumber("Sensor 3", { sensor3.getValue().toDouble() })
     }
 
     public fun stop() {

@@ -111,7 +111,7 @@ object ClimberConstants {
         val right1 = 10
         val left2 = 11
         val right2 = 12
-        val left3 = 13
-        val right3 = 14
+        //val left3 = 13
+        //val right3 = 14
     }
 }

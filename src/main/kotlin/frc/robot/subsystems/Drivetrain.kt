@@ -12,6 +12,8 @@ import kotlin.math.*
 import frc.robot.DriveConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.math.geometry.Pose2d
 
 class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
@@ -22,6 +24,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
     private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
+
+    private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList);
 
     // configure the motors and add to shuffleboard
     init {
@@ -101,9 +105,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             configFactoryDefault(100)
             setFusedHeading(0.0, 100)
         }
-
-        tab.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
-        tab.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
+        layout.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
+        layout.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
     }
 
     fun getAllVelocities() : Array<Double> {
@@ -168,19 +171,18 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     // maintains a deadband
     fun withDeadband(movement: Double, deadband: Double): Double {
         if(abs(movement) <= deadband) return 0.0;
+        if(abs(movement) > 1.0) return sign(movement);
         return movement;
     }
 
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
-        // this makes turning at full speed easier (one wheel stays at full throttle, the other is reduced by double the turn)
-        val howFarOver = max(0.0, throttle + turn - 1)
         // set slow multiplier
         var slow: Double = 1.0
         if(isSlow) slow = DriveConstants.slowMultiplier
         // set percent outputs of drivetrain motors
         //println("throttle output ${throttle - turn - howFarOver}, ${throttle + turn - howFarOver}")
-        leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow, 0.001))
-        rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow, 0.001))
+        leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn) * slow, 0.001))
+        rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn) * slow, 0.001))
     }
 
     public var brakeMode = false

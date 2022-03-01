@@ -17,13 +17,15 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.IntakeConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 
 class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless)
     public val encoder = motor.getEncoder()
-
+    private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList);
     // configure the motors and add to shuffleboard
     init {
         motor.apply {
@@ -47,7 +49,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
             setPosition(0.0)
         }
 
-        tab.addNumber("Intake Real Velocity", { encoder.getVelocity() })
+        layout.addNumber("Velocity", { encoder.getVelocity() })
     }
 
     public fun stop() {

@@ -104,6 +104,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     // auto-align (toggle Y)
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(AutoAlign(m_vision, m_drivetrain, m_shooter))
+
+    val aButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
+    aButton.whenPressed(TestClimb(m_climber))
   }
 
   // select autonomous command

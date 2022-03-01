@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import kotlin.math.*
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.networktables.NetworkTableInstance
 import frc.robot.subsystems.Drivetrain
 import edu.wpi.first.math.geometry.Rotation2d
@@ -21,7 +24,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     private val mCameraHeight: Double = VisionConstants.cameraHeight
     private val mCameraAngle: Double = VisionConstants.cameraAngle
     public val maxSpeed = VisionConstants.maxAutoAlignSpeed
-
+    private val layout: ShuffleboardLayout = tab.getLayout("Vision", BuiltInLayouts.kList);
     fun getHorizontalOffset(): Double {
         if (inverted) {
             return -mLimelight.getEntry("tx").getDouble(0.0)
@@ -71,9 +74,9 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     // add the PID controller to shuffleboard
     init {
-        tab.addNumber("Offset", { getHorizontalOffset() })
-        tab.addBoolean("Aligned", { turnAligned() })
-        tab.addNumber("Horizontal Distance", { getHorizontalDistance() })
+        layout.addNumber("Offset", { getHorizontalOffset() })
+        layout.addBoolean("Aligned", { turnAligned() })
+        layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
     }
 
     // check if the limelight is picking up on the target

@@ -17,6 +17,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.FeederConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 
 class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
 
@@ -24,6 +26,8 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
     val motor = CANSparkMax(FeederConstants.Ports.motor, MotorType.kBrushless)
     public val encoder = motor.getEncoder() 
     public var currentVel: Double = FeederConstants.idlePercent
+
+    private val layout: ShuffleboardLayout = tab.getLayout("Feeder", BuiltInLayouts.kList);
 
     // configure the motors and add to shuffleboard
     init {
@@ -47,8 +51,8 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
         encoder.apply {
             setPosition(0.0)
         }
-
-        tab.addNumber("Feeder Real Velocity", { encoder.getVelocity() })
+        layout.addNumber("Attempted", { currentVel })
+        layout.addNumber("Velocity", { encoder.getVelocity() })
     }
 
     public fun stop() {

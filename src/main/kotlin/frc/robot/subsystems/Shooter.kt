@@ -14,6 +14,9 @@ import frc.robot.ShooterConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+
 class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
@@ -24,6 +27,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     public var kickerVelocity: Double = ShooterConstants.kickerVelocity
     public var setpointMain = 0.0
     public var setpointKicker = 0.0
+
+    private val layout: ShuffleboardLayout = tab.getLayout("Shooter", BuiltInLayouts.kList);
 
     // configure the motors and add to shuffleboard
     init {
@@ -93,10 +98,10 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             configPeakOutputReverse(-1.0, 100)
         }
 
-        tab.addNumber("Attempted Main Velocity", { setpointMain })
-        tab.addNumber("Attempted Kicker Velocity", { setpointKicker })
-        tab.addNumber("Real Main Velocity", { flyWheelVelocity(mainMotor) })
-        tab.addNumber("Real Kicker Velocity", { flyWheelVelocity(kickerMotor) })
+        layout.addNumber("Attempted Main Velocity", { setpointMain })
+        layout.addNumber("Attempted Kicker Velocity", { setpointKicker })
+        layout.addNumber("Real Main Velocity", { flyWheelVelocity(mainMotor) })
+        layout.addNumber("Real Kicker Velocity", { flyWheelVelocity(kickerMotor) })
         tab.add("Main shooter velocity", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(mapOf("min" to -15000, "max" to 22000))
