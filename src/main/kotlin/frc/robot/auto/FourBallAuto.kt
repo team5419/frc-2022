@@ -26,6 +26,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
     val indexer: Indexer = m_indexer
     val feeder: Feeder = m_feeder
     val intake: Intake = m_intake
+    
     init {
         addCommands(
             // run intake and move to first shoot position
