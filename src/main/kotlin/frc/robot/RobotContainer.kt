@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.auto.Baseline
 import frc.robot.auto.TwoBallAuto
-import frc.robot.auto.FourBallAuto
+import frc.robot.auto.FiveBallAuto
+import frc.robot.auto.FiveBallAuto2
 import frc.robot.auto.PreMatchCheck
 
 import frc.robot.commands.*;
@@ -62,7 +63,8 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
-    autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
+    autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
+    autoSelector.addOption("Five Ball Auto 2", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
     autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
 
     // field simulation (in progress)
