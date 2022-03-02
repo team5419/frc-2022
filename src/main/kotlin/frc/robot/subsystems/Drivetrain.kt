@@ -25,7 +25,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
 
-    private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList);
+    private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList).withPosition(2, 0).withSize(1, 2);
 
     // configure the motors and add to shuffleboard
     init {

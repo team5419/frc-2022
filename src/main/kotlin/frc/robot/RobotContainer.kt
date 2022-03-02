@@ -58,7 +58,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     m_indexer.setDefaultCommand(DefaultIndex(m_indexer));
     
     // create and add autonomous routines to selector in shuffleboard
-    tab.add("Auto Selector", autoSelector)
+    tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))

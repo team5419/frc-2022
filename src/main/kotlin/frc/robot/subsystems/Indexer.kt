@@ -30,7 +30,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
     public val sensor2 = AnalogInput(IndexerConstants.Ports.sensor2)
     public val sensor3 = AnalogInput(IndexerConstants.Ports.sensor3)
 
-    private val layout: ShuffleboardLayout = tab.getLayout("Indexer", BuiltInLayouts.kList);
+    private val layout: ShuffleboardLayout = tab.getLayout("Indexer", BuiltInLayouts.kList).withPosition(5, 0).withSize(1, 4);
     // configure the motors and add to shuffleboard
     init {
         motor.apply {

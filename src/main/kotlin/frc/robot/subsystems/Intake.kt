@@ -25,7 +25,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     // declare motors and ports
     val motor = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless)
     public val encoder = motor.getEncoder()
-    private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList);
+    private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(8, 0).withSize(2, 1);
     // configure the motors and add to shuffleboard
     init {
         motor.apply {

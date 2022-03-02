@@ -12,10 +12,13 @@ import frc.robot.classes.DriveSignal
 import frc.robot.VisionConstants
 import frc.robot.Lookup
 import frc.robot.LookupEntry
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 
 class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
     private val mLimelight = NetworkTableInstance.getDefault().getTable("limelight")
+    private val layout: ShuffleboardLayout = tab.getLayout("Vision", BuiltInLayouts.kList).withPosition(3, 0).withSize(2, 4);
 
     val inverted: Boolean = false
     private val mTargetHeight: Double = VisionConstants.targetHeight
@@ -72,9 +75,9 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     // add the PID controller to shuffleboard
     init {
-        tab.addNumber("Offset", { getHorizontalOffset() })
-        tab.addBoolean("Aligned", { turnAligned() })
-        tab.addNumber("Horizontal Distance", { getHorizontalDistance() })
+        layout.addNumber("Offset", { getHorizontalOffset() })
+        layout.addBoolean("Aligned", { turnAligned() })
+        layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
     }
 
     // check if the limelight is picking up on the target

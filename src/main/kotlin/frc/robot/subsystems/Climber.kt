@@ -24,9 +24,9 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // declare motors and ports
     public val pairs: Array<ClimberPair> = arrayOf(
         ClimberPair(TalonFX(ClimberConstants.Ports.left1), false, TalonFX(ClimberConstants.Ports.right1), true),
-        ClimberPair(TalonFX(ClimberConstants.Ports.left2), true, TalonFX(ClimberConstants.Ports.right2), true)
+        ClimberPair(TalonFX(ClimberConstants.Ports.left2), true, TalonFX(ClimberConstants.Ports.right2), false)
     )
-    private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList);
+    private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
     // configure the motors and add to shuffleboard
     init {
@@ -65,9 +65,16 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         return movement;
     }
 
+    public fun setPairVelocity(pair: Int, throttle: Double, turn: Double) {
+        val f: Double = 10.0;
+        pairs[pair].left.set(ControlMode.Velocity, withDeadband((-throttle - turn), 0.001) * f);
+        pairs[pair].right.set(ControlMode.Velocity, withDeadband((-throttle + turn), 0.001) * f);
+    }
+
     public fun setPair(pair: Int, throttle: Double, turn: Double) {
-        pairs[pair].left.set(ControlMode.PercentOutput, withDeadband((-throttle - turn), 0.001));
-        pairs[pair].right.set(ControlMode.PercentOutput, withDeadband((-throttle + turn), 0.001));
+        val f: Double = 0.5;
+        pairs[pair].left.set(ControlMode.PercentOutput, withDeadband((-throttle - turn), 0.001) * f);
+        pairs[pair].right.set(ControlMode.PercentOutput, withDeadband((-throttle + turn), 0.001) * f);
     }
 
     public fun setIndividual(motor: TalonFX, percent: Double) {

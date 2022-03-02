@@ -28,7 +28,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     public var setpointMain = 0.0
     public var setpointKicker = 0.0
 
-    private val layout: ShuffleboardLayout = tab.getLayout("Shooter", BuiltInLayouts.kList);
+    private val layout: ShuffleboardLayout = tab.getLayout("Shooter", BuiltInLayouts.kList).withPosition(6, 0).withSize(2, 4);
 
     // configure the motors and add to shuffleboard
     init {
@@ -103,11 +103,15 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         layout.addNumber("Real Main Velocity", { flyWheelVelocity(mainMotor) })
         layout.addNumber("Real Kicker Velocity", { flyWheelVelocity(kickerMotor) })
         tab.add("Main shooter velocity", 0.0)
+            .withPosition(8, 1)
+            .withSize(2, 1)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(mapOf("min" to -15000, "max" to 22000))
             .getEntry()
             .addListener({ value: EntryNotification -> this.mainVelocity = value.value.getDouble() }, EntryListenerFlags.kUpdate)
         tab.add("Kicker shooter velocity", 0.0)
+            .withPosition(8, 2)
+            .withSize(2, 1)
             .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(mapOf("min" to -15000, "max" to 22000))
             .getEntry()
