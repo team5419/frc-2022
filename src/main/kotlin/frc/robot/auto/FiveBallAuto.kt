@@ -41,18 +41,30 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
             AutoAlign(vision, drivetrain, shooter, 2.0, false),
             ShootAndFeed(shooter, feeder, indexer, -1.0, -1.0, 1.5),
             // run intake and move to second shoot position
+            RamseteAction(drivetrain, listOf(
+                    Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
+                    Pose2d(0.75, -2.0, Rotation2d.fromDegrees(45.0))
+            ), false),
             ParallelRaceGroup(
                 RunIntake(intake, feeder, 8.0),
                 RamseteAction(drivetrain, listOf(
-                    Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
-                    Pose2d(-2.0, -0.3, Rotation2d.fromDegrees(0.0))
+                    Pose2d(0.75, -2.0, Rotation2d.fromDegrees(45.0)), 
+                    Pose2d(0.5, -2.25, Rotation2d.fromDegrees(45.0))
                 ), false)
             ),
-            // intake 2 balls from the human player station
-            RunIntake(intake, feeder, 2.0),
-            // shoots 2 balls
-            AutoAlign(vision, drivetrain, shooter, 4.0, false),
-            ShootAndFeed(shooter, feeder, indexer, -1.0, -1.0, 1.5),
+            ParallelRaceGroup(
+                RunIntake(intake, feeder, 8.0),
+                // autoalign and index/shoot second ball
+                AutoAlign(vision, drivetrain, shooter, 0.0, false)
+            ),
+            ParallelCommandGroup(
+                RunIntake(intake, feeder, 8.0),
+                ShootAndFeed(shooter, feeder, indexer, 16000.0, 16000.0, 8.0)
+            ),
+            RamseteAction(drivetrain, listOf(
+                    Pose2d(0.5, -2.25, Rotation2d.fromDegrees(45.0)), 
+                    Pose2d(0.0, -2.75, Rotation2d.fromDegrees(45.0))
+            ), false)
         )
     }
 }
