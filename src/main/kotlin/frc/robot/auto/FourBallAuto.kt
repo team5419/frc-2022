@@ -52,7 +52,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
             RunIntake(intake, feeder, 2.0),
             // shoots 2 balls
             AutoAlign(vision, drivetrain, shooter, 4.0, false),
-            ShootAndFeed(shooter, feeder, indexer, -1.0, -1.0, 1.5),
+            ShootAndFeed(shooter, feeder, indexer, -1.0, -1.0, 1.5)
         )
     }
 }
