@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.auto.Baseline
+import frc.robot.auto.Test
 import frc.robot.auto.TwoBallAuto
 import frc.robot.auto.FiveBallAuto
 import frc.robot.auto.FiveBallAuto2
@@ -39,6 +40,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_climber = Climber(tab);
   private val m_feeder = Feeder(tab);
   private val m_intake = Intake(tab);
+  private val m_lights = Lights(tab);
   // default autonomous routine
   private val m_baseline = Baseline()
 
@@ -66,6 +68,8 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
     autoSelector.addOption("Five Ball Auto 2", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
     autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
+    autoSelector.addOption("Test", Test(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
+
 
     // field simulation (in progress)
     var m_field = Field2d()
@@ -87,28 +91,27 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {
 
-    // shoot and run feeder/indexer (hold right bumper) 
-    val rBumper: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)
-    rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer));
+    // auto-align (toggle Y)
+    val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
+    aButton.whenHeld(AutoAlign(m_vision, m_drivetrain, m_shooter))
 
     // enable drivetrain slow mode (hold left bumper)
     val lBumper : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
     lBumper.whenHeld(Drive(m_drivetrain, driver, true))
 
     // intake and run feeder (hold B)
+    val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
+    xButton.toggleWhenPressed(RunIntake(m_intake, m_feeder))
+
+    // shoot and run feeder/indexer (hold right bumper) 
+    val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
+    rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer));
+
+    val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
+    aButton2.whenPressed(TestClimb(m_climber))
+
     val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
-    bButton.whenHeld(RunIntake(m_intake, m_feeder))
-
-    // toggle idle feeding (press X)
-    val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    xButton.toggleWhenPressed(Feed(m_feeder));
-
-    // auto-align (toggle Y)
-    val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
-    yButton.toggleWhenPressed(AutoAlign(m_vision, m_drivetrain, m_shooter))
-
-    val aButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton.whenPressed(TestClimb(m_climber))
+    bButton.whenHeld(RunLights(m_lights))
   }
 
   // select autonomous command

@@ -31,21 +31,33 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // configure the motors and add to shuffleboard
     init {
         for(i in 0..pairs.size - 1) {
-            pairs[i].left.apply {
-                configFactoryDefault(100)
-                setInverted(pairs[i].invertedLeft)
-                configPeakOutputForward(1.0)
-                configPeakOutputReverse(-1.0)
-                setNeutralMode(NeutralMode.Brake)
-            }
+            val pairArray = arrayOf(pairs[i].left, pairs[i].right);
+            for(j in 0..pairArray.size - 1) {
+                pairArray[j].apply {
+                    configFactoryDefault(100)
+                    configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
-            pairs[i].right.apply {
-                configFactoryDefault(100)
-                setInverted(pairs[i].invertedRight)
-                configPeakOutputForward(1.0)
-                configPeakOutputReverse(-1.0)
-                setNeutralMode(NeutralMode.Brake)
+                    config_kP(1, 0.5, 100)
+                    config_kI(1, 0.0, 100)
+                    config_kD(1, 0.0, 100)
+                    config_kF(1, 0.06, 100)
+                    selectProfileSlot(0, 0)
+
+                    setSelectedSensorPosition(0.0, 0, 100)
+
+                    configClosedloopRamp(1.0, 100)
+                    configClosedLoopPeriod(0, 1, 100)
+
+                    configPeakOutputForward(1.0)
+                    configPeakOutputReverse(-1.0)
+                    
+                    setNeutralMode(NeutralMode.Brake)
+                }
             }
+            
+            pairs[i].left.setInverted(pairs[i].invertedLeft);
+            pairs[i].right.setInverted(pairs[i].invertedRight);
+
             val newLayout: ShuffleboardLayout = layout.getLayout("Pair ${i}", BuiltInLayouts.kList);
             newLayout.addNumber("left", { pairs[i].left.getSelectedSensorVelocity() });
             newLayout.addNumber("right", { pairs[i].right.getSelectedSensorVelocity() });
@@ -66,9 +78,10 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun setPairVelocity(pair: Int, throttle: Double, turn: Double) {
-        val f: Double = 10.0;
+        val f: Double = 10000.0;
         pairs[pair].left.set(ControlMode.Velocity, withDeadband((-throttle - turn), 0.001) * f);
         pairs[pair].right.set(ControlMode.Velocity, withDeadband((-throttle + turn), 0.001) * f);
+        println((throttle + turn) * f)
     }
 
     public fun setPair(pair: Int, throttle: Double, turn: Double) {

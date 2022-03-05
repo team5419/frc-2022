@@ -24,7 +24,7 @@ class Feed(_feeder: Feeder) : CommandBase() {
 
   override fun execute() {
     feeder.feed()
-    }
+  }
 
   override fun end(interrupted: Boolean) {
     feeder.currentVel = previousVel

@@ -3,17 +3,17 @@ import kotlin.math.PI
 
 object DriveConstants {
     object Ports {
-        val leftLeader = 2; //2
-        val leftFollower = 3; //3
-        val rightLeader = 4; //4
-        val rightFollower = 5; // 1
+        val leftLeader = 3; // 2
+        val leftFollower = 4; //3
+        val rightLeader = 1; //4
+        val rightFollower = 2; // 5
         val gyroPort = 20;
     }
 
     val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     val gearRatio: Double = (10.3333 / 1.0)
     val ticksPerRotation: Double = (2048.0 * gearRatio)
-    const val wheelRadius = 0.0762
+    const val wheelRadius = 0.0508
     const val wheelDiameter = wheelRadius * 2.0
     const val wheelCircumference = wheelDiameter * PI
 
@@ -25,7 +25,7 @@ object DriveConstants {
         const val maxAcceleration: Double = 1.5
         const val maxCentripetalAcceleration: Double = 3.0
         const val maxVoltage: Double = 12.0 // volts
-        const val beta: Double = 1.8 // m^-2
+        const val beta: Double = 2.0 // m^-2
         const val zeta: Double = 0.7 // unitless
         const val trackWidth: Double = 1.781 // meters
     }
@@ -56,7 +56,7 @@ object IndexerConstants {
         val sensor2 = 2;
         val sensor3 = 1;
     }
-    val outputPercent: Double = 1.0; // x / 1
+    val outputPercent: Double = 0.4; // x / 1
     val ticksPerIndex: Double = 4.0;
 }
 
@@ -113,5 +113,11 @@ object ClimberConstants {
         val right2 = 12
         //val left3 = 13
         //val right3 = 14
+    }
+}
+
+object LightsConstants {
+    object Ports {
+        val lights = 13;
     }
 }
