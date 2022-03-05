@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.auto.Baseline
-import frc.robot.auto.Test
 import frc.robot.auto.TwoBallAuto
 import frc.robot.auto.FiveBallAuto
 import frc.robot.auto.FiveBallAuto2
@@ -68,8 +67,6 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
     autoSelector.addOption("Five Ball Auto 2", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
     autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
-    autoSelector.addOption("Test", Test(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
-
 
     // field simulation (in progress)
     var m_field = Field2d()
@@ -102,6 +99,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     // intake and run feeder (hold B)
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     xButton.toggleWhenPressed(RunIntake(m_intake, m_feeder))
+
+    val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
+    yButton.whenHeld(Outtake(m_feeder, m_indexer, m_intake))
 
     // shoot and run feeder/indexer (hold right bumper) 
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)

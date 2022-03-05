@@ -66,6 +66,7 @@ object FeederConstants {
     }
     val idlePercent = 0.2;
     val activePercent = 0.9;
+    val reversePercent = -activePercent;
 }
 
 object IntakeConstants {
@@ -73,6 +74,7 @@ object IntakeConstants {
         val motor = 16;
     }
     val outputPercent = 0.5;
+    val reversePercent = -outputPercent;
 }
 
 object PrototypeMotorConstants {
