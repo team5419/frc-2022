@@ -58,6 +58,7 @@ object IndexerConstants {
     }
     val outputPercent: Double = 0.4; // x / 1
     val ticksPerIndex: Double = 4.0;
+    val autoSpeed: Double = 1000.0;
 }
 
 object FeederConstants {
@@ -67,6 +68,7 @@ object FeederConstants {
     val idlePercent = 0.2;
     val activePercent = 0.9;
     val reversePercent = -activePercent;
+    val autoSpeed: Double = 1000.0;
 }
 
 object IntakeConstants {
@@ -75,6 +77,7 @@ object IntakeConstants {
     }
     val outputPercent = 0.5;
     val reversePercent = -outputPercent;
+    val autoSpeed: Double = 1000.0;
 }
 
 object PrototypeMotorConstants {
@@ -116,6 +119,7 @@ object ClimberConstants {
         //val left3 = 13
         //val right3 = 14
     }
+    val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
 }
 
 object LightsConstants {

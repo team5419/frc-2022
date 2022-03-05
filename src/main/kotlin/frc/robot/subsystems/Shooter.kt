@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val kickerMotor = TalonFX(ShooterConstants.Ports.kicker)
-    val mainMotor = TalonFX(ShooterConstants.Ports.main)
+    public val kickerMotor = TalonFX(ShooterConstants.Ports.kicker)
+    public val mainMotor = TalonFX(ShooterConstants.Ports.main)
 
     public var mainVelocity: Double = ShooterConstants.mainVelocity
     public var kickerVelocity: Double = ShooterConstants.kickerVelocity

@@ -42,22 +42,15 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_lights = Lights(tab);
   // default autonomous routine
   private val m_baseline = Baseline()
+  private val m_autocheck = PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter);
 
   // creates a tab in shuffleboard to select autonomous routine
   val autoSelector = SendableChooser<SequentialCommandGroup>()
+  val driver = XboxController(0);
+  val codriver = XboxController(1);
 
   init {
-
-    // configure the button bindings
-    val driver = XboxController(0);
-    val codriver = XboxController(1);
     configureButtonBindings(driver, codriver);
-
-    // call drive command by default
-    m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
-    m_climber.setDefaultCommand(Climb(m_climber, codriver));
-    m_feeder.setDefaultCommand(Feed(m_feeder));
-    m_indexer.setDefaultCommand(DefaultIndex(m_indexer));
     
     // create and add autonomous routines to selector in shuffleboard
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
@@ -66,16 +59,16 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
     autoSelector.addOption("Five Ball Auto 2", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake))
-    autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_drivetrain, m_shooter, m_vision, m_indexer))
+    autoSelector.addOption("Pre-Match Check", m_autocheck)
 
     // field simulation (in progress)
-    var m_field = Field2d()
-    tab.add("field", m_field)
-    m_field.getObject("traj").setTrajectory(
-      RamseteAction(m_drivetrain, listOf( // negative x is forward, positive x is backward, positive y is left, negative y is right
-      Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-      Pose2d(0.8, 0.0, Rotation2d(0.0))
-      ), true).trajectory)
+    // var m_field = Field2d()
+    // tab.add("field", m_field)
+    // m_field.getObject("traj").setTrajectory(
+    //   RamseteAction(m_drivetrain, listOf( // negative x is forward, positive x is backward, positive y is left, negative y is right
+    //   Pose2d(0.0, 0.0, Rotation2d(0.0)), 
+    //   Pose2d(0.8, 0.0, Rotation2d(0.0))
+    //   ), true).trajectory)
   }
 
   fun onAuto() {
@@ -117,5 +110,15 @@ class RobotContainer(tab: ShuffleboardTab) {
   // select autonomous command
   fun getAutonomousCommand(): Command {
     return autoSelector.getSelected() ?: m_baseline
+  }
+
+  fun setDefaults() {
+    if(autoSelector.getSelected() != m_autocheck) {
+      // call drive command by default
+      m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
+      m_climber.setDefaultCommand(Climb(m_climber, codriver));
+      m_feeder.setDefaultCommand(Feed(m_feeder));
+      m_indexer.setDefaultCommand(DefaultIndex(m_indexer));
+    }
   }
 }

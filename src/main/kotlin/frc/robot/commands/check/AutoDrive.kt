@@ -22,7 +22,7 @@ class AutoDrive(_drivetrain: Drivetrain, _time: Double, _tab: ShuffleboardTab) :
       drivetrain.drive(0.5, 0.0, false)
     }
 
-    override fun getVels(): Array<Double> {
+    override fun getVels(): List<Double> {
       return drivetrain.getAllVelocities()
     }
 }

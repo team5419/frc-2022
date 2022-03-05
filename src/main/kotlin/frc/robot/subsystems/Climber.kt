@@ -64,6 +64,15 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         }
     }
 
+    fun getAllVelocities() : List<Double> {
+        var returning: MutableList<Double> = mutableListOf<Double>();
+        for(pair in pairs) {
+            returning.add(pair.left.getSelectedSensorVelocity());
+            returning.add(pair.right.getSelectedSensorVelocity());
+        }
+        return returning.toList();
+    }
+
     public fun stop() {
         for(pair in pairs) {
             pair.left.set(ControlMode.PercentOutput, 0.0)

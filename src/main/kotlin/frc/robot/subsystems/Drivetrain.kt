@@ -109,8 +109,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         layout.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
     }
 
-    fun getAllVelocities() : Array<Double> {
-        return arrayOf(
+    fun getAllVelocities() : List<Double> {
+        return listOf(
             leftLeader.getSelectedSensorVelocity(0),
             leftFollower.getSelectedSensorVelocity(0),
             rightLeader.getSelectedSensorVelocity(0),

@@ -11,7 +11,7 @@ open class CheckCommand(_name: String, _tab: ShuffleboardTab, _time: Double, _nu
     private val time: Double = _time
     private val timer: Timer = Timer()
     private val numMotors: Int = _numMotors
-    public var currentVelocities: Array<Double> = Array<Double>(_numMotors) { 0.0 }
+    public var currentVelocities: List<Double> = List<Double>(_numMotors) { 0.0 }
 
     override fun initialize() {
         timer.reset()
@@ -23,7 +23,7 @@ open class CheckCommand(_name: String, _tab: ShuffleboardTab, _time: Double, _nu
 
     open fun check(i: Int): Boolean { return true }
     open fun runMotors() {}
-    open fun getVels(): Array<Double> { return Array<Double>(numMotors) { 0.0 } }
+    open fun getVels(): List<Double> { return List<Double>(numMotors) { 0.0 } }
 
     override fun execute() {
         runMotors()
