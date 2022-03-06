@@ -7,8 +7,10 @@ import frc.robot.FeederConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Lights;
+import frc.robot.classes.RGB;
 
-class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
+class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _lights: Lights, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
   private val shooter: Shooter = _shooter;
   private val main: Double = _main;
   private val kicker: Double = _kicker;
@@ -17,6 +19,8 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _main:
   private val previousVel: Double = feeder.currentVel
   private val time: Double = _time
   private val timer: Timer = Timer()
+  private val lights: Lights = _lights;
+
   init {
     addRequirements(_shooter)
     addRequirements(_indexer);
@@ -26,6 +30,8 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _main:
     timer.reset()
     timer.start()
     feeder.currentVel = FeederConstants.activePercent
+    lights.currentRGB = RGB(86, 255, 51); // pink
+    lights.blinking = true;
     shooter.shoot(main, kicker)
   }
 
@@ -43,6 +49,8 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _main:
   override fun end(interrupted: Boolean) {
       timer.stop()
       feeder.currentVel = previousVel
+      lights.currentRGB = RGB(0, 0, 0)
+      lights.blinking = false
       shooter.stop()
       indexer.stop()
   }

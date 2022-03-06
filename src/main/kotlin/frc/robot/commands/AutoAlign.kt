@@ -10,8 +10,10 @@ import frc.robot.LookupEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.Timer
+import frc.robot.classes.RGB;
+import frc.robot.subsystems.Lights;
 
-class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _time: Double = 0.0, _throttling: Boolean = true) : CommandBase() {
+class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _lights: Lights, _time: Double = 0.0, _throttling: Boolean = true) : CommandBase() {
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
@@ -19,6 +21,7 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _ti
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val throttling: Boolean = _throttling
+  private val lights: Lights = _lights;
 
   init {
     addRequirements(_vision);
@@ -32,6 +35,8 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _ti
     setpoint = vision.getShotSetpoint();
     shooter.mainVelocity = setpoint.mainVelocity;
     shooter.kickerVelocity = setpoint.kickerVelocity;
+    lights.currentRGB = RGB(86, 255, 51);
+    lights.blinking = false;
     timer.reset()
     timer.start()
   }
@@ -52,6 +57,8 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _ti
       println("done aligning")
       vision.off();
       timer.stop()
+      lights.currentRGB = RGB(0, 0, 0);
+      lights.blinking = false;
       drivetrain.setPercent(0.0, 0.0)
       drivetrain.brakeMode = false;
   }

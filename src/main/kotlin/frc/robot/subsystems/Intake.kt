@@ -23,45 +23,46 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val motor = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless)
-    public val encoder = motor.getEncoder()
+    val motor = TalonFX(IntakeConstants.Ports.motor)
     private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(8, 0).withSize(2, 1);
     // configure the motors and add to shuffleboard
     init {
+
         motor.apply {
-            restoreFactoryDefaults()
-            setIdleMode(IdleMode.kCoast)
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
+
+            setSensorPhase(false)
             setInverted(true)
-            //setSensorPhase(false)
-            setSmartCurrentLimit(40)
-            setClosedLoopRampRate(1.0)
-            setControlFramePeriodMs(1)
+
+            config_kP( 0, 1.0, 100 )
+            config_kI( 0, 0.0, 100 )
+            config_kD( 0, 0.0, 100 )
+
+            setSelectedSensorPosition(0.0, 0, 100)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+
+            setNeutralMode(NeutralMode.Coast)
+
+            configClosedLoopPeakOutput(0, 0.1, 100)
         }
 
-        val controller = motor.getPIDController()
-        controller.apply {
-            setP(1.0, 1)
-            setI(0.0, 1)
-            setD(0.0, 1)
-        }
-
-        encoder.apply {
-            setPosition(0.0)
-        }
-
-        layout.addNumber("Velocity", { encoder.getVelocity() })
+        layout.addNumber("Velocity", { motor.getSelectedSensorVelocity() })
     }
 
     public fun stop() {
-        motor.set(0.0)
+        motor.set(ControlMode.PercentOutput, 0.0)
     }
 
     public fun intake() {
-        motor.set(IntakeConstants.outputPercent)
+        motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent)
     }
 
     public fun reverse() {
-        motor.set(IntakeConstants.reversePercent)
+        motor.set(ControlMode.PercentOutput, IntakeConstants.reversePercent)
     }
 
     override fun periodic() {

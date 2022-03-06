@@ -64,7 +64,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
         motor.set(0.0)
     }
 
-    public fun atPositionOne() : Boolean{
+    public fun atPositionOne() : Boolean {
         return sensor1.getValue().toDouble() > 1000.0
     }
 

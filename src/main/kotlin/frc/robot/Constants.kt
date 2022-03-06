@@ -124,6 +124,9 @@ object ClimberConstants {
 
 object LightsConstants {
     object Ports {
-        val lights = 13;
+        val lights1 = 0;
+        val lights2 = 1;
     }
+    val len1: Int = 15;
+    val len2: Int = 14
 }

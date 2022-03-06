@@ -23,6 +23,6 @@ class AutoIntake(_intake: Intake, _time: Double, _tab: ShuffleboardTab) : CheckC
     }
 
     override fun getVels(): List<Double> {
-      return listOf(intake.encoder.getVelocity());
+      return listOf(intake.motor.getSelectedSensorVelocity());
     }
 }

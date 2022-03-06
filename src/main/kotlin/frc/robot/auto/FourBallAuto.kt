@@ -9,6 +9,7 @@ import frc.robot.subsystems.Vision
 import frc.robot.subsystems.Indexer
 import frc.robot.subsystems.Feeder
 import frc.robot.subsystems.Intake
+import frc.robot.subsystems.Lights
 
 import frc.robot.commands.RamseteAction
 import frc.robot.commands.AutoAlign
@@ -19,13 +20,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
-class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake) : SequentialCommandGroup() {
+class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake, m_lights: Lights) : SequentialCommandGroup() {
     val drivetrain: Drivetrain = m_drivetrain
     val shooter: Shooter = m_shooter
     val vision: Vision = m_vision
     val indexer: Indexer = m_indexer
     val feeder: Feeder = m_feeder
     val intake: Intake = m_intake
+    val lights: Lights = m_lights;
     
     init {
         addCommands(
@@ -38,8 +40,8 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                 ), false)
             ),
             // autoalign and index/shoot first 2 balls
-            AutoAlign(vision, drivetrain, shooter, 2.0, false),
-            ShootAndFeed(shooter, feeder, indexer, -1.0, -1.0, 1.5),
+            AutoAlign(vision, drivetrain, shooter, lights, 2.0, false),
+            ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.5),
             // run intake and move to second shoot position
             ParallelRaceGroup(
                 RunIntake(intake, feeder, 8.0),
@@ -51,8 +53,8 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
             // intake 2 balls from the human player station
             RunIntake(intake, feeder, 2.0),
             // shoots 2 balls
-            AutoAlign(vision, drivetrain, shooter, 4.0, false),
-            ShootAndFeed(shooter, feeder, indexer, -1.0, -1.0, 1.5)
+            AutoAlign(vision, drivetrain, shooter, lights, 4.0, false),
+            ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.5)
         )
     }
 }

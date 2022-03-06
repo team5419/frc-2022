@@ -17,10 +17,10 @@ class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
   }
 
   override fun execute() {
-    climber.setPairVelocity(0, codriver.getLeftY(), codriver.getLeftX())
-    climber.setPairVelocity(1, codriver.getRightY(), codriver.getRightX())
-    //climber.setPair(0, codriver.getLeftY(), codriver.getLeftX())
-    //climber.setPair(1, codriver.getRightY(), codriver.getRightX())
+    climber.setPairVelocity(0, codriver.getLeftY())
+    climber.setPairVelocity(1, codriver.getRightY())
+    //climber.setPair(0, codriver.getLeftY())
+    //climber.setPair(1, codriver.getRightY())
     println("trying to climb")
   }
 

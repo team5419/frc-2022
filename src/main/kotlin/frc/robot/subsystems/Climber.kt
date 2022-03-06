@@ -86,21 +86,17 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         return movement;
     }
 
-    public fun setPairVelocity(pair: Int, throttle: Double, turn: Double) {
+    public fun setPairVelocity(pair: Int, throttle: Double) {
         val f: Double = 15000.0;
-        pairs[pair].left.set(ControlMode.Velocity, withDeadband((-throttle - turn), 0.001) * f);
-        pairs[pair].right.set(ControlMode.Velocity, withDeadband((-throttle + turn), 0.001) * f);
-        println((throttle + turn) * f)
+        pairs[pair].left.set(ControlMode.Velocity, withDeadband(-throttle, 0.001) * f);
+        pairs[pair].right.set(ControlMode.Velocity, withDeadband(-throttle, 0.001) * f);
+        println(throttle * f)
     }
 
-    public fun setPair(pair: Int, throttle: Double, turn: Double) {
+    public fun setPair(pair: Int, throttle: Double) {
         val f: Double = 0.5;
-        pairs[pair].left.set(ControlMode.PercentOutput, withDeadband((-throttle - turn), 0.001) * f);
-        pairs[pair].right.set(ControlMode.PercentOutput, withDeadband((-throttle + turn), 0.001) * f);
-    }
-
-    public fun setIndividual(motor: TalonFX, percent: Double) {
-        motor.set(ControlMode.PercentOutput, percent);
+        pairs[pair].left.set(ControlMode.PercentOutput, withDeadband(-throttle, 0.001) * f);
+        pairs[pair].right.set(ControlMode.PercentOutput, withDeadband(-throttle, 0.001) * f);
     }
 
     override fun periodic() {
