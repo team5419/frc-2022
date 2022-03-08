@@ -60,7 +60,6 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun feed() {
-        println("current = ${currentVel}")
         motor.set(currentVel)
     }
 

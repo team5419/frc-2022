@@ -17,21 +17,22 @@ class Outtake(_feeder: Feeder, _indexer: Indexer, _intake: Intake)  : CommandBas
   private var startingPosition: Double = 0.0
 
   init {
-    addRequirements(_feeder)
     addRequirements(_indexer)
     addRequirements(_intake)
   }
 
   override fun initialize() {
     startingPosition = indexer.encoder.getPosition()
-    feeder.currentVel = FeederConstants.reversePercent
+    feeder.currentVel = -0.9; //FeederConstants.reversePercent
     intake.reverse()
   }
 
   override fun execute() {
-    if(Math.abs(indexer.encoder.getPosition() - startingPosition) < IndexerConstants.ticksPerIndex) {
-        indexer.index(-1.0)
-    }
+    // if(Math.abs(indexer.encoder.getPosition() - startingPosition) < IndexerConstants.ticksPerIndex) {
+    //     indexer.index(-1.0)
+    // } else {
+    //     indexer.stop();
+    // }
   }
 
   override fun isFinished(): Boolean {

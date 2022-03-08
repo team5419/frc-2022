@@ -22,6 +22,7 @@ class DefaultIndex(_indexer: Indexer, _lights: Lights) : CommandBase() {
   }
 
   override fun execute() {
+    println("running indexer");
     if(indexer.atPositionOne() && indexer.atPositionTwo() && indexer.atPositionThree() && lights.isEqualTo(0, 0, 0)) {
       lights.currentRGB = RGB(51, 158, 255);
       lights.blinking = false;
@@ -32,7 +33,7 @@ class DefaultIndex(_indexer: Indexer, _lights: Lights) : CommandBase() {
       }
     }
     if(indexer.atPositionOne() && !indexer.atPositionThree()) {
-        indexer.index(0.3);
+        indexer.index(0.32);
     } else {
         indexer.stop();
     }

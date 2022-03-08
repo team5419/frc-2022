@@ -35,12 +35,18 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
                 RunIntake(intake, feeder, 3.0),
                 RamseteAction(drivetrain, listOf(
                     Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                    Pose2d(-1.0, 0.0, Rotation2d(0.0))
+                    Pose2d(-0.75, 0.0, Rotation2d(0.0))
                 ), false)
             ),
+            ParallelRaceGroup(
+                RunIntake(intake, feeder, 2.0),
+                AutoAlign(vision, drivetrain, shooter, lights, 2.0, false)
+            ),
+            ParallelRaceGroup(
+                RunIntake(intake, feeder, 4.0),
+                ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 4.0)
+            )
             // autoalign and index/shoot first 2 balls
-            AutoAlign(vision, drivetrain, shooter, lights, 2.0, false),
-            ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 4.0)
         )
     }
 }

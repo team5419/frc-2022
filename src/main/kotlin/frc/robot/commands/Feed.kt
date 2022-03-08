@@ -9,7 +9,6 @@ import frc.robot.FeederConstants;
 
 class Feed(_feeder: Feeder) : CommandBase() {
   private val feeder: Feeder = _feeder
-  private val previousVel: Double = feeder.currentVel
 
 
   init {
@@ -27,7 +26,6 @@ class Feed(_feeder: Feeder) : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    feeder.currentVel = previousVel
   }
 
   // end command if time has elapsed

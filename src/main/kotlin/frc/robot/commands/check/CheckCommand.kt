@@ -19,6 +19,7 @@ open class CheckCommand(_name: String, _tab: ShuffleboardTab, _time: Double, _nu
         for(i in 0..numMotors - 1) {
           tab.addBoolean("${mname} motor ${i + 1}", {check(i)})
         }
+        println("started checking ${mname}");
     }
 
     open fun check(i: Int): Boolean { return true }
@@ -32,7 +33,9 @@ open class CheckCommand(_name: String, _tab: ShuffleboardTab, _time: Double, _nu
         }
     }
 
-    override fun end(interrupted: Boolean) {}
+    override fun end(interrupted: Boolean) {
+      println("done checking ${mname}");
+    }
     
     override fun isFinished(): Boolean {
         return (time != 0.0 && timer.get() >= time)

@@ -38,7 +38,7 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
   override fun execute() {
     if(shooter.isSpedUp())
     {
-      indexer.index();
+      indexer.index(0.75);
     }
   }
 

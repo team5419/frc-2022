@@ -51,7 +51,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                     configPeakOutputForward(1.0)
                     configPeakOutputReverse(-1.0)
                     
-                    setNeutralMode(NeutralMode.Brake)
+                    setNeutralMode(NeutralMode.Coast)
                 }
             }
             
@@ -90,7 +90,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         val f: Double = 15000.0;
         pairs[pair].left.set(ControlMode.Velocity, withDeadband(-throttle, 0.001) * f);
         pairs[pair].right.set(ControlMode.Velocity, withDeadband(-throttle, 0.001) * f);
-        println(throttle * f)
+        //println(throttle * f)
     }
 
     public fun setPair(pair: Int, throttle: Double) {

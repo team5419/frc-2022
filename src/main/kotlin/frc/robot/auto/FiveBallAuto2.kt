@@ -70,7 +70,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
             ),
             // autoalign and shoot last ball
             AutoAlign(vision, drivetrain, shooter, lights, 2.0, false),
-            ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 4.0)
+            ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 4.0)
 
         )
     }

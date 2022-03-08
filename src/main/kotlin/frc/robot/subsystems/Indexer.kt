@@ -77,7 +77,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun index(percent: Double = 1.0) {
-        println("indexing ${percent}");
+        //println("indexing ${percent}");
         motor.set(IndexerConstants.outputPercent * percent)
     }
 

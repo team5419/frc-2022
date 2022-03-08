@@ -67,7 +67,7 @@ object FeederConstants {
     }
     val idlePercent = 0.2;
     val activePercent = 0.9;
-    val reversePercent = -0.9;
+    val reversePercent: Double = -0.9;
     val autoSpeed: Double = 1000.0;
 }
 
@@ -104,9 +104,9 @@ object VisionConstants {
     }
 
     object ThrottlePID {
-        public const val P = 0.5
+        public const val P = 0.4
         public const val I = 0.006
-        public const val D = 0.0005
+        public const val D = 0.0010
     }
 }
 

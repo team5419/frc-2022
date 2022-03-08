@@ -19,29 +19,17 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
     private val mLimelight = NetworkTableInstance.getDefault().getTable("limelight")
     private val layout: ShuffleboardLayout = tab.getLayout("Vision", BuiltInLayouts.kList).withPosition(3, 0).withSize(2, 4);
-
-    val inverted: Boolean = false
     private val mTargetHeight: Double = VisionConstants.targetHeight
     private val mCameraHeight: Double = VisionConstants.cameraHeight
     private val mCameraAngle: Double = VisionConstants.cameraAngle
     public val maxSpeed = VisionConstants.maxAutoAlignSpeed
 
     fun getHorizontalOffset(): Double {
-        if (inverted) {
-            return -mLimelight.getEntry("tx").getDouble(0.0)
-        } 
-        else {
-            return mLimelight.getEntry("tx").getDouble(0.0)
-        }
+        return mLimelight.getEntry("tx").getDouble(0.0)
     }
 
     fun getVerticalOffset(): Double {
-        if (inverted) {
-            return -mLimelight.getEntry("ty").getDouble(0.0)
-        } 
-        else {
-            return mLimelight.getEntry("ty").getDouble(0.0)
-        }
+        return mLimelight.getEntry("ty").getDouble(0.0)
     }
 
     // calculate horizontal distance based on verticle and horizontal offset
@@ -82,7 +70,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     // check if the limelight is picking up on the target
     public fun isTargetFound(): Boolean {
-        return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() > 0.0
+        return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() != 0.0
     }
 
     public fun turnAligned(): Boolean {
@@ -90,7 +78,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public fun throttleAligned(distance : Double): Boolean {
-        return isTargetFound() && Math.abs(getHorizontalDistance() - distance) > 0.05
+        return isTargetFound() && Math.abs(getHorizontalDistance() - distance) < 0.05
     }
 
     public fun autoAlignTurn() : DriveSignal {

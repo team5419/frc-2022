@@ -40,7 +40,7 @@ class Lights(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun setColor() {
-        println("color ${currentRGB.r} ${currentRGB.g} ${currentRGB.b}");
+        //println("color ${currentRGB.r} ${currentRGB.g} ${currentRGB.b}");
         for(i in 0..buffer1.getLength() - 1) {
             buffer1.setRGB(i, currentRGB.r, currentRGB.g, currentRGB.b);
         }

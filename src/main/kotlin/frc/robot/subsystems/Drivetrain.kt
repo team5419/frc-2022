@@ -31,7 +31,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     init {
         leftLeader.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 15.0, 0.0, 0.0), 100)
 
             setSensorPhase(false)
             setInverted(false)

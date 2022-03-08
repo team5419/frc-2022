@@ -21,7 +21,7 @@ class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
     climber.setPair(1, codriver.getRightY())
     //climber.setPair(0, codriver.getLeftY())
     //climber.setPair(1, codriver.getRightY())
-    println("trying to climb")
+    //("trying to climb")
   }
 
   override fun end(interrupted: Boolean) {

@@ -9,8 +9,8 @@ object Lookup {
 
     init {
         table = mutableListOf<LookupEntry>()
-        add(1.65, 13000.0, 16900.0)
-        add(2.0, 17000.0, 16000.0)
+        add(1.65, 13000.0, 16000.0) // 13000, 16900
+        add(2.0, 15000.0, 15000.0) // 17000, 16000
         add(3.0, 18000.0, 16000.0)
     }
 
@@ -23,25 +23,25 @@ object Lookup {
         for (i in 0..table.size-1) {
             val entry = table.get(i)
 
-            if (entry.distance < distance) {
-                table.add(i + 1, LookupEntry(distance, mainVelocity, kickerVelocity))
+            if (entry.distance > distance) {
+                table.add(i, LookupEntry(distance, mainVelocity, kickerVelocity))
                 break
             }
         }
+
+        table.add(table.size, LookupEntry(distance, mainVelocity, kickerVelocity))
     }
 
     fun getClosest(distance: Double): LookupEntry {
         for (i in 0..table.size-1) {
             val entry = table.get(i)
-            //println("table entry ${entry.distance}");
 
             if (entry.distance > distance) {
                 if (i == 0) {
                     return entry
                 }
                 val prevEntry = table.get(i - 1)
-                if(Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) return prevEntry 
-                else return entry
+                return if (Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) prevEntry else entry
             }
         }
 

@@ -42,19 +42,22 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _li
   }
 
   override fun execute() {
+    println("setpoint distance = ${setpoint.distance}");
+    //println("actual distance = ${vision.getHorizontalDistance()}");
     var throttleOutput: DriveSignal = DriveSignal(0.0, 0.0)
-    if(throttling) throttleOutput = vision.autoAlignThrottle(setpoint.distance);
+    if(throttling) {
+      throttleOutput = vision.autoAlignThrottle(setpoint.distance)
+    }
     var turnOutput: DriveSignal = vision.autoAlignTurn();
     drivetrain.setPercent(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
   }
 
   override fun isFinished() : Boolean {
-    //return timer.get() >= time && time > 0.0 // 2 seconds to align
-    return(vision.turnAligned() && vision.throttleAligned(setpoint.distance))
+    return (timer.get() >= time && time > 0.0) || (vision.turnAligned() && vision.throttleAligned(setpoint.distance))
   }
 
   override fun end(interrupted: Boolean) {
-      println("done aligning")
+      //println("done aligning")
       vision.off();
       timer.stop()
       lights.currentRGB = RGB(0, 0, 0);
