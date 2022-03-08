@@ -29,7 +29,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   // subsystems
   private val m_drivetrain = Drivetrain(tab);
   private val m_shooter = Shooter(tab);
-    private val m_vision = Vision(tab, m_drivetrain);
+  private val m_vision = Vision(tab, m_drivetrain);
   private val m_indexer = Indexer(tab);
   private val m_climber = Climber(tab);
   private val m_feeder = Feeder(tab);
@@ -78,7 +78,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {
 
-    // auto-align (toggle Y)
+    // auto-align (toggle A)
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
     aButton.whenHeld(AutoAlign(m_vision, m_drivetrain, m_shooter, m_lights))
 
@@ -90,6 +90,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     xButton.toggleWhenPressed(RunIntake(m_intake, m_feeder))
 
+    // outtake (hold Y)
     val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
     yButton.whenHeld(Outtake(m_feeder, m_indexer, m_intake))
 
@@ -97,6 +98,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
     rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer, m_lights));
 
+    // autonomous climb (hold A button)
     val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
     aButton2.whenPressed(TestClimb(m_climber))
   }
