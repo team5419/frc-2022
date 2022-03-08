@@ -31,7 +31,6 @@ class DefaultIndex(_indexer: Indexer, _lights: Lights) : CommandBase() {
         lights.blinking = false;
       }
     }
-    
     if(indexer.atPositionOne() && !indexer.atPositionThree()) {
         indexer.index(0.3);
     } else {

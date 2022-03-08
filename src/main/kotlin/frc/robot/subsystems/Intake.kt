@@ -33,7 +33,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             setSensorPhase(false)
-            setInverted(true)
+            setInverted(false)
 
             config_kP( 0, 1.0, 100 )
             config_kI( 0, 0.0, 100 )

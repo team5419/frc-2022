@@ -20,7 +20,7 @@ class AutoClimb(_climber: Climber, _time: Double, _tab: ShuffleboardTab) : Check
 
     override fun runMotors() {
         for(i in 0..2) {
-            climber.setPair(i, 0.1);
+            climber.setPairVelocity(i, 0.1);
         }
     }
 

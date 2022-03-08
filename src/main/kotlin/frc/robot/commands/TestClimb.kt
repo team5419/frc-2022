@@ -1,5 +1,5 @@
 package frc.robot.commands
-import frc.robot.commands.AutoClimb;
+import frc.robot.commands.AutonomousClimb;
 import frc.robot.subsystems.Climber;
 
 
@@ -13,8 +13,8 @@ class TestClimb(m_climber: Climber) : SequentialCommandGroup(){
 
     init {
         addCommands(
-            AutoClimb(climber, 0, 100.0, 0.2), // run 100 ticks on pair 1 at 20% power
-            AutoClimb(climber, 1, 100.0, 0.2) // run 100 ticks on pair 2 at 20% power
+            AutonomousClimb(climber, 0, 100.0, 0.2), // run 100 ticks on pair 1 at 20% power
+            AutonomousClimb(climber, 1, 100.0, 0.2) // run 100 ticks on pair 2 at 20% power
         )
     }
 }

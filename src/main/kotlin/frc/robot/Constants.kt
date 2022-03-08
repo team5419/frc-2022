@@ -3,10 +3,10 @@ import kotlin.math.PI
 
 object DriveConstants {
     object Ports {
-        val leftLeader = 3; // 2
-        val leftFollower = 4; //3
-        val rightLeader = 1; //4
-        val rightFollower = 2; // 5
+        val leftLeader = 2; // 3
+        val leftFollower = 3; //4
+        val rightLeader = 4; //1
+        val rightFollower = 5; // 2
         val gyroPort = 20;
     }
 
@@ -42,7 +42,7 @@ object DriveConstants {
 
 object ShooterConstants {
     object Ports {
-        val main = 6;
+        val main = 8;
         val kicker = 7;
     }
     val mainVelocity = 10600.0
@@ -51,10 +51,10 @@ object ShooterConstants {
 
 object IndexerConstants {
     object Ports {
-        val motor = 8;
-        val sensor1 = 0;
-        val sensor2 = 2;
-        val sensor3 = 1;
+        val motor = 16;
+        val sensor1 = 2;
+        val sensor2 = 1;
+        val sensor3 = 0;
     }
     val outputPercent: Double = 0.4; // x / 1
     val ticksPerIndex: Double = 4.0;
@@ -67,13 +67,13 @@ object FeederConstants {
     }
     val idlePercent = 0.2;
     val activePercent = 0.9;
-    val reversePercent = -activePercent;
+    val reversePercent = -0.9;
     val autoSpeed: Double = 1000.0;
 }
 
 object IntakeConstants {
     object Ports {
-        val motor = 16;
+        val motor = 6;
     }
     val outputPercent = 0.5;
     val reversePercent = -outputPercent;

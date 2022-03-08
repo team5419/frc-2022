@@ -25,6 +25,10 @@ class PreMatchCheck(
     val checkTab: ShuffleboardTab = Shuffleboard.getTab("Pre Match Check")
 
     init {
+        // drivetrain.setDefaultCommand(null);
+        // climber.setDefaultCommand(null);
+        // feeder.setDefaultCommand(null);
+        // indexer.setDefaultCommand(null);
         addCommands(
             AutoClimb(climber, 5.0, checkTab),
             AutoDrive(drivetrain, 5.0, checkTab),

@@ -65,6 +65,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     //   Pose2d(0.0, 0.0, Rotation2d(0.0)), 
     //   Pose2d(0.8, 0.0, Rotation2d(0.0))
     //   ), true).trajectory)
+    setDefaults();
   }
 
   fun onAuto() {
@@ -85,7 +86,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     val lBumper : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
     lBumper.whenHeld(Drive(m_drivetrain, driver, true))
 
-    // intake and run feeder (hold B)
+    // intake and run feeder (hold X)
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     xButton.toggleWhenPressed(RunIntake(m_intake, m_feeder))
 
@@ -98,9 +99,6 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
     aButton2.whenPressed(TestClimb(m_climber))
-
-    // val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
-    // bButton.whenHeld(RunLights(m_lights))
   }
 
   // select autonomous command
@@ -109,13 +107,11 @@ class RobotContainer(tab: ShuffleboardTab) {
   }
 
   fun setDefaults() {
-    // if(autoSelector.getSelected() != m_autocheck) {
-    //   // call drive command by default
-    //   m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
-    //   m_climber.setDefaultCommand(Climb(m_climber, codriver));
-    //   m_feeder.setDefaultCommand(Feed(m_feeder));
-    //   m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
-    //   m_lights.setDefaultCommand(RunLights(m_lights));
-    // }
+      // call drive command by default
+      m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
+      m_climber.setDefaultCommand(Climb(m_climber, codriver));
+      m_feeder.setDefaultCommand(Feed(m_feeder));
+      m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
+      m_lights.setDefaultCommand(RunLights(m_lights));
   }
 }
