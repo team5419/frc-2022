@@ -106,7 +106,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     enum class LightMode { On, Off, Blink }
 
-    var lightMode: LightMode = LightMode.On
+    var lightMode: LightMode = LightMode.Off
         set(value) {
             if (value == field) return
             when (value) {

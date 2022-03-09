@@ -15,6 +15,8 @@ import frc.robot.commands.RamseteAction
 import frc.robot.commands.AutoAlign
 import frc.robot.commands.RunIntake
 import frc.robot.commands.ShootAndFeed
+import frc.robot.commands.SpinUp
+import frc.robot.commands.Wait
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -33,45 +35,50 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
         addCommands(
             // run intake and move to first shoot position
             ParallelRaceGroup(
-                RunIntake(intake, feeder, 2.0),
-                RamseteAction(drivetrain, listOf(
-                    Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                    Pose2d(-1.0, 0.0, Rotation2d(0.0))
-                ), false)
-            ),
-            // autoalign and index/shoot first 2 balls
-            AutoAlign(vision, drivetrain, shooter, lights, 2.0, false),
-            ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.5),
-            // run intake and move to second shoot position
-            ParallelRaceGroup(
-                RunIntake(intake, feeder, 8.0),
-                RamseteAction(drivetrain, listOf(
-                    Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
-                    Pose2d(-2.0, -0.3, Rotation2d.fromDegrees(0.0))
-                ), false)
-            ),
-            // intake 2 balls from the human player station
-            RunIntake(intake, feeder, 2.0),
-            // moves to new shot location
-            RamseteAction(drivetrain, listOf(
-                Pose2d(-2.0, -0.3, Rotation2d(0.0)), 
-                Pose2d(0.2, 0.2, Rotation2d.fromDegrees(45.0))
-            ), true),
-            // shoots 2 balls
-            AutoAlign(vision, drivetrain, shooter, lights, 2.0, false),
-            ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.5),
-            // move backwards to pick up the last ball
-            ParallelRaceGroup(
-                RunIntake(intake, feeder, 3.0),
-                RamseteAction(drivetrain, listOf(
-                    Pose2d(0.2, 0.2, Rotation2d(45.0)), 
-                    Pose2d(0.4, 0.0, Rotation2d(45.0))
-                ), false)
-            ),
-            // autoalign and shoot last ball
-            AutoAlign(vision, drivetrain, shooter, lights, 2.0, false),
-            ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 4.0)
-
+                RunIntake(intake, feeder),
+                SequentialCommandGroup(
+                    ParallelRaceGroup(
+                        SpinUp(shooter),
+                        RamseteAction(drivetrain, listOf(
+                            Pose2d(0.0, 0.0, Rotation2d(0.0)), 
+                            Pose2d(-0.75, 0.0, Rotation2d(0.0))
+                        ), false)
+                    ),
+                    // autoalign and index/shoot first 2 balls
+                    AutoAlign(vision, drivetrain, shooter, lights, 1.0, false),
+                    ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.75),
+                    // run intake and move to second shoot position
+                    RamseteAction(drivetrain, listOf(
+                        Pose2d(-0.75, 0.0, Rotation2d(0.0)), 
+                        Pose2d(-2.0, -0.3, Rotation2d.fromDegrees(0.0))
+                    ), false),
+                    Wait(1.0),
+                    // intake 2 balls from the human player station
+                    // moves to new shot location
+                    ParallelRaceGroup(
+                        RamseteAction(drivetrain, listOf(
+                            Pose2d(-2.0, -0.3, Rotation2d(0.0)), 
+                            Pose2d(0.2, 0.2, Rotation2d.fromDegrees(45.0))
+                        ), true),
+                        SpinUp(shooter)
+                    ),
+                    // shoots 2 balls
+                    AutoAlign(vision, drivetrain, shooter, lights, 1.0, false),
+                    ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.5),
+                    // move backwards to pick up the last ball
+                    ParallelRaceGroup(
+                        RamseteAction(drivetrain, listOf(
+                            Pose2d(0.2, 0.2, Rotation2d(45.0)), 
+                            Pose2d(0.4, 0.0, Rotation2d(45.0))
+                        ), false),
+                        SpinUp(shooter)
+                    ),
+                    // autoalign and shoot last ball
+                    AutoAlign(vision, drivetrain, shooter, lights, 1.0, false),
+                    ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 4.0)
+                )
+            )
+            
         )
     }
 }

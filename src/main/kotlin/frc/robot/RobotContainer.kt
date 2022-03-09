@@ -91,16 +91,23 @@ class RobotContainer(tab: ShuffleboardTab) {
     xButton.toggleWhenPressed(RunIntake(m_intake, m_feeder))
 
     // outtake (hold Y)
-    val yButton: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
+    val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
     yButton.whenHeld(Outtake(m_feeder, m_indexer, m_intake))
+
+    // mini shoot
+    val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
+    aButton2.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer, m_lights, 10000.0, 10000.0, 0.0))
 
     // shoot and run feeder/indexer (hold right bumper) 
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
     rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer, m_lights));
 
+    val xButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
+    xButton2.whenHeld(SpinUp(m_shooter, 10000.0, 10000.0));
+
     // autonomous climb (hold A button)
-    val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton2.whenPressed(TestClimb(m_climber))
+    // val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
+    // aButton2.whenPressed(TestClimb(m_climber))
   }
 
   // select autonomous command

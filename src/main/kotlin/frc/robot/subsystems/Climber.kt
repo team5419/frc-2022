@@ -35,23 +35,34 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
             for(j in 0..pairArray.size - 1) {
                 pairArray[j].apply {
                     configFactoryDefault(100)
+
+                    setNeutralMode(NeutralMode.Brake)
+                    setSensorPhase(false)
+
                     configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
+                    // bang bang PID
+                    config_kP(0, 10000.0, 100)
+                    config_kI(0, 0.0, 100)
+                    config_kD(0, 0.0, 100)
+                    config_kF(0, 0.0, 100)
+
+                    // velocity controlle PID
                     config_kP(1, 0.5, 100)
                     config_kI(1, 0.0, 100)
                     config_kD(1, 0.0, 100)
                     config_kF(1, 0.06, 100)
-                    selectProfileSlot(0, 0)
+
+                    // bang bang PID
+                    selectProfileSlot(1, 0)
 
                     setSelectedSensorPosition(0.0, 0, 100)
-
                     configClosedloopRamp(1.0, 100)
+
                     configClosedLoopPeriod(0, 1, 100)
 
-                    configPeakOutputForward(1.0)
-                    configPeakOutputReverse(-1.0)
-                    
-                    setNeutralMode(NeutralMode.Coast)
+                    configPeakOutputForward(1.0, 100)
+                    configPeakOutputReverse(-1.0, 100)
                 }
             }
             
@@ -88,9 +99,9 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
 
     public fun setPairVelocity(pair: Int, throttle: Double) {
         val f: Double = 15000.0;
-        pairs[pair].left.set(ControlMode.Velocity, withDeadband(-throttle, 0.001) * f);
-        pairs[pair].right.set(ControlMode.Velocity, withDeadband(-throttle, 0.001) * f);
-        //println(throttle * f)
+        pairs[pair].left.set(ControlMode.Velocity, (withDeadband(-throttle, 0.1)) * f);
+        pairs[pair].right.set(ControlMode.Velocity, (withDeadband(-throttle, 0.1)) * f);
+        println("setting velocity to: " + ((withDeadband(-throttle, 0.1)) * f))
     }
 
     public fun setPair(pair: Int, throttle: Double) {

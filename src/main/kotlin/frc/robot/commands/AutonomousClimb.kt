@@ -21,7 +21,7 @@ class AutonomousClimb(_climber: Climber, _index: Int, _ticks: Double, _speed: Do
   }
 
   override fun execute() {
-    climber.setPairVelocity(index, speed);
+    climber.setPairVelocity(index, -speed);
   }
 
   override fun end(interrupted: Boolean) {
@@ -29,6 +29,6 @@ class AutonomousClimb(_climber: Climber, _index: Int, _ticks: Double, _speed: Do
   }
 
   override fun isFinished(): Boolean {
-    return climber.pairs[index].left.getSelectedSensorPosition() - starting >= ticks;
+    return Math.abs(climber.pairs[index].left.getSelectedSensorPosition() - starting) >= ticks;
   }
 }
