@@ -49,11 +49,12 @@ class RobotContainer(tab: ShuffleboardTab) {
     
     // create and add autonomous routines to selector in shuffleboard
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
+    Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     autoSelector.setDefaultOption("Baseline", m_baseline)
     autoSelector.addOption("Baseline", m_baseline)
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
-    autoSelector.addOption("Five Ball Auto 2", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
+    autoSelector.addOption("Five Ball Auto 2", FiveBallAuto2(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Pre-Match Check", m_autocheck)
 
@@ -66,14 +67,6 @@ class RobotContainer(tab: ShuffleboardTab) {
     //   Pose2d(0.8, 0.0, Rotation2d(0.0))
     //   ), true).trajectory)
     setDefaults();
-  }
-
-  fun onAuto() {
-    m_drivetrain.brakeMode = true
-  }
-
-  fun onTeleop() {
-    m_drivetrain.brakeMode = false
   }
   
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {
@@ -96,14 +89,16 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // mini shoot
     val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton2.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer, m_lights, 10000.0, 10000.0, 0.0))
+    aButton2.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer, m_lights, 7000.0, 7000.0, 0.0))
+    
 
     // shoot and run feeder/indexer (hold right bumper) 
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
     rBumper.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer, m_lights));
+    rBumper.whileHeld(CycleIndexer(m_indexer, m_shooter));
 
     val xButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    xButton2.whenHeld(SpinUp(m_shooter, 10000.0, 10000.0));
+    xButton2.whenHeld(SpinUp(m_shooter, 8000.0, 10000.0));
 
     // autonomous climb (hold A button)
     // val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)

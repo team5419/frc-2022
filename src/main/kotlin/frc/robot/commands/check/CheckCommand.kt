@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 
 open class CheckCommand(_name: String, _tab: ShuffleboardTab, _time: Double, _numMotors: Int) : CommandBase() {
     private val mname: String = _name
@@ -12,14 +14,16 @@ open class CheckCommand(_name: String, _tab: ShuffleboardTab, _time: Double, _nu
     private val timer: Timer = Timer()
     private val numMotors: Int = _numMotors
     public var currentVelocities: List<Double> = List<Double>(_numMotors) { 0.0 }
+    private val layout: ShuffleboardLayout = tab.getLayout(_name, BuiltInLayouts.kList).withSize(1, 4);
 
     override fun initialize() {
         timer.reset()
         timer.start()
         for(i in 0..numMotors - 1) {
-          tab.addBoolean("${mname} motor ${i + 1}", {check(i)})
+          layout.addBoolean("${mname} motor ${i + 1}", {check(i)})
         }
         println("started checking ${mname}");
+        runMotors();
     }
 
     open fun check(i: Int): Boolean { return true }
@@ -27,7 +31,6 @@ open class CheckCommand(_name: String, _tab: ShuffleboardTab, _time: Double, _nu
     open fun getVels(): List<Double> { return List<Double>(numMotors) { 0.0 } }
 
     override fun execute() {
-        runMotors()
         if(timer.get() > time / 2 && currentVelocities[0] == 0.0) {
           currentVelocities = getVels();
         }

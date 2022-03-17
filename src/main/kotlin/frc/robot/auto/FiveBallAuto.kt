@@ -16,7 +16,7 @@ import frc.robot.commands.AutoAlign
 import frc.robot.commands.RunIntake
 import frc.robot.commands.ShootAndFeed
 import frc.robot.commands.SpinUp
-
+import frc.robot.commands.CycleIndexer
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -39,32 +39,51 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
                             Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                            Pose2d(-0.75, 0.0, Rotation2d(0.0))
+                            Pose2d(-0.90, 0.0, Rotation2d(0.0))
+                        ), false),
+                        SpinUp(shooter, 15500.0, 15500.0)
+                    ),
+                    // autoalign and index/shoot first 2 balls
+                    AutoAlign(vision, drivetrain, shooter, lights, 0.35, false),
+                    // ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.75),
+                    ParallelRaceGroup(
+                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 2.5),
+                        CycleIndexer(indexer, shooter, 10)
+                    ),
+                    // run intake and move to second shoot position
+                    RamseteAction(drivetrain, listOf(                
+                        Pose2d(-0.90, 0.0, Rotation2d(0.0)), 
+                        Pose2d(0.6, -1.50, Rotation2d.fromDegrees(45.0))
+                    ), false),
+                    ParallelRaceGroup(
+                        RamseteAction(drivetrain, listOf(                
+                            Pose2d(0.6, -1.50, Rotation2d.fromDegrees(45.0)), 
+                            Pose2d(0.5, -1.8, Rotation2d.fromDegrees(45.0))
                         ), false),
                         SpinUp(shooter, 15000.0, 15000.0)
                     ),
-                    // autoalign and index/shoot first 2 balls
-                    AutoAlign(vision, drivetrain, shooter, lights, 1.0, false),
-                    ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.75),
-                    // run intake and move to second shoot position
-                    RamseteAction(drivetrain, listOf(                
-                        Pose2d(-0.75, 0.0, Rotation2d(0.0)), 
-                        Pose2d(0.4, -1.50, Rotation2d.fromDegrees(45.0))
-                    ), false),
-                    RamseteAction(drivetrain, listOf(                
-                        Pose2d(0.4, -1.50, Rotation2d.fromDegrees(45.0)), 
-                        Pose2d(0.15, -1.75, Rotation2d.fromDegrees(45.0))
-                    ), false),
                     // autoalign and index/shoot second ball
-                    AutoAlign(vision, drivetrain, shooter, lights, 2.0, false),
-                    ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 8.0)
+                    AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
+                    // ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 2.0),
+                    ParallelRaceGroup(
+                        ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 5.0),
+                        CycleIndexer(indexer, shooter, 10)
+                    ),
+                    ParallelRaceGroup(
+                        SpinUp(shooter, 20000.0, 20000.0), 
+                        RamseteAction(drivetrain, listOf(
+                            Pose2d(0.5, -1.8, Rotation2d.fromDegrees(45.0)), 
+                            Pose2d(-0.4, -4.75, Rotation2d.fromDegrees(45.0))
+                        ), false)
+                    ),
+                    AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
+                    // ShootAndFeed(shooter, feeder, indexer, lights, 20000.0, 20000.0, 2.0)
+                    ParallelRaceGroup(
+                        ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 2.0),
+                        CycleIndexer(indexer, shooter, 10)
+                    )
                 )
-            ),
-            
-            RamseteAction(drivetrain, listOf(
-                    Pose2d(0.3, -1.75, Rotation2d.fromDegrees(45.0)), 
-                    Pose2d(0.25, -2.5, Rotation2d.fromDegrees(45.0))
-            ), false)
+            )
         )
     }
 }

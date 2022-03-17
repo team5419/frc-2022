@@ -98,6 +98,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
         if(!throttleAligned(distance) && isTargetFound())
         {
+            println("output ${output}")
             return DriveSignal(-output, -output)
         }
 

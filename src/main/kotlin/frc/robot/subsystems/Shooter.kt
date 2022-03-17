@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+import frc.robot.classes.RGB;
 
 class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
@@ -25,8 +26,10 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     public var mainVelocity: Double = ShooterConstants.mainVelocity
     public var kickerVelocity: Double = ShooterConstants.kickerVelocity
+    public var currentColor: RGB = RGB(255, 0, 0);
     public var setpointMain = 0.0
     public var setpointKicker = 0.0
+    public var shooterMultiplier : Double = 1.0
 
     private val layout: ShuffleboardLayout = tab.getLayout("Shooter", BuiltInLayouts.kList).withPosition(6, 0).withSize(2, 4);
 
@@ -102,6 +105,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         layout.addNumber("Attempted Kicker Velocity", { setpointKicker })
         layout.addNumber("Real Main Velocity", { flyWheelVelocity(mainMotor) })
         layout.addNumber("Real Kicker Velocity", { flyWheelVelocity(kickerMotor) })
+        layout.addBoolean("Sped up", { isSpedUp() });
         tab.add("Main shooter velocity", 0.0)
             .withPosition(8, 1)
             .withSize(2, 1)
@@ -145,8 +149,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         }
         //println("Setting Velocity: ${setpointMain}")
         // spin flywheel at selected velocity
-        mainMotor.set(ControlMode.Velocity, setpointMain)
-        kickerMotor.set(ControlMode.Velocity, setpointKicker)
+        mainMotor.set(ControlMode.Velocity, setpointMain * shooterMultiplier)
+        kickerMotor.set(ControlMode.Velocity, setpointKicker * shooterMultiplier)
     }
 
     override fun periodic() {

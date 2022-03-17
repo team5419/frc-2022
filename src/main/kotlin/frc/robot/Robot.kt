@@ -24,14 +24,12 @@ class Robot : TimedRobot() {
   }
 
   override fun disabledInit() {
-    m_robotContainer.onTeleop()
   }
 
   override fun disabledPeriodic() {}
 
   // runs autonomous command selected in RobotContainer.kt
   override fun autonomousInit() {
-    m_robotContainer.onAuto()
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.setDefaults();
     if(m_autonomousCommand != null) {
@@ -42,7 +40,6 @@ class Robot : TimedRobot() {
   override fun autonomousPeriodic() {}
 
   override fun teleopInit() {
-    m_robotContainer.onTeleop()
     // cancel all autonomous commands when teleop starts
     if(m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

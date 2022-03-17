@@ -62,6 +62,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
     override fun initialize() {
         timer.reset()
         timer.start()
+        drivetrain.brakeMode = true;
     }
 
     override fun execute() {
@@ -93,7 +94,9 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
 
     override fun end(interrupted: Boolean) {
         //println("Done driving!")
+        drivetrain.brakeMode = false;
         drivetrain.drive(0.0, 0.0, false)
+
     }
 
     override fun isFinished(): Boolean {

@@ -23,23 +23,21 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
 
   init {
     addRequirements(_shooter)
-    addRequirements(_indexer);
   }
 
   override fun initialize() {
     timer.reset()
     timer.start()
     feeder.currentVel = FeederConstants.activePercent
-    lights.currentRGB = RGB(86, 255, 51); // pink
+    lights.currentRGB = shooter.currentColor;
     lights.blinking = true;
     shooter.shoot(main, kicker)
   }
 
   override fun execute() {
-    if(shooter.isSpedUp())
-    {
-      indexer.index(0.75);
-    }
+    // if(shooter.isSpedUp()) {
+    //   indexer.index(0.8);
+    // }
   }
 
   override fun isFinished(): Boolean {

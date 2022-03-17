@@ -107,6 +107,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         }
         layout.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
         layout.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
+        layout.addBoolean("brake mode", { brakeMode})
     }
 
     fun getAllVelocities() : List<Double> {

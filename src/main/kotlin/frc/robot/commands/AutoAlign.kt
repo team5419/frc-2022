@@ -17,7 +17,7 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _li
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
-  private var setpoint: LookupEntry = LookupEntry(0.0, 0.0, 0.0)
+  private var setpoint: LookupEntry = LookupEntry(0.0, 0.0, 0.0, RGB(0, 0, 0))
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val throttling: Boolean = _throttling
@@ -35,7 +35,8 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _li
     setpoint = vision.getShotSetpoint();
     shooter.mainVelocity = setpoint.mainVelocity;
     shooter.kickerVelocity = setpoint.kickerVelocity;
-    lights.currentRGB = RGB(86, 255, 51);
+    shooter.currentColor = setpoint.color;
+    lights.currentRGB = setpoint.color;
     lights.blinking = false;
     timer.reset()
     timer.start()

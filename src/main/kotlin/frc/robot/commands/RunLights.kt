@@ -24,7 +24,7 @@ class RunLights(_lights: Lights) : CommandBase() {
   }
 
   override fun execute() {
-      if(lights.blinking && Math.round(timer.get()).rem(2).toInt() == 0) {
+      if(lights.blinking && Math.round(timer.get() * 2).rem(2).toInt() == 0) {
           lights.off();
       } else {
           lights.setColor();

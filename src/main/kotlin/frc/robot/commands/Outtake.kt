@@ -28,6 +28,7 @@ class Outtake(_feeder: Feeder, _indexer: Indexer, _intake: Intake)  : CommandBas
   }
 
   override fun execute() {
+    indexer.index(-0.5);
     // if(Math.abs(indexer.encoder.getPosition() - startingPosition) < IndexerConstants.ticksPerIndex) {
     //     indexer.index(-1.0)
     // } else {

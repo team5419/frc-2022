@@ -45,8 +45,8 @@ object ShooterConstants {
         val main = 8;
         val kicker = 7;
     }
-    val mainVelocity = 10600.0
-    val kickerVelocity = 17400.0
+    val mainVelocity = 15000.0
+    val kickerVelocity = 15000.0
 }
 
 object IndexerConstants {
@@ -56,7 +56,7 @@ object IndexerConstants {
         val sensor2 = 1;
         val sensor3 = 0;
     }
-    val outputPercent: Double = 0.4; // x / 1
+    val outputPercent: Double = 1.0; // x / 1
     val ticksPerIndex: Double = 4.0;
     val autoSpeed: Double = 1000.0;
 }
@@ -75,7 +75,7 @@ object IntakeConstants {
     object Ports {
         val motor = 6;
     }
-    val outputPercent = 0.5;
+    val outputPercent = 1.0;
     val reversePercent = -outputPercent;
     val autoSpeed: Double = 1000.0;
 }
@@ -104,7 +104,7 @@ object VisionConstants {
     }
 
     object ThrottlePID {
-        public const val P = 0.4
+        public const val P = 0.3
         public const val I = 0.006
         public const val D = 0.0010
     }
@@ -124,7 +124,7 @@ object ClimberConstants {
 
 object LightsConstants {
     object Ports {
-        val lights1 = 0;
+        val lights1 = 1;
         val lights2 = 1;
     }
     val len1: Int = 15;
