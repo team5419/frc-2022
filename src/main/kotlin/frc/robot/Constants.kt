@@ -104,7 +104,7 @@ object VisionConstants {
     }
 
     object ThrottlePID {
-        public const val P = 0.3
+        public const val P = 0.5
         public const val I = 0.006
         public const val D = 0.0010
     }

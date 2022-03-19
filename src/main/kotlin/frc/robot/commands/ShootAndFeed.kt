@@ -23,6 +23,7 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
 
   init {
     addRequirements(_shooter)
+    //addRequirements(_indexer)
   }
 
   override fun initialize() {

@@ -19,10 +19,10 @@ import edu.wpi.first.math.geometry.Pose2d
 class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val leftLeader: TalonFX = TalonFX(DriveConstants.Ports.leftLeader)
-    private val leftFollower: TalonFX = TalonFX(DriveConstants.Ports.leftFollower)
-    val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
-    private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
+    public val leftLeader: TalonFX = TalonFX(DriveConstants.Ports.leftLeader)
+    public val leftFollower: TalonFX = TalonFX(DriveConstants.Ports.leftFollower)
+    public val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
+    public val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
 
     private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList).withPosition(2, 0).withSize(1, 2);
@@ -188,7 +188,6 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     public var brakeMode = false
         set(value: Boolean) {
-            if(value == field) return
             if(value) {
                 leftLeader.setNeutralMode(NeutralMode.Brake)
                 rightLeader.setNeutralMode(NeutralMode.Brake)

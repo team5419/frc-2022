@@ -2,32 +2,34 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.FeederConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Lights;
 import frc.robot.classes.RGB;
+import com.ctre.phoenix.motorcontrol.can.TalonFX
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.motorcontrol.*
 
-class SpinUp(_shooter: Shooter, _main: Double = 15000.0, _kicker: Double = 15000.0)  : CommandBase() {
-  private val shooter: Shooter = _shooter;
-  private val main: Double = _main;
-  private val kicker: Double = _kicker;
+
+class ToggleBrakeMode(_drivetrain: Drivetrain) : CommandBase() {
+  private val drivetrain: Drivetrain = _drivetrain;
 
   init {
-    addRequirements(_shooter)
   }
 
   override fun initialize() {
-    shooter.shoot(main, kicker)
+    drivetrain.brakeMode = false
+    println(drivetrain.brakeMode)
   }
 
   override fun execute() {
   }
 
   override fun isFinished(): Boolean {
-    return false;
+    return true;
   }
 
   override fun end(interrupted: Boolean) {

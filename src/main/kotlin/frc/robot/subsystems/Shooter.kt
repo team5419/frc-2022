@@ -47,7 +47,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             // bang bang PID
             config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
-            config_kD(0, 0.0, 100)
+            config_kD(0, 10.0, 100)
             config_kF(0, 0.0, 100)
 
             // velocity controlle PID
@@ -57,7 +57,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             config_kF(1, 0.06, 100)
 
             // bang bang PID control
-            selectProfileSlot(0, 0)
+            selectProfileSlot(1, 0)
 
             setSelectedSensorPosition(0.0, 0, 100)
             configClosedloopRamp(1.0, 100)
@@ -80,7 +80,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             // bang bang PID
             config_kP(0, 10000.0, 100)
             config_kI(0, 0.0, 100)
-            config_kD(0, 0.0, 100)
+            config_kD(0, 10.0, 100)
             config_kF(0, 0.0, 100)
 
             // velocity controlle PID
@@ -90,7 +90,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             config_kF(1, 0.06, 100)
 
             // bang bang PID
-            selectProfileSlot(0, 0)
+            selectProfileSlot(1, 0)
 
             setSelectedSensorPosition(0.0, 0, 100)
             configClosedloopRamp(1.0, 100)
@@ -129,7 +129,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     //check if flywheel velocity is at target
     public fun isSpedUp(): Boolean {
-        return flyWheelVelocity(mainMotor) >= setpointMain && flyWheelVelocity(kickerMotor) >= setpointKicker && (setpointMain != 0.0 || setpointKicker != 0.0)
+        return flyWheelVelocity(mainMotor) >= setpointMain - 750.0 && flyWheelVelocity(kickerMotor) >= setpointKicker - 750.0 && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 
     public fun stop() {

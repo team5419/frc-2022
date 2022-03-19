@@ -19,7 +19,7 @@ class CycleIndexer(_indexer: Indexer, _shooter: Shooter, _numtimes: Int = 1) : S
   init {
     for(i in 1..numtimes) {
         addCommands(
-            WaitForShooter(shooter, 0.3), 
+            WaitForShooter(shooter, 0.1), 
             Index(indexer)  
         )
     }

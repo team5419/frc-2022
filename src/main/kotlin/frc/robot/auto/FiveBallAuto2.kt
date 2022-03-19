@@ -42,36 +42,36 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                         SpinUp(shooter, 15500.0, 15500.0),
                         RamseteAction(drivetrain, listOf(
                             Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                            Pose2d(-0.90, 0.0, Rotation2d(0.0))
+                            Pose2d(-0.9, 0.0, Rotation2d(0.0))
                         ), false)
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
                     ParallelRaceGroup(
                         CycleIndexer(indexer, shooter, 10),
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 3.0)
+                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 1.5)
                     ),
                     
                     // run intake and move to second shoot position
                     RamseteAction(drivetrain, listOf(
-                        Pose2d(-0.90, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-2.5 /*-4.0*/, 0.0 /*-1.5*/, Rotation2d(0.0))
+                        Pose2d(-0.9, 0.0, Rotation2d(0.0)), 
+                        Pose2d(-4.0, -0.3, Rotation2d.fromDegrees(15.0))
                     ), false),
-                    Wait(1.0),
+                    Wait(1.5),
                     // intake 2 balls from the human player station
                     // moves to new shot location
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
-                            Pose2d(-2.5, 0.0, Rotation2d(0.0)), 
-                            Pose2d(-0.50, 0.0, Rotation2d.fromDegrees(0.0))
+                            Pose2d(-4.0, -0.3, Rotation2d.fromDegrees(15.0)), 
+                            Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
                         ), true),
                         SpinUp(shooter, 15500.0, 15500.0)
                     ),
                     // shoots 2 balls
-                    AutoAlign(vision, drivetrain, shooter, lights, 0.5, true),
+                    AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
                     ParallelRaceGroup(
                         CycleIndexer(indexer, shooter, 10),
-                        ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 3.0)
+                        ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 5.0)
                     )
                 )
             )
