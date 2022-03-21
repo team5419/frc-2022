@@ -62,7 +62,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
                             Pose2d(-4.0, -0.1, Rotation2d.fromDegrees(0.0)), 
-                            Pose2d(2.0, 1.0, Rotation2d.fromDegrees(-35.0))
+                            Pose2d(0.0, 1.0, Rotation2d.fromDegrees(-35.0))
                         ), true),
                         SpinUp(shooter, 15000.0, 15000.0)
                     ),
@@ -75,8 +75,8 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     // move backward and pick up last ball
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
-                            Pose2d(2.0, 1.0, Rotation2d.fromDegrees(-35.0)), 
-                            Pose2d(2.0, 1.5, Rotation2d.fromDegrees(-35.0))
+                            Pose2d(0.0, 1.0, Rotation2d.fromDegrees(-35.0)), 
+                            Pose2d(-0.5, 1.5, Rotation2d.fromDegrees(-35.0))
                         ), true),
                         SpinUp(shooter, 15500.0, 15500.0)
                     ),
