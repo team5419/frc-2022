@@ -71,7 +71,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     ParallelRaceGroup(
                         CycleIndexer(indexer, shooter, 10),
                         ShootAndFeed(shooter, feeder, indexer, lights, 15750.0, 15750.0, 1.3)
-                    )
+                    ),
                     // move backward and pick up last ball
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
