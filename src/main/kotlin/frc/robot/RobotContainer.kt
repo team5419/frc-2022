@@ -54,8 +54,8 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.addOption("Baseline", m_baseline)
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
-    autoSelector.addOption("Five Ball Auto 2", FiveBallAuto2(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
+    autoSelector.addOption("Five Ball Auto 2", FiveBallAuto2(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Pre-Match Check", m_autocheck)
 
     // field simulation (in progress)
