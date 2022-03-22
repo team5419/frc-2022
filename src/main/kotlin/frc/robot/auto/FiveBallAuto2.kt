@@ -51,7 +51,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                         CycleIndexer(indexer, shooter, 10),
                         ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 1.3)
                     ),
-                    // run intake and move to second shoot position
+                    // run intake and move to pick-up position
                     RamseteAction(drivetrain, listOf(
                         Pose2d(-0.9, 0.0, Rotation2d(0.0)), 
                         Pose2d(-4.0, -0.1, Rotation2d.fromDegrees(0.0))
