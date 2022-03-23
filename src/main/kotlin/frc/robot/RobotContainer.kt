@@ -106,7 +106,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // safe zone shot (hold a button)
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButton.whenPressed(AlignSpinShoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, 22000.0, 20000.0, false))
+    aButton.whenPressed(AlignSpinShoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, 20000.0, 20000.0, false))
   
   }
 

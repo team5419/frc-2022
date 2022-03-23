@@ -49,7 +49,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
                     ParallelRaceGroup(
                         CycleIndexer(indexer, shooter, 10),
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 1.75)
+                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 1.3)
                     ),
                     // run intake and move to pick-up position
                     RamseteAction(drivetrain, listOf(
