@@ -75,7 +75,7 @@ object IntakeConstants {
     object Ports {
         val motor = 6;
     }
-    val outputPercent = 1.0;
+    val outputPercent = 0.8;
     val reversePercent = -outputPercent;
     val autoSpeed: Double = 1000.0;
 }
