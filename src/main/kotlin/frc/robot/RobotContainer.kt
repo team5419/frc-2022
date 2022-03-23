@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d
 
 import frc.robot.ShooterConstants
 
-
 // robot structure declared here (subsystems, commands, button mappings)
 class RobotContainer(tab: ShuffleboardTab) {
 
@@ -35,6 +34,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_feeder = Feeder(tab);
   private val m_intake = Intake(tab);
   private val m_lights = Lights(tab);
+
   // default autonomous routine
   private val m_baseline = Baseline()
   private val m_autocheck = PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter);
@@ -98,7 +98,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // spin up (hold x button)
     val xButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    xButton2.whenHeld(SpinUp(m_shooter, 8000.0, 10000.0));
+    xButton2.whenHeld(SpinUp(m_shooter, 15000.0, 15000.0));
 
     // break mode (press b button)
     val bButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
