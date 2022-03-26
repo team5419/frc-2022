@@ -10,6 +10,9 @@ import edu.wpi.first.networktables.EntryNotification
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
+import com.ctre.phoenix.led.CANdle
+import com.ctre.phoenix.led.CANdleConfiguration
+import com.ctre.phoenix.led.CANdle.LEDStripType
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
@@ -22,44 +25,28 @@ import frc.robot.LightsConstants
 import frc.robot.classes.RGB
 
 class Lights(tab: ShuffleboardTab) : SubsystemBase() {
-
-    // declare motors and ports
-    private val lights1 = AddressableLED(LightsConstants.Ports.lights1);
-    // private val lights2 = AddressableLED(LightsConstants.Ports.lights2)
-    private val buffer1 = AddressableLEDBuffer(LightsConstants.len1);
     // private val buffer2 = AddressableLEDBuffer(LightsConstants.len2);
-    public var currentRGB: RGB = RGB(0, 0, 0);
-    public var blinking: Boolean = false;
+    private var currentRGB: RGB = RGB(0, 0, 0);
+        // Example usage of a CANdle
+    private val candle: CANdle = CANdle(LightsConstants.Ports.lights1); // creates a new CANdle with ID 0
+    private val config: CANdleConfiguration = CANdleConfiguration();
+    
 
+    //candle.setLEDs(255, 255, 255); // set the CANdle LEDs to white
     // conf
     init {
-        lights1.setLength(buffer1.getLength());
-        // lights2.setLength(buffer2.getLength());
-        lights1.start();
-        // lights2.start();
+        config.stripType = LEDStripType.RGB; // set the strip type to RGB
+        config.brightnessScalar = 0.5; // dim the LEDs to half brightness
+        candle.configAllSettings(config);
     }
 
-    public fun setColor() {
-        println("color ${currentRGB.r} ${currentRGB.g} ${currentRGB.b}");
-        for(i in 0..buffer1.getLength() - 1) {
-            buffer1.setRGB(i, currentRGB.r, currentRGB.g, currentRGB.b);
-        }
-        // for(i in 0..buffer2.getLength() - 1) {
-        //     buffer2.setRGB(i, currentRGB.r, currentRGB.g, currentRGB.b);
-        // }
-        lights1.setData(buffer1);
-        //lights2.setData(buffer2);
+    public fun setColor(rgb: RGB) {
+        currentRGB = rgb;
+        candle.setLEDs(rgb.g, rgb.r, rgb.b, 255, 0, 5)
     }
 
     public fun off() {
-        for(i in 0..buffer1.getLength() - 1) {
-            buffer1.setRGB(i, 0, 0, 0);
-        }
-        // for(i in 0..buffer2.getLength() - 1) {
-        //     buffer2.setRGB(i, 0, 0, 0);
-        // }
-        lights1.setData(buffer1);
-        //lights2.setData(buffer2);
+        candle.setLEDs(0, 0, 0)
     }
 
     public fun isEqualTo(r: Int, g: Int, b: Int): Boolean {
@@ -73,8 +60,6 @@ class Lights(tab: ShuffleboardTab) : SubsystemBase() {
     }
     
     public fun stop() {
-        currentRGB = RGB(0, 0, 0);
-        blinking = false;
-        setColor();
+        setColor(RGB(0, 0, 0));
     }
 }

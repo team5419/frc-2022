@@ -57,8 +57,8 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         motor.set(ControlMode.PercentOutput, 0.0)
     }
 
-    public fun intake() {
-        motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent)
+    public fun intake(velocity: Double = 1.0) {
+        motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent * velocity)
     }
 
     public fun reverse() {

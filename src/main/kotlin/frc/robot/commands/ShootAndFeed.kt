@@ -16,7 +16,6 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
   private val kicker: Double = _kicker;
   private val feeder: Feeder = _feeder;
   private val indexer: Indexer = _indexer
-  private val previousVel: Double = feeder.currentVel
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val lights: Lights = _lights;
@@ -30,12 +29,17 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
     timer.reset()
     timer.start()
     feeder.currentVel = FeederConstants.activePercent
-    lights.currentRGB = shooter.currentColor;
-    lights.blinking = true;
+    lights.setColor(shooter.currentColor);
     shooter.shoot(main, kicker)
+    println("shooting")
   }
 
   override fun execute() {
+    // if(indexer.atPositionTwo() || indexer.atPositionThree()) {
+    //   feeder.currentVel = -0.1;
+    // } else {
+    //   feeder.currentVel = FeederConstants.activePercent;
+    // }
     // if(shooter.isSpedUp()) {
     //   indexer.index(0.8);
     // }
@@ -47,9 +51,8 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
 
   override fun end(interrupted: Boolean) {
       timer.stop()
-      feeder.currentVel = previousVel
-      lights.currentRGB = RGB(0, 0, 0)
-      lights.blinking = false
+      feeder.currentVel = FeederConstants.idlePercent
+      lights.setColor(RGB(0, 0, 0))
       shooter.stop()
       indexer.stop()
   }

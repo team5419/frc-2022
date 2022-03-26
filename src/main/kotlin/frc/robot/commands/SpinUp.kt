@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Lights;
 import frc.robot.classes.RGB;
 
-class SpinUp(_shooter: Shooter, _main: Double = 15000.0, _kicker: Double = 15000.0)  : CommandBase() {
+class SpinUp(_shooter: Shooter, _main: Double = 13600.0, _kicker: Double = 13600.0)  : CommandBase() {
   private val shooter: Shooter = _shooter;
   private val main: Double = _main;
   private val kicker: Double = _kicker;
@@ -21,6 +21,7 @@ class SpinUp(_shooter: Shooter, _main: Double = 15000.0, _kicker: Double = 15000
 
   override fun initialize() {
     shooter.shoot(main, kicker)
+    println("spinning up")
   }
 
   override fun execute() {

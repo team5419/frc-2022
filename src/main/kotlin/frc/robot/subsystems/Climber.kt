@@ -99,8 +99,10 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
 
     public fun setPairVelocity(pair: Int, throttle: Double, turn: Double = 0.0) {
         val f: Double = 15000.0;
-        pairs[pair].left.set(ControlMode.Velocity, (withDeadband(-throttle - turn, 0.1)) * f);
-        pairs[pair].right.set(ControlMode.Velocity, (withDeadband(-throttle + turn, 0.1)) * f);
+        val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
+        val rightturn: Double =/*  if(turn > 0) */ withDeadband(turn, 0.05)// else 0.0;
+        pairs[pair].left.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
+        pairs[pair].right.set(ControlMode.Velocity, (withDeadband(-throttle + rightturn, 0.1)) * f);
         //println("setting velocity to: " + ((withDeadband(-throttle, 0.1)) * f))
     }
 

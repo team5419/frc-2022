@@ -16,7 +16,6 @@ class Index(_indexer: Indexer) : CommandBase() {
 
   override fun initialize() {
     startingPosition = indexer.encoder.getPosition()
-
   }
 
   override fun execute() {

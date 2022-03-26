@@ -25,6 +25,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = CANSparkMax(IndexerConstants.Ports.motor, MotorType.kBrushless)
+    val controller = motor.getPIDController()
     public val encoder = motor.getEncoder()    
     public val sensor1 = AnalogInput(IndexerConstants.Ports.sensor1)
     public val sensor2 = AnalogInput(IndexerConstants.Ports.sensor2)
@@ -43,7 +44,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
             setControlFramePeriodMs(1)
         }
 
-        val controller = motor.getPIDController()
+        
         controller.apply {
             setP(1.0, 1)
             setI(0.0, 1)
@@ -76,8 +77,11 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
         return sensor3.getValue().toDouble() > 1000.0
     }
 
-    public fun index(percent: Double = 1.0) {
-        //println("indexing ${percent}");
+    public fun positionIndex(position: Double) {
+        controller.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+    public fun index(percent: Double) {  
+        println("indexing ${percent}");
         motor.set(IndexerConstants.outputPercent * percent)
     }
 

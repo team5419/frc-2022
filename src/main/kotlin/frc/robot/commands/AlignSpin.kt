@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 
 
-class AlignSpinShoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _lights: Lights, _main: Double = -1.0, _kicker: Double = -1.0, _throttling: Boolean = true) : SequentialCommandGroup() {
+class AlignSpin(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _lights: Lights, _main: Double = -1.0, _kicker: Double = -1.0, _throttling: Boolean = true) : SequentialCommandGroup() {
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
@@ -35,17 +35,12 @@ class AlignSpinShoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter
     addCommands(
       ParallelRaceGroup(
         SpinUp(shooter),
-        AutoAlign(vision, drivetrain, shooter, lights, 1.0, throttling)
-      ),
-      ParallelRaceGroup(
-        ShootAndFeed(shooter, feeder, indexer, lights, main, kicker),
-        CycleIndexer(indexer, shooter, 5)
+        AutoAlign(vision, drivetrain, shooter, lights, 0.0, throttling)
       )
     )
   }
 
   override fun end(interrupted: Boolean) {
-    shooter.stop();
     drivetrain.drive(0.0, 0.0, false);
   }
 }

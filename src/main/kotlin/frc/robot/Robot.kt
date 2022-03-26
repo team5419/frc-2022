@@ -24,6 +24,7 @@ class Robot : TimedRobot() {
   }
 
   override fun disabledInit() {
+    m_robotContainer.lightsOff();
   }
 
   override fun disabledPeriodic() {}

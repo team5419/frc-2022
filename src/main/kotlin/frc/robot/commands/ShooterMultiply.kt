@@ -6,34 +6,28 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.FeederConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.Timer
-import frc.robot.commands.Feed
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Lights;
+import frc.robot.classes.RGB;
 
-
-class WaitForShooter(_shooter: Shooter, _time: Double) : CommandBase() {
+class ShooterMultiply(_shooter: Shooter, _change: Double)  : CommandBase() {
   private val shooter: Shooter = _shooter;
-  private val time: Double = _time;
-  private val timer: Timer = Timer()
+  private val change: Double = _change;
 
   init {
   }
 
   override fun initialize() {
-    timer.reset()
-    timer.start()
+      shooter.shooterMultiplier += change;
   }
 
   override fun execute() {
-    println("waiting")
   }
 
-  // end command if time has elapsed
   override fun isFinished(): Boolean {
-    println("done spinning up: ${shooter.isSpedUp()}")
-    return (timer.get() >= time) && shooter.isSpedUp() 
+    return true;
   }
 
   override fun end(interrupted: Boolean) {
-    timer.stop()
   }
 }

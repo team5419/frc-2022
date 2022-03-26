@@ -58,6 +58,7 @@ object IndexerConstants {
     }
     val outputPercent: Double = 1.0; // x / 1
     val ticksPerIndex: Double = 4.0;
+    val ticksDefault: Double = 5.0;
     val autoSpeed: Double = 1000.0;
 }
 
@@ -75,7 +76,7 @@ object IntakeConstants {
     object Ports {
         val motor = 6;
     }
-    val outputPercent = 0.8;
+    val outputPercent = 1.0;
     val reversePercent = -outputPercent;
     val autoSpeed: Double = 1000.0;
 }
@@ -98,7 +99,7 @@ object VisionConstants {
     public const val maxOffsetFor2XZoom = 10.0
 
     object TurnPID {
-        public const val P = 0.01
+        public const val P = 0.02
         public const val I = 0.006
         public const val D = 0.0005
     }
@@ -124,9 +125,6 @@ object ClimberConstants {
 
 object LightsConstants {
     object Ports {
-        val lights1 = 1;
-        val lights2 = 1;
+        val lights1 = 25;
     }
-    val len1: Int = 15;
-    val len2: Int = 14
 }

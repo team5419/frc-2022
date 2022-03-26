@@ -17,7 +17,10 @@ import frc.robot.commands.RunIntake
 import frc.robot.commands.ShootAndFeed
 import frc.robot.commands.CycleIndexer
 import frc.robot.commands.SpinUp
+import frc.robot.commands.Feed
 
+
+import frc.robot.commands.Shoot
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -31,25 +34,30 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
     val intake: Intake = m_intake
     val lights: Lights = m_lights
     init {
-        addCommands(
-            // run intake and move to first shoot position
-            ParallelRaceGroup(
-                RunIntake(intake, feeder),
-                SequentialCommandGroup(
-                    ParallelRaceGroup(
-                        RamseteAction(drivetrain, listOf(
-                            Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                            Pose2d(-0.90, 0.0, Rotation2d(0.0))
-                        ), false),
-                        SpinUp(shooter, 15500.0, 15500.0)
-                    ),
-                    
-                    AutoAlign(vision, drivetrain, shooter, lights, 0.75, false),
-                    ParallelRaceGroup(
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 8.0),
-                        CycleIndexer(indexer, shooter, 10)
-                    )
-                )
+        val firstVel: Double = 15500.0
+
+            addCommands(
+                // run intake and move to first shoot position
+                ParallelRaceGroup(
+                    RunIntake(intake, feeder, 0.0),
+                    Feed(feeder),
+                    SequentialCommandGroup(
+                        ParallelRaceGroup(
+                            RamseteAction(drivetrain, listOf(
+                                Pose2d(0.0, 0.0, Rotation2d(0.0)), 
+                                Pose2d(-0.3, 0.0, Rotation2d(0.0))
+                            ), false)
+                        ),
+                        ParallelRaceGroup(
+                            SpinUp(shooter, firstVel, firstVel),
+                            RamseteAction(drivetrain, listOf(
+                                Pose2d(-0.3, 0.0, Rotation2d(0.0)),
+                                Pose2d(-1.0, 0.0, Rotation2d(0.0))
+                            ), false)
+                        ),
+                        // autoalign and index/shoot first 2 balls
+                        AutoAlign(vision, drivetrain, shooter, lights, 1.0, false),
+                        Shoot(vision, drivetrain, shooter, indexer, feeder, lights, firstVel, firstVel, 5.0))
             )
         )
     }

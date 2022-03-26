@@ -34,6 +34,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_feeder = Feeder(tab);
   private val m_intake = Intake(tab);
   private val m_lights = Lights(tab);
+  private val m_camera = Camera(tab);
 
   // default autonomous routine
   private val m_baseline = Baseline()
@@ -56,6 +57,8 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
     autoSelector.addOption("Five Ball Auto 2", FiveBallAuto2(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
+    autoSelector.addOption("Test", Test(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights))
+    autoSelector.addOption("Four Ball Auto Red", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, true))
     autoSelector.addOption("Pre-Match Check", m_autocheck)
 
     // field simulation (in progress)
@@ -86,7 +89,10 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // mini shoot
     val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton2.whenHeld(ShootAndFeed(m_shooter, m_feeder, m_indexer, m_lights, 7000.0, 7000.0, 0.0))
+    aButton2.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, 7000.0, 7000.0))
+
+    val yButton2: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
+    yButton2.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, 20000.0, 20000.0))
 
     // defense mode (hold B button) 
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
@@ -94,19 +100,22 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // shoot (press right bumper)
     val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
-    rBumper.whenPressed(AlignSpinShoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights));
-
-    // spin up (hold x button)
-    val xButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    xButton2.whenHeld(SpinUp(m_shooter, 15000.0, 15000.0));
+    rBumper.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights));
 
     // break mode (press b button)
     val bButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
     bButton2.whenPressed(ToggleBrakeMode(m_drivetrain))
 
-    // safe zone shot (hold a button)
+    // safe zone shot (press a button)
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButton.whenPressed(AlignSpinShoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, 20000.0, 20000.0, false))
+    aButton.whenHeld(AlignSpin(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights))
+
+    // edit shooter multiplier
+    val rBumper2: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)
+    rBumper2.whenPressed(ShooterMultiply(m_shooter, 0.1));
+
+    val lBumper2: JoystickButton = JoystickButton(codriver, XboxController.Button.kLeftBumper.value)
+    lBumper2.whenPressed(ShooterMultiply(m_shooter, -0.1));
   
   }
 
@@ -122,6 +131,9 @@ class RobotContainer(tab: ShuffleboardTab) {
       m_climber.setDefaultCommand(Climb(m_climber, codriver));
       m_feeder.setDefaultCommand(Feed(m_feeder));
       m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
-      m_lights.setDefaultCommand(RunLights(m_lights));
+  }
+
+  fun lightsOff() {
+    m_lights.stop();
   }
 }

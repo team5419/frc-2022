@@ -18,12 +18,15 @@ import frc.robot.commands.ShootAndFeed
 import frc.robot.commands.SpinUp
 import frc.robot.commands.Wait
 import frc.robot.commands.CycleIndexer
+import frc.robot.commands.DefaultIndex
+import frc.robot.commands.Feed
+import frc.robot.commands.Shoot
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
-class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake, m_lights: Lights) : SequentialCommandGroup() {
+class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake, m_lights: Lights, red: Boolean = false) : SequentialCommandGroup() {
     val drivetrain: Drivetrain = m_drivetrain
     val shooter: Shooter = m_shooter
     val vision: Vision = m_vision
@@ -33,45 +36,47 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
     val lights: Lights = m_lights
     
     init {
+        val firstVel: Double = if (red) 15500.0 else 15500.0
         addCommands(
             // run intake and move to first shoot position
             ParallelRaceGroup(
-                RunIntake(intake, feeder),
+                RunIntake(intake, feeder, 0.0),
+                Feed(feeder),
                 SequentialCommandGroup(
                     ParallelRaceGroup(
-                        SpinUp(shooter, 15500.0, 15500.0),
                         RamseteAction(drivetrain, listOf(
                             Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                            Pose2d(-0.9, 0.0, Rotation2d(0.0))
+                            Pose2d(-0.3, 0.0, Rotation2d(0.0))
+                        ), false)
+                    ),
+                    ParallelRaceGroup(
+                        SpinUp(shooter, firstVel, firstVel),
+                        RamseteAction(drivetrain, listOf(
+                            Pose2d(-0.3, 0.0, Rotation2d(0.0)),
+                            Pose2d(-1.0, 0.0, Rotation2d(0.0))
                         ), false)
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    ParallelRaceGroup(
-                        CycleIndexer(indexer, shooter, 10),
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 1.5)
-                    ),
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, firstVel, firstVel, 2.25),
                     // run intake and move to second shoot position
                     RamseteAction(drivetrain, listOf(
-                        Pose2d(-0.9, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-4.0, -0.1, Rotation2d.fromDegrees(0.0))
+                        Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
+                        Pose2d(-4.0, -0.7, Rotation2d.fromDegrees(0.0))
                     ), false),
-                    Wait(1.5),
+                    Wait(0.5),
                     // intake 2 balls from the human player station
                     // moves to new shot location
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
-                            Pose2d(-4.0, -0.1, Rotation2d.fromDegrees(0.0)), 
+                            Pose2d(-4.0, -0.7, Rotation2d.fromDegrees(0.0)), 
                             Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
                         ), true),
-                        SpinUp(shooter, 15750.0, 15750.0)
+                        SpinUp(shooter, 15500.0, 15500.0)
                     ),
                     // shoots 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    ParallelRaceGroup(
-                        CycleIndexer(indexer, shooter, 10),
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15750.0, 15750.0, 5.0)
-                    )
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, 15500.0, 15500.0, 5.0)
                 )
             )
             

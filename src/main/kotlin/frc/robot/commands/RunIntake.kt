@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.FeederConstants
 
 
-class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0) : CommandBase() {
+class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0, _velocity: Double = 1.0) : CommandBase() {
   private val intake: Intake = _intake
   private val feeder: Feeder = _feeder
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val previousVel: Double = feeder.currentVel
+  private val velocity: Double = _velocity
 
   init {
   }
@@ -22,7 +23,7 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0) : Command
       timer.reset()
       timer.start()
       feeder.currentVel = FeederConstants.activePercent
-      intake.intake()
+      intake.intake(velocity)
   }
 
   override fun execute() {

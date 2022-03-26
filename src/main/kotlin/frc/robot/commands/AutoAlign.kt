@@ -36,8 +36,7 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _li
     shooter.mainVelocity = setpoint.mainVelocity;
     shooter.kickerVelocity = setpoint.kickerVelocity;
     shooter.currentColor = setpoint.color;
-    lights.currentRGB = setpoint.color;
-    lights.blinking = false;
+    lights.setColor(setpoint.color);
     timer.reset()
     timer.start()
   }
@@ -54,21 +53,23 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _li
   }
 
   override fun isFinished() : Boolean {
-    if(time > 0.0 && timer.get() < time) {
-      return false
+    if(time > 0.0 && timer.get() > time) {
+      return true
     }
-    if(throttling) {
-      return (vision.turnAligned() && vision.throttleAligned(setpoint.distance))
-    }
-    return (vision.turnAligned())
+    // if(timer.get() > 0.5) {
+    //   if(throttling) {
+    //     return (vision.turnAligned() && vision.throttleAligned(setpoint.distance))
+    //   }
+    //   return (vision.turnAligned())
+    // }
+    return false
   }
 
   override fun end(interrupted: Boolean) {
       //println("done aligning")
       vision.off();
       timer.stop()
-      lights.currentRGB = RGB(0, 0, 0);
-      lights.blinking = false;
+      lights.setColor(RGB(0, 0, 0));
       drivetrain.setPercent(0.0, 0.0)
       drivetrain.brakeMode = false;
   }
