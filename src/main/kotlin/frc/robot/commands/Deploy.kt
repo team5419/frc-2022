@@ -1,34 +1,32 @@
 package frc.robot.commands; 
 
-import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.IndexerConstants
 
 
-class Index(_indexer: Indexer) : CommandBase() {
-  private val indexer: Indexer = _indexer
-  private var startingPosition: Double = 0.0
+class Deploy(_intake: Intake, _percent: Double = 1.0) : CommandBase() {
+  private val intake: Intake = _intake
+  private val percent: Double = _percent
   init {
-    addRequirements(_indexer);
   }
 
   override fun initialize() {
-    startingPosition = indexer.encoder.getPosition()
+    intake.runDeploy(percent)
   }
 
   override fun execute() {
-    indexer.index(0.4);
   }
 
   override fun end(interrupted: Boolean) {
-    indexer.stop()
+    intake.deployStop()
   }
 
   // end command if time has elapsed
   override fun isFinished(): Boolean {
-    return indexer.encoder.getPosition() - startingPosition >= IndexerConstants.ticksPerIndex
+    return false
   }
 
 }

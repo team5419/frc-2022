@@ -1,34 +1,30 @@
 package frc.robot.commands; 
 
-import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.IndexerConstants
 
 
-class Index(_indexer: Indexer) : CommandBase() {
-  private val indexer: Indexer = _indexer
-  private var startingPosition: Double = 0.0
+class InvertDrive(_drivetrain: Drivetrain) : CommandBase() {
+  private val drivetrain: Drivetrain = _drivetrain
   init {
-    addRequirements(_indexer);
   }
 
   override fun initialize() {
-    startingPosition = indexer.encoder.getPosition()
+    drivetrain.inverted *= -1;
   }
 
   override fun execute() {
-    indexer.index(0.4);
   }
 
   override fun end(interrupted: Boolean) {
-    indexer.stop()
   }
 
   // end command if time has elapsed
   override fun isFinished(): Boolean {
-    return indexer.encoder.getPosition() - startingPosition >= IndexerConstants.ticksPerIndex
+    return true;
   }
 
 }

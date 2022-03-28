@@ -84,7 +84,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             config_kF(0, 0.0, 100)
 
             // velocity controlle PID
-            config_kP(1, 0.5, 100)
+            config_kP(1, 0.7, 100)
             config_kI(1, 0.0, 100)
             config_kD(1, 0.0, 100)
             config_kF(1, 0.06, 100)

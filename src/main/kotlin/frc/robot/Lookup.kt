@@ -11,7 +11,7 @@ object Lookup {
     init {
         table = mutableListOf<LookupEntry>()
         //table.add(LookupEntry(1.65, 12000.0, 13500.0, RGB(255, 0, 0)))
-        table.add(LookupEntry(2.0, 14600.0, 14600.0, RGB(0, 0, 255)))
+        table.add(LookupEntry(2.0, 14500.0, 14500.0, RGB(0, 0, 255)))
         table.add(LookupEntry(4.0, 19000.0, 19000.0, RGB(255, 0, 0)))
         // table.add(LookupEntry(6.6, 20000.0, 20000.0, RGB(100, 100, 100)))
         //table.add(LookupEntry(3.0, 17000.0, 15500.0, RGB(0, 0, 255)))

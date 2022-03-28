@@ -28,25 +28,25 @@ class Lights(tab: ShuffleboardTab) : SubsystemBase() {
     // private val buffer2 = AddressableLEDBuffer(LightsConstants.len2);
     private var currentRGB: RGB = RGB(0, 0, 0);
         // Example usage of a CANdle
-    private val candle: CANdle = CANdle(LightsConstants.Ports.lights1); // creates a new CANdle with ID 0
-    private val config: CANdleConfiguration = CANdleConfiguration();
+    //private val candle: CANdle = CANdle(LightsConstants.Ports.lights1); // creates a new CANdle with ID 0
+    //private val config: CANdleConfiguration = CANdleConfiguration();
     
 
-    //candle.setLEDs(255, 255, 255); // set the CANdle LEDs to white
+    // candle.setLEDs(255, 255, 255); // set the CANdle LEDs to white
     // conf
-    init {
-        config.stripType = LEDStripType.RGB; // set the strip type to RGB
-        config.brightnessScalar = 0.5; // dim the LEDs to half brightness
-        candle.configAllSettings(config);
-    }
+    // init {
+    //     config.stripType = LEDStripType.RGB; // set the strip type to RGB
+    //     config.brightnessScalar = 0.5; // dim the LEDs to half brightness
+    //     candle.configAllSettings(config);
+    // }
 
     public fun setColor(rgb: RGB) {
-        currentRGB = rgb;
-        candle.setLEDs(rgb.g, rgb.r, rgb.b, 255, 0, 5)
+        // currentRGB = rgb;
+        // candle.setLEDs(rgb.g, rgb.r, rgb.b, 255, 0, 5)
     }
 
     public fun off() {
-        candle.setLEDs(0, 0, 0)
+        //candle.setLEDs(0, 0, 0)
     }
 
     public fun isEqualTo(r: Int, g: Int, b: Int): Boolean {
@@ -60,6 +60,6 @@ class Lights(tab: ShuffleboardTab) : SubsystemBase() {
     }
     
     public fun stop() {
-        setColor(RGB(0, 0, 0));
+        //setColor(RGB(0, 0, 0));
     }
 }

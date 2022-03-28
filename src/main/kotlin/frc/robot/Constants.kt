@@ -51,20 +51,20 @@ object ShooterConstants {
 
 object IndexerConstants {
     object Ports {
-        val motor = 16;
+        val motor = 22;
         val sensor1 = 2;
         val sensor2 = 1;
         val sensor3 = 0;
     }
     val outputPercent: Double = 1.0; // x / 1
-    val ticksPerIndex: Double = 4.0;
+    val ticksPerIndex: Double = 8.0;
     val ticksDefault: Double = 5.0;
     val autoSpeed: Double = 1000.0;
 }
 
 object FeederConstants {
     object Ports {
-        val motor = 15;
+        val motor = 16;
     }
     val idlePercent = 0.2;
     val activePercent = 0.9;
@@ -75,6 +75,7 @@ object FeederConstants {
 object IntakeConstants {
     object Ports {
         val motor = 6;
+        val deployMotor = 15;
     }
     val outputPercent = 1.0;
     val reversePercent = -outputPercent;

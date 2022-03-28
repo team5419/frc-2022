@@ -34,7 +34,7 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
     val intake: Intake = m_intake
     val lights: Lights = m_lights
     init {
-        val firstVel: Double = 15500.0
+        val firstVel: Double = 15250.0
 
             addCommands(
                 // run intake and move to first shoot position
