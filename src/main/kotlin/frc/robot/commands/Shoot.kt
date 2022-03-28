@@ -20,13 +20,14 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.FeederConstants
 
 
-class Shoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _lights: Lights, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0) : SequentialCommandGroup() {
+class Shoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _lights: Lights, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0) : SequentialCommandGroup() {
   private val vision: Vision = _vision;
   private val drivetrain: Drivetrain = _drivetrain;
   private val shooter: Shooter = _shooter;
   private val indexer: Indexer = _indexer;
   private val lights: Lights = _lights;
   private val feeder: Feeder = _feeder;
+  private val driver: XboxController = _driver;
   private val main: Double = _main;
   private val kicker: Double = _kicker;
   private val time : Double = _time;
@@ -34,7 +35,7 @@ class Shoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexe
   init {
     addCommands(
         ParallelRaceGroup(
-            ShootAndFeed(shooter, feeder, indexer, lights, main, kicker, time),
+            ShootAndFeed(shooter, feeder, indexer, lights, driver, main, kicker, time),
             CycleIndexer(indexer, shooter, 50)
         )
     )

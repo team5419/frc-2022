@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
-class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake, m_lights: Lights) : SequentialCommandGroup() {
+class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake, m_lights: Lights, m_driver: XboxController) : SequentialCommandGroup() {
     val drivetrain: Drivetrain = m_drivetrain
     val shooter: Shooter = m_shooter
     val vision: Vision = m_vision
@@ -29,6 +29,7 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
     val feeder: Feeder = m_feeder
     val intake: Intake = m_intake
     val lights: Lights = m_lights;
+    val driver: XboxController = m_driver;
     
     init {
         addCommands(
@@ -47,7 +48,7 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     AutoAlign(vision, drivetrain, shooter, lights, 0.35, false),
                     // ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 1.75),
                     ParallelRaceGroup(
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 2.5),
+                        ShootAndFeed(shooter, feeder, indexer, lights, driver, 15500.0, 15500.0, 2.5),
                         CycleIndexer(indexer, shooter, 10)
                     ),
                     // run intake and move to second shoot position
@@ -66,7 +67,7 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
                     // ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 2.0),
                     ParallelRaceGroup(
-                        ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 5.0),
+                        ShootAndFeed(shooter, feeder, indexer, lights, driver, -1.0, -1.0, 5.0),
                         CycleIndexer(indexer, shooter, 10)
                     ),
                     ParallelRaceGroup(
@@ -79,7 +80,7 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
                     // ShootAndFeed(shooter, feeder, indexer, lights, 20000.0, 20000.0, 2.0)
                     ParallelRaceGroup(
-                        ShootAndFeed(shooter, feeder, indexer, lights, -1.0, -1.0, 2.0),
+                        ShootAndFeed(shooter, feeder, indexer, lights, driver, -1.0, -1.0, 2.0),
                         CycleIndexer(indexer, shooter, 10)
                     )
                 )
