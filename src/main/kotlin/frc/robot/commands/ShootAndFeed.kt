@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Lights;
 import frc.robot.classes.RGB;
 
-class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _lights: Lights, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
+class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _lights: Lights, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
   private val shooter: Shooter = _shooter;
   private val main: Double = _main;
   private val kicker: Double = _kicker;
@@ -19,6 +19,7 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val lights: Lights = _lights;
+  private val driver: XboxController = _driver;
 
   init {
     addRequirements(_shooter)
@@ -46,7 +47,7 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
   }
 
   override fun isFinished(): Boolean {
-    return time > 0.0 && timer.get() >= time
+    return ((time > 0.0 && timer.get() >= time) || (!indexer.atPositionOne() && !indexer.atPositionTwo() && !indexer.atPositionThree()))
   }
 
   override fun end(interrupted: Boolean) {
@@ -55,5 +56,7 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
       lights.setColor(RGB(0, 0, 0))
       shooter.stop()
       indexer.stop()
+      driver.setRumble(RumbleType.kLeftRumble, 1.0);
+      driver.setRumble(RumbleType.kRightRumble, 1.0);
   }
 }

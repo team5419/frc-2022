@@ -14,7 +14,6 @@ import frc.robot.subsystems.Lights
 import frc.robot.commands.RamseteAction
 import frc.robot.commands.AutoAlign
 import frc.robot.commands.RunIntake
-import frc.robot.commands.ShootAndFeed
 import frc.robot.commands.SpinUp
 import frc.robot.commands.Wait
 import frc.robot.commands.CycleIndexer
@@ -27,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
-class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake, m_lights: Lights) : SequentialCommandGroup() {
+class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision, m_indexer: Indexer, m_feeder: Feeder, m_intake: Intake, m_lights: Lights, m_driver: XboxController) : SequentialCommandGroup() {
     val drivetrain: Drivetrain = m_drivetrain
     val shooter: Shooter = m_shooter
     val vision: Vision = m_vision
@@ -35,6 +34,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
     val feeder: Feeder = m_feeder
     val intake: Intake = m_intake
     val lights: Lights = m_lights
+    val driver: XboxController = m_driver
     
     init {
         val backwards1: Double = 1.0;
@@ -64,7 +64,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, 15500.0, 15500.0, 1.75),
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 1.75),
                     // run intake and move to second shoot position
                     RamseteAction(drivetrain, listOf(
                         Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
@@ -92,10 +92,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     ),
                     // shoots 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    ParallelRaceGroup(
-                        CycleIndexer(indexer, shooter, 10),
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15000.0, 14000.0, 1.2)
-                    ),
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15000.0, 14000.0, 1.2),
                     // move backward and pick up last ball
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
@@ -107,10 +104,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     ),
                     // shoots 1 ball
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    ParallelRaceGroup(
-                        CycleIndexer(indexer, shooter, 10),
-                        ShootAndFeed(shooter, feeder, indexer, lights, 15500.0, 15500.0, 1.3)
-                    )
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 1.3),
                 )
             )
             
