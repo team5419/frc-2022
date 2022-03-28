@@ -72,53 +72,57 @@ class RobotContainer(tab: ShuffleboardTab) {
   
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {
 
-    // enable drivetrain slow mode (hold left bumper)
-    val lBumper : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-    lBumper.whenHeld(Drive(m_drivetrain, driver, true))
+    // DRIVER CONTROLS ---------------------------------------------------------------->
 
-    // intake and run feeder (hold X)
-    val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
-    xButton.toggleWhenPressed(RunIntake(m_intake, m_feeder))
+    // auto-align (hold A)
+    val aButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
+    aButtonDriver.whenHeld(AlignSpin(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights))
 
-    val yButton2: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
-    yButton2.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 20000.0, 20000.0))
+    // shoot (hold right bumper)
+    val rBumperDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
+    rBumperDriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver));
 
-    // defense mode (hold B button) 
-    val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
-    bButton.whenHeld(ToggleCurrent(m_drivetrain));
+    // intake (hold X)
+    val xButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
+    xButtonDriver.toggleWhenPressed(RunIntake(m_intake, m_feeder))
 
-    // shoot (press right bumper)
-    val rBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
-    rBumper.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver));
+    // drivetrain slow mode (hold left bumper)
+    val lBumperDriver : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+    lBumperDriver.whenHeld(Drive(m_drivetrain, driver, true))
 
-    // safe zone shot (press a button)
-    val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButton.whenHeld(AlignSpin(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights))
+    // defense mode (hold B) 
+    val bButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
+    bButtonDriver.whenHeld(ToggleCurrent(m_drivetrain));
 
+    // safe zone shot (hold Y)
+    val yButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
+    yButtonDriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 20000.0, 20000.0))
+
+    // CO-DRIVER CONTROLS ---------------------------------------------------------------->
+    
     // outtake (hold Y)
-    val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
-    yButton.whenHeld(Outtake(m_feeder, m_indexer, m_intake))
+    val yButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
+    yButtonCodriver.whenHeld(Outtake(m_feeder, m_indexer, m_intake))
 
-    // mini shoot
-    val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton2.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 7000.0, 7000.0))
+    // mini shoot (hold A)
+    val aButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
+    aButtonCodriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 7000.0, 7000.0))
 
-    // break mode (press b button)
-    val bButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
-    bButton2.whenPressed(ToggleBrakeMode(m_drivetrain))
+    // break mode (press B)
+    val bButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
+    bButtonCodriver.whenPressed(ToggleBrakeMode(m_drivetrain))
 
-    // edit shooter multiplier
-    val rBumper2: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)
-    //rBumper2.whenPressed(ShooterMultiply(m_shooter, 0.1));
-    rBumper2.whenHeld(Deploy(m_intake, -0.8))
+    // raise intake (hold right bumper)
+    val rBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)
+    rBumperCodriver.whenHeld(Deploy(m_intake, -0.8))
 
-    val lBumper2: JoystickButton = JoystickButton(codriver, XboxController.Button.kLeftBumper.value)
-    //lBumper2.whenPressed(ShooterMultiply(m_shooter, -0.1));
-    lBumper2.whenHeld(Deploy(m_intake, 0.8))
+    // lower intake (hold left bumper)
+    val lBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kLeftBumper.value)
+    lBumperCodriver.whenHeld(Deploy(m_intake, 0.8))
 
-    //val xButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    val xButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    xButton2.whenPressed(InvertDrive(m_drivetrain))
+    // invert drivetrain
+    val xButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
+    xButtonCodriver.whenPressed(InvertDrive(m_drivetrain))
   
 
   }
