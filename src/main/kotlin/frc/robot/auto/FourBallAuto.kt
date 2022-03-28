@@ -3,6 +3,8 @@ package frc.robot.auto
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 
+import edu.wpi.first.wpilibj.XboxController;
+
 import frc.robot.subsystems.Drivetrain
 import frc.robot.subsystems.Shooter
 import frc.robot.subsystems.Vision
@@ -50,7 +52,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                         ), false)
                     ),
                     ParallelRaceGroup(
-                        SpinUp(shooter, 15500, 15500),
+                        SpinUp(shooter, 15500.0, 15500.0),
                         RamseteAction(drivetrain, listOf(
                             Pose2d(-0.3, 0.0, Rotation2d(0.0)),
                             Pose2d(-1.0, 0.0, Rotation2d(0.0))
@@ -58,25 +60,25 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500, 15500, 2.25),
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 2.25),
                     // run intake and move to second shoot position
                     RamseteAction(drivetrain, listOf(
                         Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-4.0, stationDist, Rotation2d.fromDegrees(0.0))
+                        Pose2d(-4.0, -0.2, Rotation2d.fromDegrees(0.0))
                     ), false),
                     Wait(0.25),
                     // intake 2 balls from the human player station
                     // moves to new shot location
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
-                            Pose2d(-4.0, stationDist, Rotation2d.fromDegrees(0.0)), 
+                            Pose2d(-4.0, -0.2, Rotation2d.fromDegrees(0.0)), 
                             Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
                         ), true),
                         SpinUp(shooter, 15250.0, 15250.0)
                     ),
                     // shoots 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, 15250.0, 15250.0, 5.0)
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15250.0, 15250.0, 5.0)
                 )
             )
             

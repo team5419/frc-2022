@@ -101,7 +101,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // mini shoot
     val aButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton2.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, 7000.0, 7000.0))
+    aButton2.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 7000.0, 7000.0))
 
     // break mode (press b button)
     val bButton2: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)

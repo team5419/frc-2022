@@ -3,6 +3,8 @@ package frc.robot.auto
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 
+import edu.wpi.first.wpilibj.XboxController;
+
 import frc.robot.subsystems.Drivetrain
 import frc.robot.subsystems.Shooter
 import frc.robot.subsystems.Vision
@@ -50,7 +52,7 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
                             ), false)
                         ),
                         ParallelRaceGroup(
-                            SpinUp(shooter, 15500, 15500),
+                            SpinUp(shooter, 15500.0, 15500.0),
                             RamseteAction(drivetrain, listOf(
                                 Pose2d(-0.3, 0.0, Rotation2d(0.0)),
                                 Pose2d(-1.0, 0.0, Rotation2d(0.0))
@@ -58,7 +60,7 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
                         ),
                         // autoalign and index/shoot first 2 balls
                         AutoAlign(vision, drivetrain, shooter, lights, 1.0, false),
-                        Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500, 15500, 5.0))
+                        Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 5.0))
             )
         )
     }

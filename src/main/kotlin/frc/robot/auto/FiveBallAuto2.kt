@@ -3,6 +3,8 @@ package frc.robot.auto
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 
+import edu.wpi.first.wpilibj.XboxController;
+
 import frc.robot.subsystems.Drivetrain
 import frc.robot.subsystems.Shooter
 import frc.robot.subsystems.Vision
@@ -104,7 +106,7 @@ class FiveBallAuto2(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visi
                     ),
                     // shoots 1 ball
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 1.3),
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 1.3)
                 )
             )
             

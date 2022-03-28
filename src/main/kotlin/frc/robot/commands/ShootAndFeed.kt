@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Lights;
 import frc.robot.classes.RGB;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType
+
 class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _lights: Lights, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
   private val shooter: Shooter = _shooter;
   private val main: Double = _main;
