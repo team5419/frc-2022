@@ -34,11 +34,6 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_feeder = Feeder(tab);
   private val m_intake = Intake(tab);
   private val m_lights = Lights(tab);
-  //private val m_camera = Camera(tab);
-
-  // default autonomous routine
-  private val m_baseline = Baseline()
-  private val m_autocheck = PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter);
 
   // creates a tab in shuffleboard to select autonomous routine
   val autoSelector = SendableChooser<SequentialCommandGroup>()
@@ -46,28 +41,20 @@ class RobotContainer(tab: ShuffleboardTab) {
   val codriver = XboxController(1);
 
   init {
+
     configureButtonBindings(driver, codriver);
+    setDefaults();
     
     // create and add autonomous routines to selector in shuffleboard
-    tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
     Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
-    autoSelector.setDefaultOption("Baseline", m_baseline)
-    autoSelector.addOption("Baseline", m_baseline)
+    tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
+    autoSelector.setDefaultOption("Baseline", Baseline())
+    autoSelector.addOption("Baseline", Baseline())
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
     autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
-    autoSelector.addOption("Pre-Match Check", m_autocheck)
+    autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter))
 
-    // field simulation (in progress)
-    // var m_field = Field2d()
-    // tab.add("field", m_field)
-    // m_field.getObject("traj").setTrajectory(
-    //   RamseteAction(m_drivetrain, listOf( // negative x is forward, positive x is backward, positive y is left, negative y is right
-    //   Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-    //   Pose2d(0.8, 0.0, Rotation2d(0.0))
-    //   ), true).trajectory)
-
-    setDefaults();
   }
   
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {
@@ -123,18 +110,16 @@ class RobotContainer(tab: ShuffleboardTab) {
     // invert drivetrain
     val xButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
     xButtonCodriver.whenPressed(InvertDrive(m_drivetrain))
-  
-
   }
 
 
   // select autonomous command
   fun getAutonomousCommand(): Command {
-    return autoSelector.getSelected() ?: m_baseline
+    return autoSelector.getSelected() ?: Baseline()
   }
 
   fun setDefaults() {
-      // call drive command by default
+      // set default commands
       m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
       m_climber.setDefaultCommand(Climb(m_climber, codriver));
       m_feeder.setDefaultCommand(Feed(m_feeder));
