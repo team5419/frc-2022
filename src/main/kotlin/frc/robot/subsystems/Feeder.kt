@@ -25,10 +25,9 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
     // declare motors and ports
     val motor = CANSparkMax(FeederConstants.Ports.motor, MotorType.kBrushless)
     public val encoder = motor.getEncoder() 
-    public var currentVel: Double = FeederConstants.idlePercent
-
-    private val layout: ShuffleboardLayout = tab.getLayout("Feeder", BuiltInLayouts.kList).withPosition(2, 2).withSize(1, 2);
-
+    private var previousVel : Double = -2.0
+    
+    private val layout: ShuffleboardLayout = tab.getLayout("Feeder", BuiltInLayouts.kList).withPosition(2, 2).withSize(1, 2)
     // configure the motors and add to shuffleboard
     init {
         motor.apply {
@@ -51,16 +50,25 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
         encoder.apply {
             setPosition(0.0)
         }
-        layout.addNumber("Attempted", { currentVel })
-        layout.addNumber("Velocity", { encoder.getVelocity() })
+        //layout.addNumber("Attempted", { currentVel })
+        //layout.addNumber("Velocity", { encoder.getVelocity() })
     }
 
     public fun stop() {
         motor.set(0.0)
     }
 
-    public fun feed() {
-        motor.set(currentVel)
+    // public fun feed() {
+    //     motor.set(currentVel)
+    // }
+
+    public var currentVel: Double = FeederConstants.idlePercent
+    set(value: Double) {
+            if(value == previousVel) {
+                return;
+            }
+            previousVel = value;
+            motor.set(value);
     }
 
     override fun periodic() {

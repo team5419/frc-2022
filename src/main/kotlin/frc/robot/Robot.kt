@@ -15,7 +15,7 @@ class Robot : TimedRobot() {
   private var m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
   override fun robotInit() {
-    NetworkTableInstance.getDefault().setUpdateRate(0.01)
+    NetworkTableInstance.getDefault().setUpdateRate(10.0)
   }
 
   override fun robotPeriodic() {

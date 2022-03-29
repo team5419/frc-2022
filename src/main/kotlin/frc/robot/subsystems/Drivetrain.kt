@@ -26,7 +26,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
     public var inverted: Int = 1
     private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList).withPosition(2, 0).withSize(1, 2);
-
+    private var previousThrottle: Double = -2.0;
+    private var previousTurn: Double = -2.0;
     // configure the motors and add to shuffleboard
     init {
         leftLeader.apply {
@@ -105,9 +106,9 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             configFactoryDefault(100)
             setFusedHeading(0.0, 100)
         }
-        layout.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
-        layout.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
-        layout.addBoolean("brake mode", { brakeMode})
+        //layout.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
+        //layout.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
+        //layout.addBoolean("brake mode", { brakeMode})
     }
 
     fun getAllVelocities() : List<Double> {
@@ -177,6 +178,11 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
+        if(throttle == previousThrottle && turn == previousTurn) {
+            return;
+        }
+        previousThrottle = throttle;
+        previousTurn = turn;
         // set slow multiplier
         var slow: Double = 1.0
         if(isSlow) slow = DriveConstants.slowMultiplier

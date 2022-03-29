@@ -74,7 +74,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
             setPosition(0.0)
         }
 
-        layout.addNumber("Velocity", { motor.getSelectedSensorVelocity() })
+        //layout.addNumber("Velocity", { motor.getSelectedSensorVelocity() })
         
     }
 

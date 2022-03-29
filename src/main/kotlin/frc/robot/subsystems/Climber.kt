@@ -70,8 +70,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
             pairs[i].right.setInverted(pairs[i].invertedRight);
 
             val newLayout: ShuffleboardLayout = layout.getLayout("Pair ${i}", BuiltInLayouts.kList);
-            newLayout.addNumber("left", { pairs[i].left.getSelectedSensorVelocity() });
-            newLayout.addNumber("right", { pairs[i].right.getSelectedSensorVelocity() });
+            //newLayout.addNumber("left", { pairs[i].left.getSelectedSensorVelocity() });
+            //newLayout.addNumber("right", { pairs[i].right.getSelectedSensorVelocity() });
         }
     }
 
@@ -98,6 +98,11 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun setPairVelocity(pair: Int, throttle: Double, turn: Double = 0.0) {
+        if(pairs[pair].previousThrottle == throttle && pairs[pair].previousTurn == turn) {
+            return;
+        }
+        pairs[pair].previousThrottle = throttle;
+        pairs[pair].previousTurn = turn;
         val f: Double = 15000.0;
         val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
         val rightturn: Double =/*  if(turn > 0) */ withDeadband(turn, 0.05)// else 0.0;

@@ -8,10 +8,14 @@ open class ClimberPair {
     val right: TalonFX
     val invertedLeft : Boolean
     val invertedRight : Boolean
+    var previousThrottle : Double
+    var previousTurn : Double
     constructor(_left: TalonFX, _invertedLeft : Boolean = false, _right: TalonFX, _invertedRight : Boolean = false) {
         this.left = _left;
         this.right = _right;
         this.invertedLeft = _invertedLeft;
         this.invertedRight = _invertedRight;
+        this.previousThrottle = -2.0;
+        this.previousTurn = -2.0
     }
 }
