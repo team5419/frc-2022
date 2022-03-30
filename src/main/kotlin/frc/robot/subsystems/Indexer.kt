@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.wpilibj.AnalogInput
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 
 class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
 
@@ -43,7 +44,8 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
             //setSensorPhase(false)
             setSmartCurrentLimit(40)
             setClosedLoopRampRate(1.0)
-            setControlFramePeriodMs(1)
+            setControlFramePeriodMs(50)
+            setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
         }
 
         
@@ -64,7 +66,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun stop() {
-        motor.set(0.0)
+        index(0.0);
     }
 
     public fun atPositionOne() : Boolean {

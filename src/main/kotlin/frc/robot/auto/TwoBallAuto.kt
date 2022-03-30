@@ -20,6 +20,7 @@ import frc.robot.commands.ShootAndFeed
 import frc.robot.commands.CycleIndexer
 import frc.robot.commands.SpinUp
 import frc.robot.commands.Feed
+import frc.robot.commands.StartFeeding
 
 
 import frc.robot.commands.Shoot
@@ -43,8 +44,9 @@ class TwoBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Vision
                 // run intake and move to first shoot position
                 ParallelRaceGroup(
                     RunIntake(intake, feeder, 0.0),
-                    Feed(feeder),
+                    //Feed(feeder),
                     SequentialCommandGroup(
+                        StartFeeding(feeder),
                         ParallelRaceGroup(
                             RamseteAction(drivetrain, listOf(
                                 Pose2d(0.0, 0.0, Rotation2d(0.0)), 

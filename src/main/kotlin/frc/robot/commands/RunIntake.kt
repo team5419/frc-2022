@@ -17,6 +17,7 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0, _velocity
   private val velocity: Double = _velocity
 
   init {
+    addRequirements(_intake)
   }
 
   override fun initialize() {
@@ -24,6 +25,7 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0, _velocity
       timer.start()
       feeder.currentVel = FeederConstants.activePercent
       intake.intake(velocity)
+      intake.positionDeploy(25.0);
   }
 
   override fun execute() {
@@ -33,6 +35,7 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0, _velocity
     intake.stop()
     timer.stop()
     feeder.currentVel = previousVel
+    intake.positionDeploy(0.0);
   }
 
   // end command if time has elapsed

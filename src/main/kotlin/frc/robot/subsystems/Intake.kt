@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
-
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
@@ -46,8 +46,8 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
-            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
-
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 50, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 50)
             setNeutralMode(NeutralMode.Coast)
 
             configClosedLoopPeakOutput(0, 0.1, 100)
@@ -55,12 +55,13 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
         deployMotor.apply {
             restoreFactoryDefaults()
-            setIdleMode(IdleMode.kCoast)
+            setIdleMode(IdleMode.kBrake)
             setInverted(false)
             //setSensorPhase(false)
             setSmartCurrentLimit(40)
             setClosedLoopRampRate(1.0)
-            setControlFramePeriodMs(1)
+            setControlFramePeriodMs(50)
+            setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
         }
 
         
@@ -68,6 +69,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
             setP(1.0, 1)
             setI(0.0, 1)
             setD(0.0, 1)
+            setFF(10.0, 1)
         }
 
         encoder.apply {
@@ -75,6 +77,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         }
 
         //layout.addNumber("Velocity", { motor.getSelectedSensorVelocity() })
+        //layout.addNumber("Deploy pos", { encoder.getPosition() })
         
     }
 
@@ -90,6 +93,10 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent * velocity)
     }
 
+    public fun positionDeploy(position: Double) {
+        controller.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+
     public fun reverse() {
         motor.set(ControlMode.PercentOutput, IntakeConstants.reversePercent)
     }
@@ -99,6 +106,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     override fun periodic() {
+        //println(encoder.getPosition());
     }
 
     override fun simulationPeriodic() {

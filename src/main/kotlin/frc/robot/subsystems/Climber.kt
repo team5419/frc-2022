@@ -63,6 +63,9 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
 
                     configPeakOutputForward(1.0, 100)
                     configPeakOutputReverse(-1.0, 100)
+
+                    setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 50, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 50)
                 }
             }
             

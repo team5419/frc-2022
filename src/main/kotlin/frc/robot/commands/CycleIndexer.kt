@@ -17,12 +17,12 @@ class CycleIndexer(_indexer: Indexer, _shooter: Shooter, _numtimes: Int = 1) : S
   private val numtimes: Int = _numtimes
 
   init {
-    for(i in 1..numtimes) {
-        addCommands(
-            WaitForShooter(shooter, 0.0), 
-            Index(indexer)  
-        )
-    }
+    // for(i in 1..numtimes) {
+         addCommands(
+    //         WaitForShooter(shooter, 0.0), 
+            Index(indexer, shooter)  
+         )
+    // }
   }
 
   override fun end(interrupted: Boolean) {

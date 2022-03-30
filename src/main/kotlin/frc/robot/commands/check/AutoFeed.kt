@@ -20,7 +20,7 @@ class AutoFeed(_feeder: Feeder, _time: Double, _tab: ShuffleboardTab) : CheckCom
 
     override fun runMotors() {
       feeder.currentVel = FeederConstants.activePercent;
-      feeder.feed();
+      //feeder.feed();
     }
 
     override fun getVels(): List<Double> {

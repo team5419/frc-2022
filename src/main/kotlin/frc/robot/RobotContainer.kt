@@ -28,7 +28,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   // subsystems
   private val m_drivetrain = Drivetrain(tab);
   private val m_shooter = Shooter(tab);
-  //private val m_vision = Vision(tab, m_drivetrain);
+  private val m_vision = Vision(tab, m_drivetrain);
   private val m_indexer = Indexer(tab);
   private val m_climber = Climber(tab);
   private val m_feeder = Feeder(tab);
@@ -49,11 +49,11 @@ class RobotContainer(tab: ShuffleboardTab) {
     Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
     autoSelector.setDefaultOption("Baseline", Baseline())
-    // autoSelector.addOption("Baseline", Baseline())
-    // autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
-    // autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
-    // autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
-    // autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter))
+    autoSelector.addOption("Baseline", Baseline())
+    autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
+    autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
+    autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
+    autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter))
 
   }
   
@@ -63,11 +63,11 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // auto-align (hold A)
     val aButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    //aButtonDriver.whenHeld(AlignSpin(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights))
+    aButtonDriver.whenHeld(AlignSpin(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights))
 
     // shoot (hold right bumper)
     val rBumperDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
-    //rBumperDriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver));
+    rBumperDriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver));
 
     // intake (hold X)
     val xButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
@@ -75,7 +75,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // drivetrain slow mode (hold left bumper)
     val lBumperDriver : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-    lBumperDriver.whenHeld(Drive(m_drivetrain, driver, true))
+    lBumperDriver.whenHeld(Drive(m_drivetrain, driver, true, m_feeder))
 
     // defense mode (hold B) 
     val bButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
@@ -83,7 +83,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // safe zone shot (hold Y)
     val yButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
-    //yButtonDriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 20000.0, 20000.0))
+    yButtonDriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 20000.0, 20000.0))
 
     // CO-DRIVER CONTROLS ---------------------------------------------------------------->
     
@@ -93,7 +93,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // mini shoot (hold A)
     val aButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    //aButtonCodriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 7000.0, 7000.0))
+    aButtonCodriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 7000.0, 7000.0))
 
     // break mode (press B)
     val bButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
@@ -120,10 +120,10 @@ class RobotContainer(tab: ShuffleboardTab) {
 
   fun setDefaults() {
       // set default commands
-      //m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver));
-      // m_climber.setDefaultCommand(Climb(m_climber, codriver));
-       m_feeder.setDefaultCommand(Feed(m_feeder));
-      // m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
+      m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver, false, m_feeder));
+      m_climber.setDefaultCommand(Climb(m_climber, codriver));
+    //m_feeder.setDefaultCommand(Feed(m_feeder));
+      m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
   }
 
   fun lightsOff() {

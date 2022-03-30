@@ -84,10 +84,10 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
             config_kF(0, 0.0, 100)
 
             // velocity controlle PID
-            config_kP(1, 0.7, 100)
+            config_kP(1, 0.7, 100) // 0.7
             config_kI(1, 0.0, 100)
-            config_kD(1, 0.0, 100)
-            config_kF(1, 0.06, 100)
+            config_kD(1, 0.007, 100)
+            config_kF(1, 0.06, 100) // .06
 
             // bang bang PID
             selectProfileSlot(1, 0)
@@ -99,6 +99,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
             configPeakOutputForward(1.0, 100)
             configPeakOutputReverse(-1.0, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 50, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 50)
         }
 
         // layout.addNumber("Attempted Main Velocity", { setpointMain })
@@ -130,7 +132,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     //check if flywheel velocity is at target
     public fun isSpedUp(): Boolean {
-        return flyWheelVelocity(mainMotor) / shooterMultiplier >= setpointMain -300.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= setpointKicker -300.0 && (setpointMain != 0.0 || setpointKicker != 0.0)
+        return flyWheelVelocity(mainMotor) / shooterMultiplier >= setpointMain -750.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= setpointKicker -750.0 && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 
     public fun stop() {
@@ -148,7 +150,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         if(kicker != setpointKicker) {
             setpointKicker = if (kicker == -1.0) this.kickerVelocity else kicker
         }
-        //println("Setting Velocity: ${setpointMain}")
+        println("Setting Velocity: ${setpointMain}")
         // spin flywheel at selected velocity
         mainMotor.set(ControlMode.Velocity, setpointMain * shooterMultiplier)
         kickerMotor.set(ControlMode.Velocity, setpointKicker * shooterMultiplier)
