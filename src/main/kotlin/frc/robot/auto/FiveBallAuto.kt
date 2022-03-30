@@ -47,6 +47,7 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
         addCommands(
             // run intake and move to first shoot position
             ParallelRaceGroup(
+                ToggleCurrent(drivetrain)
                 RunIntake(intake, feeder, 0.0),
                 Feed(feeder),
                 SequentialCommandGroup(
