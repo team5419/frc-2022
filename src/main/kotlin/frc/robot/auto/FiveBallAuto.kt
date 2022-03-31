@@ -19,6 +19,7 @@ import frc.robot.commands.RunIntake
 import frc.robot.commands.SpinUp
 import frc.robot.commands.Wait
 import frc.robot.commands.CycleIndexer
+import frc.robot.commands.ToggleCurrent
 import frc.robot.commands.DefaultIndex
 import frc.robot.commands.Feed
 import frc.robot.commands.Shoot
@@ -47,13 +48,13 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
         addCommands(
             // run intake and move to first shoot position
             ParallelRaceGroup(
-                ToggleCurrent(drivetrain)
+                ToggleCurrent(drivetrain),
                 RunIntake(intake, feeder, 0.0),
                 Feed(feeder),
                 SequentialCommandGroup(
+                    SpinUp(shooter, 15500.0, 15500.0),
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
-                            SpinUp(shooter, 15500.0, 15500.0),
                             Pose2d(0.0, 0.0, Rotation2d(0.0)), 
                             Pose2d(-1.0, 0.0, Rotation2d(0.0))
                         ), false)
@@ -100,8 +101,7 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
                     Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0)
                 )
-            )
-            
+            ) 
         )
     }
 }

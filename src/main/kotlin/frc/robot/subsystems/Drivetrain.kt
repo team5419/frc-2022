@@ -178,17 +178,35 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         return movement;
     }
 
+    fun withSkim(velocity : Double): Double {
+        if(velocity > 1.0) return -(velocity - 1.0)
+        else if(velocity < -1.0) return -(velocity + 1.0)
+        else return 0.0
+    }
+
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
+
+        // code to not overload CAN network
         if(throttle == previousThrottle && turn == previousTurn) {
             return;
         }
         previousThrottle = throttle;
         previousTurn = turn;
+
         // set slow multiplier
         var slow: Double = 1.0
         if(isSlow) slow = DriveConstants.slowMultiplier
+
+        // NICER WAY TO CONTROL ROBOT????????????
+        // var turn2 = turn * (throttle + 0.5)
+        // var t_left = inverted * (throttle - turn2)
+        // var t_right = inverted * (throttle + turn2)
+        // var left = (t_left + withSkim(t_right)) * slow
+        // var right = (t_right + withSkim(t_left)) * slow
+        // leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.01))
+        // rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.01))
+
         // set percent outputs of drivetrain motors
-        //println("throttle output ${throttle - turn - howFarOver}, ${throttle + turn - howFarOver}")
         leftLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle - turn) * slow, 0.001))
         rightLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle + turn) * slow, 0.001))
     }
