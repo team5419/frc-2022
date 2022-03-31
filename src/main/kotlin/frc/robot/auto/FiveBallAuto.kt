@@ -5,24 +5,8 @@ import edu.wpi.first.math.geometry.Rotation2d
 
 import edu.wpi.first.wpilibj.XboxController;
 
-import frc.robot.subsystems.Drivetrain
-import frc.robot.subsystems.Shooter
-import frc.robot.subsystems.Vision
-import frc.robot.subsystems.Indexer
-import frc.robot.subsystems.Feeder
-import frc.robot.subsystems.Intake
-import frc.robot.subsystems.Lights
-
-import frc.robot.commands.RamseteAction
-import frc.robot.commands.AutoAlign
-import frc.robot.commands.RunIntake
-import frc.robot.commands.SpinUp
-import frc.robot.commands.Wait
-import frc.robot.commands.CycleIndexer
-import frc.robot.commands.ToggleCurrent
-import frc.robot.commands.DefaultIndex
-import frc.robot.commands.Feed
-import frc.robot.commands.Shoot
+import frc.robot.subsystems.*
+import frc.robot.commands.*
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -50,8 +34,8 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
             ParallelRaceGroup(
                 ToggleCurrent(drivetrain),
                 RunIntake(intake, feeder, 0.0),
-                Feed(feeder),
                 SequentialCommandGroup(
+                    StartFeeding(feeder),
                     SpinUp(shooter, 15500.0, 15500.0),
                     ParallelRaceGroup(
                         RamseteAction(drivetrain, listOf(
