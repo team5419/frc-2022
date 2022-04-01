@@ -124,6 +124,7 @@ class RobotContainer(tab: ShuffleboardTab) {
       m_climber.setDefaultCommand(Climb(m_climber, codriver));
     //m_feeder.setDefaultCommand(Feed(m_feeder));
       m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
+      m_intake.setDefaultCommand(DefaultIntake(m_intake));
   }
 
   fun lightsOff() {

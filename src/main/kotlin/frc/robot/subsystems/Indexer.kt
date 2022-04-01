@@ -58,7 +58,7 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
         encoder.apply {
             setPosition(0.0)
         }
-
+        layout.addNumber("Position", { encoder.getPosition() })
         // layout.addNumber("Velocity", { encoder.getVelocity() })
         // layout.addNumber("Sensor 1", { sensor1.getValue().toDouble() })
         // layout.addNumber("Sensor 2", { sensor2.getValue().toDouble() })

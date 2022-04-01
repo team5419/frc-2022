@@ -25,17 +25,19 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0, _velocity
       timer.start()
       feeder.currentVel = FeederConstants.activePercent
       intake.intake(velocity)
-      intake.positionDeploy(25.0);
+      //println("strating intake")
+      intake.setpointTicks = -25.0;
   }
 
   override fun execute() {
+    //println("running intake")
   }
 
   override fun end(interrupted: Boolean) {
     intake.stop()
     timer.stop()
-    feeder.currentVel = previousVel
-    intake.positionDeploy(0.0);
+    feeder.currentVel = previousVel;
+    intake.setpointTicks = 0.0;
   }
 
   // end command if time has elapsed

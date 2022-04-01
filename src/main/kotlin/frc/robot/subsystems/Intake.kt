@@ -28,6 +28,8 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     val controller = deployMotor.getPIDController()
     public val encoder = deployMotor.getEncoder()    
     private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(8, 0).withSize(2, 1);
+    private var deploySetpoint: Double = -2.0;
+    public var setpointTicks: Double = 0.0;
     // configure the motors and add to shuffleboard
     init {
 
@@ -66,7 +68,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
         
         controller.apply {
-            setP(1.0, 1)
+            setP(10.0, 1)
             setI(0.0, 1)
             setD(0.0, 1)
             setFF(10.0, 1)
@@ -77,7 +79,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         }
 
         //layout.addNumber("Velocity", { motor.getSelectedSensorVelocity() })
-        //layout.addNumber("Deploy pos", { encoder.getPosition() })
+        layout.addNumber("Deploy pos", { encoder.getPosition() })
         
     }
 
@@ -94,6 +96,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun positionDeploy(position: Double) {
+        println("setting intake pos ${position}");
         controller.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
@@ -102,6 +105,10 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun runDeploy(percent: Double = 1.0) {
+        if(percent == deploySetpoint) {
+            return;
+        }
+        deploySetpoint = percent;
         deployMotor.set(percent)
     }
 
