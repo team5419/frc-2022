@@ -24,9 +24,9 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = TalonFX(IntakeConstants.Ports.motor)
-    val deployMotor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.deployMotor, MotorType.kBrushless)
-    val controller = deployMotor.getPIDController()
-    public val encoder = deployMotor.getEncoder()    
+    var deployMotor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.deployMotor, MotorType.kBrushless)
+    var controller = deployMotor.getPIDController()
+    public var encoder = deployMotor.getEncoder()    
     private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(8, 0).withSize(2, 1);
     private var deploySetpoint: Double = -2.0;
     public var setpointTicks: Double = 0.0;
@@ -68,7 +68,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
         
         controller.apply {
-            setP(10.0, 1)
+            setP(0.05, 1)
             setI(0.0, 1)
             setD(0.0, 1)
             setFF(10.0, 1)
@@ -98,6 +98,8 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     public fun positionDeploy(position: Double) {
         println("setting intake pos ${position}");
         controller.setReference(position, CANSparkMax.ControlType.kPosition);
+        println("deploying intake !!!")
+
     }
 
     public fun reverse() {

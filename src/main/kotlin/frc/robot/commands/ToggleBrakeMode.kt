@@ -22,7 +22,6 @@ class ToggleBrakeMode(_drivetrain: Drivetrain) : CommandBase() {
 
   override fun initialize() {
     drivetrain.brakeMode = false
-    println(drivetrain.brakeMode)
   }
 
   override fun execute() {

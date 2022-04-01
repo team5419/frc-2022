@@ -4,18 +4,8 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.XboxController;
 
-import frc.robot.subsystems.Drivetrain
-import frc.robot.subsystems.Shooter
-import frc.robot.subsystems.Vision
-import frc.robot.subsystems.Indexer
-import frc.robot.subsystems.Feeder
-import frc.robot.subsystems.Intake
-import frc.robot.subsystems.Lights
-
-import frc.robot.commands.RamseteAction
-import frc.robot.commands.AutoAlign
-import frc.robot.commands.RunIntake
-import frc.robot.commands.ShootAndFeed
+import frc.robot.subsystems.*
+import frc.robot.commands.*
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
