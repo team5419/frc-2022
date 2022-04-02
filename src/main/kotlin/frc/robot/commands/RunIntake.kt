@@ -2,14 +2,17 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.DeploySubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.FeederConstants
 
 
-class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0, _velocity: Double = 1.0) : CommandBase() {
+class RunIntake(_intake: Intake, _deploy: DeploySubsystem, _feeder: Feeder, _time: Double = 0.0, _velocity: Double = 1.0) : CommandBase() {
+  
   private val intake: Intake = _intake
+  private val deploy: DeploySubsystem = _deploy
   private val feeder: Feeder = _feeder
   private val time: Double = _time
   private val timer: Timer = Timer()
@@ -25,19 +28,21 @@ class RunIntake(_intake: Intake, _feeder: Feeder, _time: Double = 0.0, _velocity
       timer.start()
       feeder.currentVel = FeederConstants.activePercent
       intake.intake(velocity)
-      //println("strating intake")
-      intake.setpointTicks = -25.0;
+      deploy.changeSetpoint(25.0);
   }
 
   override fun execute() {
-    //println("running intake")
+    println("running intake")
+    deploy.changeSetpoint(20.0);
+
   }
 
   override fun end(interrupted: Boolean) {
     intake.stop()
     timer.stop()
     feeder.currentVel = previousVel;
-    intake.setpointTicks = 0.0;
+    deploy.changeSetpoint(0.0)
+    println("ended")
   }
 
   // end command if time has elapsed
