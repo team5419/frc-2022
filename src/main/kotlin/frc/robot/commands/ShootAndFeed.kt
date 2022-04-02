@@ -52,7 +52,7 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
   }
 
   override fun isFinished(): Boolean {
-    return (time > 0.0 && timer.get() >= time) || (!indexer.atPositionOne() && !indexer.atPositionTwo() && !indexer.atPositionThree())
+    return (time > 0.0 && timer.get() >= time) && (!indexer.atPositionOne() && !indexer.atPositionTwo() && !indexer.atPositionThree())
   }
 
   override fun end(interrupted: Boolean) {

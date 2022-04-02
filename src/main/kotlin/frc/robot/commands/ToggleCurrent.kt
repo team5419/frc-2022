@@ -21,10 +21,10 @@ class ToggleCurrent(_drivetrain: Drivetrain) : CommandBase() {
   }
 
   override fun initialize() {
-    drivetrain.leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100);
-    drivetrain.leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100);
-    drivetrain.rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100);
-    drivetrain.rightFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100);
+    drivetrain.leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
+    drivetrain.leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
+    drivetrain.rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
+    drivetrain.rightFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
   }
 
   override fun execute() {

@@ -28,7 +28,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
             // run intake and move to first shoot position
             ParallelRaceGroup(
                 RunIntake(intake, deploy, feeder, 0.0),
-                //Feed(feeder),
+                Feed(feeder),
                 SequentialCommandGroup(
                     StartFeeding(feeder),
                     ParallelRaceGroup(
@@ -46,7 +46,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.75, false),
-                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 2.25),
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15500.0, 15500.0, 1.0),
                     // run intake and move to second shoot position
                     RamseteAction(drivetrain, listOf(
                         Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
@@ -64,7 +64,7 @@ class FourBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
                     ),
                     // shoots 2 balls
                     AutoAlign(vision, drivetrain, shooter, lights, 0.5, false),
-                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15250.0, 15250.0, 5.0)
+                    Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, 15250.0, 15250.0, 1.0)
                 )
             )
             

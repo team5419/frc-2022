@@ -41,7 +41,7 @@ object Lookup {
                     return entry
                 }
                 val prevEntry = table.get(i - 1)
-                return if (Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) prevEntry else entry
+                return if (Math.abs(entry.distance - distance) + 0.5 > Math.abs(prevEntry.distance - distance)) prevEntry else entry
             }
         }
 

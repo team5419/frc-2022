@@ -84,7 +84,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // safe zone shot (hold Y)
     val yButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
-    yButtonDriver.whenHeld(Shoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, driver, 20000.0, 20000.0))
+    yButtonDriver.whenHeld(AutoAlignAndShoot(m_vision, m_drivetrain, m_shooter, m_indexer, m_feeder, m_lights, 20000.0, 20000.0, driver))
 
     // CO-DRIVER CONTROLS ---------------------------------------------------------------->
     
@@ -123,9 +123,9 @@ class RobotContainer(tab: ShuffleboardTab) {
       // set default commands
       m_drivetrain.setDefaultCommand(Drive(m_drivetrain, driver, false, m_feeder));
       m_climber.setDefaultCommand(Climb(m_climber, codriver));
-    //m_feeder.setDefaultCommand(Feed(m_feeder));
+      m_feeder.setDefaultCommand(Feed(m_feeder));
       m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
-      m_deploy.setDefaultCommand(DefaultDeploy(m_deploy));
+      //m_deploy.setDefaultCommand(DefaultDeploy(m_deploy));
   }
 
   fun lightsOff() {

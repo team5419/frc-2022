@@ -28,7 +28,7 @@ class RunIntake(_intake: Intake, _deploy: DeploySubsystem, _feeder: Feeder, _tim
       timer.start()
       feeder.currentVel = FeederConstants.activePercent
       intake.intake(velocity)
-      deploy.changeSetpoint(25.0);
+      //deploy.changeSetpoint(25.0);
   }
 
   override fun execute() {
@@ -41,7 +41,7 @@ class RunIntake(_intake: Intake, _deploy: DeploySubsystem, _feeder: Feeder, _tim
     intake.stop()
     timer.stop()
     feeder.currentVel = previousVel;
-    deploy.changeSetpoint(0.0)
+    //deploy.changeSetpoint(0.0)
     println("ended")
   }
 

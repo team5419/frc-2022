@@ -132,7 +132,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     //check if flywheel velocity is at target
     public fun isSpedUp(): Boolean {
-        return flyWheelVelocity(mainMotor) / shooterMultiplier >= setpointMain -750.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= setpointKicker -750.0 && (setpointMain != 0.0 || setpointKicker != 0.0)
+        return flyWheelVelocity(mainMotor) / shooterMultiplier >= setpointMain -600.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= setpointKicker -600.0 && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 
     public fun stop() {
