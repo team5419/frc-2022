@@ -118,6 +118,10 @@ object ClimberConstants {
         val right1 = 10
         val left2 = 11
         val right2 = 12
+        val lsensor0 = 25
+        val lsensor1 = 26
+        val rsensor0 = 27
+        val rsensor1 = 28
         //val left3 = 13
         //val right3 = 14
     }
