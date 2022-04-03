@@ -24,10 +24,10 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
     val driver: XboxController = m_driver
     
     init {
-        val backwards1: Double = -0.4;
-        val backwards2: Double = 1.0;
+        val backwards1: Double = -0.5;
+        val backwards2: Double = 1.1;
         val angle: Double = 60.0
-        val x1: Double = 0.3 - backwards1 * Math.cos(Math.toRadians(angle));
+        val x1: Double = 0.2 - backwards1 * Math.cos(Math.toRadians(angle));
         val y1: Double = 1.2 + backwards1 * Math.sin(Math.toRadians(angle));
         val x2: Double = x1 - backwards2 * Math.cos(Math.toRadians(angle));
         val y2: Double = y1 + backwards2 * Math.sin(Math.toRadians(angle));

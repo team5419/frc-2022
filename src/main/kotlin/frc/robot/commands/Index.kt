@@ -23,7 +23,7 @@ class Index(_indexer: Indexer, _shooter: Shooter) : CommandBase() {
   override fun execute() {
     println("setting indexer !!!");
     if(shooter.isSpedUp()) {
-      indexer.index(0.5);
+      indexer.index(0.4);
     } else {
       indexer.index(0.0);
     }

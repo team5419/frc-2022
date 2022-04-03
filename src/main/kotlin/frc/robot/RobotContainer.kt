@@ -26,7 +26,7 @@ import frc.robot.ShooterConstants
 class RobotContainer(tab: ShuffleboardTab) {
 
   // subsystems
-  private val m_drivetrain = Drivetrain(tab);
+  public val m_drivetrain = Drivetrain(tab);
   private val m_shooter = Shooter(tab);
   private val m_vision = Vision(tab, m_drivetrain);
   private val m_indexer = Indexer(tab);
