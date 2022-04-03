@@ -24,10 +24,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = TalonFX(IntakeConstants.Ports.motor)
-    var deployMotor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.deployMotor, MotorType.kBrushless)
-    var controller = deployMotor.getPIDController()
-    public var encoder = deployMotor.getEncoder()    
-    private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(8, 0).withSize(2, 1);
+
     // configure the motors and add to shuffleboard
     init {
 
@@ -52,32 +49,6 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
             configClosedLoopPeakOutput(0, 0.1, 100)
         }
-
-        deployMotor.apply {
-            restoreFactoryDefaults()
-            setIdleMode(IdleMode.kBrake)
-            setInverted(false)
-            //setSensorPhase(false)
-            setSmartCurrentLimit(40)
-            setClosedLoopRampRate(1.0)
-            setControlFramePeriodMs(50)
-            setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
-        }
-
-        
-        controller.apply {
-            setP(0.05, 1)
-            setI(0.0, 1)
-            setD(0.0, 1)
-            setFF(10.0, 1)
-        }
-
-        encoder.apply {
-            setPosition(0.0)
-        }
-
-        //layout.addNumber("Velocity", { motor.getSelectedSensorVelocity() })
-        //layout.addNumber("Deploy pos", { encoder.getPosition() })
         
     }
 
@@ -85,27 +56,15 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         motor.set(ControlMode.PercentOutput, 0.0)
     }
 
-    public fun deployStop() {
-        deployMotor.set(0.0)
-    }
-
     public fun intake(velocity: Double = 1.0) {
         motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent * velocity)
     }
 
-    public fun positionDeploy(position: Double) {
-        controller.setReference(position, CANSparkMax.ControlType.kPosition);
-        println("deploying intake !!!")
-
-    }
 
     public fun reverse() {
         motor.set(ControlMode.PercentOutput, IntakeConstants.reversePercent)
     }
 
-    public fun runDeploy(percent: Double = 1.0) {
-        deployMotor.set(percent)
-    }
 
     override fun periodic() {
         //println(encoder.getPosition());

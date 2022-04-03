@@ -34,6 +34,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   private val m_feeder = Feeder(tab);
   private val m_intake = Intake(tab);
   private val m_lights = Lights(tab);
+  private val m_deploy = DeploySubsystem(tab);
 
   // creates a tab in shuffleboard to select autonomous routine
   val autoSelector = SendableChooser<SequentialCommandGroup>()
@@ -50,9 +51,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
     autoSelector.setDefaultOption("Baseline", Baseline())
     autoSelector.addOption("Baseline", Baseline())
-    autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
-    autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
-    autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_lights, driver))
+    autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_deploy, m_lights, driver))
+    autoSelector.addOption("Four Ball Auto", FourBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_deploy, m_lights, driver))
+    autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_drivetrain, m_shooter, m_vision, m_indexer, m_feeder, m_intake, m_deploy, m_lights, driver))
     autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter))
 
   }
@@ -71,7 +72,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // intake (hold X)
     val xButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
-    xButtonDriver.toggleWhenPressed(RunIntake(m_intake, m_feeder))
+    xButtonDriver.toggleWhenPressed(RunIntake(m_intake, m_deploy, m_feeder))
 
     // drivetrain slow mode (hold left bumper)
     val lBumperDriver : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
@@ -101,11 +102,11 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // raise intake (hold right bumper)
     val rBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)
-    rBumperCodriver.whenHeld(Deploy(m_intake, -0.8))
+    rBumperCodriver.whenHeld(Deploy(m_deploy, -0.8))
 
     // lower intake (hold left bumper)
     val lBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kLeftBumper.value)
-    lBumperCodriver.whenHeld(Deploy(m_intake, 0.8))
+    lBumperCodriver.whenHeld(Deploy(m_deploy, 0.8))
 
     // invert drivetrain
     val xButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
@@ -124,6 +125,7 @@ class RobotContainer(tab: ShuffleboardTab) {
       m_climber.setDefaultCommand(Climb(m_climber, codriver));
     //m_feeder.setDefaultCommand(Feed(m_feeder));
       m_indexer.setDefaultCommand(DefaultIndex(m_indexer, m_lights));
+      m_deploy.setDefaultCommand(DefaultDeploy(m_deploy));
   }
 
   fun lightsOff() {

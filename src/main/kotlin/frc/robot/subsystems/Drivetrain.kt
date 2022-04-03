@@ -32,7 +32,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     init {
         leftLeader.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 15.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
             setSensorPhase(false)
             setInverted(false)
@@ -198,17 +198,17 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         if(isSlow) slow = DriveConstants.slowMultiplier
 
         // NICER WAY TO CONTROL ROBOT????????????
-        // var turn2 = turn * (throttle + 0.5)
-        // var t_left = inverted * (throttle - turn2)
-        // var t_right = inverted * (throttle + turn2)
-        // var left = (t_left + withSkim(t_right)) * slow
-        // var right = (t_right + withSkim(t_left)) * slow
-        // leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.01))
-        // rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.01))
+        var turn2 = withDeadband(turn, 0.1) * (throttle + 0.5)
+        var t_left = inverted * (throttle - turn2)
+        var t_right = inverted * (throttle + turn2)
+        var left = (t_left + withSkim(t_right)) * slow
+        var right = (t_right + withSkim(t_left)) * slow
+        leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.1))
+        rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.1))
 
         // set percent outputs of drivetrain motors
-        leftLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle - turn) * slow, 0.001))
-        rightLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle + turn) * slow, 0.001))
+        //leftLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle - turn) * slow, 0.001))
+        //rightLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle + turn) * slow, 0.001))
     }
 
     public var brakeMode = false

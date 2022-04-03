@@ -7,22 +7,31 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.IndexerConstants
 
 
-class Deploy(_deploy: DeploySubsystem, _percent: Double = 1.0) : CommandBase() {
+class DefaultDeploy(_deploy: DeploySubsystem) : CommandBase() {
   private val deploy: DeploySubsystem = _deploy
-  private val percent: Double = _percent
 
   init {
+    addRequirements(_deploy);
   }
 
   override fun initialize() {
-    deploy.runDeploy(percent)
   }
 
   override fun execute() {
+      val gotten = deploy.encoder.getPosition()
+      println("setpoint: " + deploy.setpointTicks)
+      if(Math.abs(gotten - deploy.setpointTicks) < 10.0) {
+          return;
+      }
+      if(gotten < deploy.setpointTicks) {
+          deploy.runDeploy(0.2);
+      } else {
+          deploy.runDeploy(-0.2);
+      }
   }
 
   override fun end(interrupted: Boolean) {
-    deploy.deployStop()
+    deploy.runDeploy(0.0)
   }
 
   // end command if time has elapsed
