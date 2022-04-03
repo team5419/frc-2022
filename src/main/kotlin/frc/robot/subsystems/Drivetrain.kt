@@ -132,6 +132,12 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     val pose: Pose2d
         get() = odometry.getPoseMeters()
 
+    fun resetOdometry() {
+        odometry.resetPosition(Pose2d(0.0, 0.0, Rotation2d(0.0)), Rotation2d(angle))
+        leftLeader.setSelectedSensorPosition(0.0)
+        rightLeader.setSelectedSensorPosition(0.0)
+    }
+
     // unit conversion functions
     fun nativeUnitsToMeters(units: Double): Double =
         (DriveConstants.wheelCircumference * units.toDouble() / DriveConstants.ticksPerRotation)

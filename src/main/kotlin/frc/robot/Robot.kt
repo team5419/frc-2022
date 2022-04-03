@@ -38,6 +38,7 @@ class Robot : TimedRobot() {
     if(m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    m_robotContainer.m_drivetrain.resetOdometry()
   }
 
   override fun autonomousPeriodic() {}
