@@ -126,6 +126,31 @@ object ClimberConstants {
         //val right3 = 14
     }
     val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
+    object Pair0 {
+        object Left {
+            val min: Double = 0.0 // the hard stop for how low the climber can go (should be zero as long as the climbers are down when you deploy the code)
+            val max: Double = 10.0 // the hard stop for how high the climber can go
+        }
+        object Right { // you can adjust these values individually for each climber
+            val min: Double = 0.0
+            val max: Double = 10.0
+        }
+    }
+    object Pair1 {
+        object Left {
+            val min: Double = 0.0
+            val max: Double = 10.0
+        }
+        object Right {
+            val min: Double = 0.0
+            val max: Double = 10.0
+        }
+    }
+    // adjust these when using the setPairSlightAdjust function
+    val adjustmentDeadband: Double = 1.0 // increasing this may prevent climbers from jerking back and forth
+    // after you find min and max values, i would suggest setting this to roughly (max - min) / 50
+    val adjustment: Double = -2000.0 // this represents how much the sensors will affect the climbers when adjusting
+    // i'm pretty sure the climbers go up when the value is negative, so this value is also negative
 }
 
 object LightsConstants {

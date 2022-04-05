@@ -17,11 +17,63 @@ class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
   }
 
   override fun execute() {
+   // ok have fun testing and relax knowing that you aren't responsible for the faulty code
+   // i've labeled each section with numbers
+   // test out one section at a time, and pay attention to any special instructions
+   // by "test out", i mean uncomment the ~two lines of code directly below the description of the step
+
+   // step 1: normal velocity control. if this doesn't work, stop. something is wrong. tell theo and emma.
+   // once you know that it's working, pull up shuffleboard and find the climber section
+   // find the value labeled "setpoint"
+   // enable the robot and watch the setpoint as karan raises the climbers. 
+   // if it's negative, then you're all good. if it's positive, you're slightly fucked.
+   // but that's okay because programming team is awesome and there are instructions for you to follow
+   // (i'll mention them in future steps)
+   // anyway continue to step 2
    // climber.setPairVelocity(0, codriver.getRightY(), codriver.getRightX() * 0.2)
    // climber.setPairVelocity(1, codriver.getLeftY(), codriver.getLeftX() * 0.2)
 
-    climber.setPair0(codriver.getRightY(), codriver.getRightX() * 0.2)
-    climber.setPair1(codriver.getLeftY(), codriver.getLeftX() * 0.2)
+   // step 2: normal control with minimum and maximum hard stops. before you begin, follow these steps:
+   // - go back and uncomment step 1 (normal control)
+   // - enable the robot and pull up the shuffleboard tab
+   // - find the "climber" section. there should be values for each sensor posted
+   // - stow the climbers and redeploy or restart the code. the values should be at 0
+   // - if they're not quite 0 for some reason, go to constants and change the minimum values to reflect your results
+   // - tell karan to raise the climbers all the way
+   // - check the values on shuffleboard and edit the maximum values in constants to match them
+   // - (you might want to go a little under because the motors will only stop once the maximum values are reached)
+   // - make sure the maximum values are greater than the minimum values. if not, the sensors are the wrong way so flip them around.
+   // - before you try out this new function, remember whether your setpoint value from step 1 ended up being positive.
+   // - if it was, head over to subsystems/Climber.kt and scroll to line 189 where there are some instructions. follow them.
+   // - ok you're ready to uncomment the following two lines and try it out
+   // climber.setPairWithStops(0, codriver.getRightY(), codriver.getRightX() * 0.2)
+   // climber.setPairWithStops(1, codriver.getLeftY(), codriver.getLeftX() * 0.2)
+
+   // step 3: pid control
+   // there's not much to adjust with this one, just try it out and stop if it's acting really weird
+   // if it is acting weird, please @emma on slack and say "told you so"
+   // ok try it out
+   // climber.setPairPIDAdjust(0, codriver.getRightY(), codriver.getRightX() * 0.2)
+   // climber.setPairPIDAdjust(1, codriver.getLeftY(), codriver.getLeftX() * 0.2)
+
+   // step 4: adjustment control
+   // this one is not going to work at first, because there are a lot of unknowns
+   // go to subsystems/Climber.kt and scroll to line 223 where there are some notes about how to tweak the function
+   // so try it out, and then make adjustments accordingly
+   // also it's worth noting that this one has a higher deadband for manual adjusting because 
+   // the automatic adjustment control will only turn on when the codriver isn't adjusting manually
+   // climber.setPairSlightAdjust(0, codriver.getRightY(), codriver.getRightX() * 0.2)
+   // climber.setPairSlightAdjust(1, codriver.getLeftY(), codriver.getLeftX() * 0.2)
+
+   // step 5: normal control with adjustment button
+   // go back and uncomment the code for step 1
+   // (or, if step 2 worked, do that instead)
+   // go to robotcontainer.kt and scroll to line 115
+   // comment out line 115 and uncomment line 116 in its place
+   // basically, the codriver is going to control the climbers as usual
+   // when they get unleveled, the codriver should be able to hold X in order to enable the pid control from step 3.
+   // have fun testing
+   // when you're done, undo your changes in robotcontainer.kt so that the codriver can use the X button as usual to invert the drivetrain
   }
 
   override fun end(interrupted: Boolean) {

@@ -10,7 +10,6 @@ import frc.robot.FeederConstants;
 class Feed(_feeder: Feeder) : CommandBase() {
   private val feeder: Feeder = _feeder
 
-
   init {
     addRequirements(_feeder);
     feeder.currentVel = FeederConstants.idlePercent
