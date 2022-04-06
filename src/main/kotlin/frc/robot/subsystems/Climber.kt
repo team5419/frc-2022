@@ -70,12 +70,12 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                     config_kF(0, 0.0, 100)
 
                     // velocity controlle PID
-                    config_kP(1, 0.5, 100)
-                    config_kI(1, 0.0, 100)
-                    config_kD(1, 0.0, 100)
-                    config_kF(1, 0.06, 100)
+                    config_kP(1, ClimberConstants.PID.P, 100)
+                    config_kI(1, ClimberConstants.PID.I, 100)
+                    config_kD(1, ClimberConstants.PID.D, 100)
+                    config_kF(1, ClimberConstants.PID.F, 100)
 
-                    // bang bang PID
+                    // velocity controlle PID selected
                     selectProfileSlot(1, 0)
 
                     setSelectedSensorPosition(0.0, 0, 100)
@@ -192,10 +192,10 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         // second, that negative power on the motors actually makes the climbers go up rather than down
         // (this is just based on what i remember from previous testing)
         // if this second assumption is wrong (aka setpoint is positive), then...
-        // replace line 174, column 19 with >
-        // replace line 174, column 71 with <
-        // replace line 177, column 20 with >
-        // and replace line 177, column 75 with < 
+        // replace line 183, column 19 with >
+        // replace line 183, column 71 with <
+        // replace line 186, column 20 with >
+        // and replace line 186, column 75 with < 
         // P.S. unlike all of these other testing functions, this one should definitely work
         // because it's just a clone of the original climbing functions with some limits imposed.
         // if it doesn't work, tell theo or emma on slack and specify what wasn't working
@@ -228,6 +228,16 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         // once it starts sort of working, you'll need to find a good deadband that will prevent the climbers from
         // jerking back and forth, as well as an adjustment rate that successfully levels the climbers without
         // speeding past the deadband and causing a huge oscillation.
+    }
+
+    public fun toMax(pair: Int) {
+        pairs[pair].left.motor.set(ControlMode.Position, pairs[pair].left.max);
+        pairs[pair].right.motor.set(ControlMode.Position, pairs[pair].right.max);
+    }
+
+    public fun toMin(pair: Int) {
+        pairs[pair].left.motor.set(ControlMode.Position, pairs[pair].left.min);
+        pairs[pair].right.motor.set(ControlMode.Position, pairs[pair].right.min);
     }
 
     public fun setPair(pair: Int, throttle: Double) {

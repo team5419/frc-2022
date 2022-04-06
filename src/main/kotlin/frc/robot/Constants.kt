@@ -151,6 +151,13 @@ object ClimberConstants {
     // after you find min and max values, i would suggest setting this to roughly (max - min) / 50
     val adjustment: Double = -2000.0 // this represents how much the sensors will affect the climbers when adjusting
     // i'm pretty sure the climbers go up when the value is negative, so this value is also negative
+
+    object PID {
+        val P: Double = 0.5
+        val I: Double = 0.0
+        val D: Double = 0.0
+        val F: Double = 0.06
+    }
 }
 
 object LightsConstants {

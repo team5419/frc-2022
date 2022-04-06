@@ -209,8 +209,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         var t_right = inverted * (throttle + turn2)
         var left = (t_left + withSkim(t_right)) * slow
         var right = (t_right + withSkim(t_left)) * slow
-        leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.1))
-        rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.1))
+        leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.05))
+        rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.05))
 
         // set percent outputs of drivetrain motors
         //leftLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle - turn) * slow, 0.001))

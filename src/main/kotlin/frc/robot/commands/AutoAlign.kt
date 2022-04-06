@@ -53,16 +53,7 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _li
   }
 
   override fun isFinished() : Boolean {
-    if(time > 0.0 && timer.get() > time) {
-      return true
-    }
-    // if(timer.get() > 0.5) {
-    //   if(throttling) {
-    //     return (vision.turnAligned() && vision.throttleAligned(setpoint.distance))
-    //   }
-    //   return (vision.turnAligned())
-    // }
-    return false
+    return time != 0.0 && (timer.get() > time || (timer.get() > 0.2 && vision.turnAligned() && vision.throttleAligned(setpoint.distance)))
   }
 
   override fun end(interrupted: Boolean) {

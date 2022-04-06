@@ -4,16 +4,19 @@ import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
+import kotlin.math.roundToInt
 
 class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
   private val climber: Climber = _climber;
   private val codriver: XboxController = _codriver;
+  private var selected: Int = 0;
 
   init {
     addRequirements(_climber);
   }
 
   override fun initialize() {
+    selected = 0;
   }
 
   override fun execute() {
@@ -74,6 +77,54 @@ class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
    // when they get unleveled, the codriver should be able to hold X in order to enable the pid control from step 3.
    // have fun testing
    // when you're done, undo your changes in robotcontainer.kt so that the codriver can use the X button as usual to invert the drivetrain
+
+   // step 6: normal control with funky d-pad
+   // - this one makes use of the values you got for min and max in step 2, so make sure you have those set in constants
+   // - pay attention, because the controls are really strange.
+   // - as usual, the codriver can climb and adjust with the joysticks
+   // - however, they can also use the d-pad to automatically raise/lower the various climber pairs
+   // - to their maximums and minimums using PID control
+   // - the codriver can use the left and right buttons on the d-pad to switch between selected climber pair
+   // - (and no, i don't know which one corresponds to outer climbers and which one goes with middle climbers)
+   // - they can use the up and down buttons on the d-pad to either raise or lower the selected climber pair
+   // - note that this is pid control, which means that the climbers should stay where they are until 
+   // - the codriver touches the joysticks once again (i've set a deadband to make sure no functions are called accidentally)
+   // - if the climbers move really fast or really slow (or not at all) when using pid, head to the constants
+   // - file because you have some work to do. find the PID object for the climber and tune those values
+   // - if you don't know how, ask mr. wright or somebody who can explain it to you
+   // - it's 11:30 PM EST. i am hunched over on a hotel bed in the Marriott in Cambridge. i don't know how much longer i can take this
+   // - (AKA i am not going to explain pid right now)
+   // - anywho try it out! make sure you uncomment all of the code below this, because there's a bit more than usual.
+   // - P.S. when tf does fahrenheit 452 come out bc that shit was fire
+   // - bradbury been lacking recently istg
+  //  var dpad: Int = codriver.getPOV();
+  //  if(dpad != -1) {
+  //    var angle: Double = dpad / 90.0;
+  //    var final: Int = angle.roundToInt();
+  //    if(final == 4) {
+  //      final = 0;
+  //    }
+  //    if(final == 3) {
+  //      selected = 0;
+  //    } else if(final == 1) {
+  //      selected = 1;
+  //    } else if(final == 0) {
+  //      climber.toMax(selected);
+  //    } else if(final == 2) {
+  //      climber.toMin(selected);
+  //    }
+  //  } else {
+  //    val righty: Double = codriver.getRightY();
+  //    val rightx: Double = codriver.getRightX();
+  //    val lefty: Double = codriver.getLeftY();
+  //    val leftx: Double = codriver.getLeftX();
+  //    if(Math.abs(righty) > 0.05 && Math.abs(rightx) > 0.05) {
+  //     climber.setPairVelocity(0, righty, rightx * 0.2)
+  //    }
+  //    if(Math.abs(lefty) > 0.05 && Math.abs(leftx) > 0.05) {
+  //     climber.setPairVelocity(0, lefty, leftx * 0.2)
+  //    }
+  //  }
   }
 
   override fun end(interrupted: Boolean) {
