@@ -30,12 +30,12 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // declare motors and ports
     public val pairs: Array<ClimberPair> = arrayOf(
         ClimberPair(
-            ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, AnalogInput(ClimberConstants.Ports.lsensor0), ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
-            ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, AnalogInput(ClimberConstants.Ports.rsensor0), ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
+            ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
+            ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
         ),
         ClimberPair(
-            ClimberSingle(TalonFX(ClimberConstants.Ports.left2), true, AnalogInput(ClimberConstants.Ports.lsensor1), ClimberConstants.Pair1.Left.min, ClimberConstants.Pair1.Left.max),
-            ClimberSingle(TalonFX(ClimberConstants.Ports.right2), false, AnalogInput(ClimberConstants.Ports.rsensor1), ClimberConstants.Pair1.Right.min, ClimberConstants.Pair1.Right.max)
+            ClimberSingle(TalonFX(ClimberConstants.Ports.left2), true, /*AnalogInput(ClimberConstants.Ports.lsensor1), */ ClimberConstants.Pair1.Left.min, ClimberConstants.Pair1.Left.max),
+            ClimberSingle(TalonFX(ClimberConstants.Ports.right2), false, /*AnalogInput(ClimberConstants.Ports.rsensor1), */ ClimberConstants.Pair1.Right.min, ClimberConstants.Pair1.Right.max)
         )
     )
     private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
@@ -94,9 +94,9 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
             pairs[i].left.motor.setInverted(pairs[i].left.inverted);
             pairs[i].right.motor.setInverted(pairs[i].right.inverted);
 
-            val newLayout: ShuffleboardLayout = layout.getLayout("Pair ${i}", BuiltInLayouts.kList);
-            newLayout.addNumber("left sensor", { left(i) });
-            newLayout.addNumber("right sensor", { right(i) });
+            //val newLayout: ShuffleboardLayout = layout.getLayout("Pair ${i}", BuiltInLayouts.kList);
+            //newLayout.addNumber("left sensor", { left(i) });
+            //newLayout.addNumber("right sensor", { right(i) });
             //newLayout.addNumber("left", { pairs[i].left.getSelectedSensorVelocity() });
             //newLayout.addNumber("right", { pairs[i].right.getSelectedSensorVelocity() });
         }
@@ -105,11 +105,13 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     fun left(pair: Int): Double {
-        return pairs[pair].left.sensor.getValue().toDouble()
+        return 0.0;
+        //return pairs[pair].left.sensor.getValue().toDouble()
     }
 
     fun right(pair: Int): Double {
-        return pairs[pair].right.sensor.getValue().toDouble()
+        return 0.0;
+        //return pairs[pair].right.sensor.getValue().toDouble()
     }
 
     // val left0: Double
@@ -150,8 +152,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         pairs[pair].previousThrottle = throttle;
         pairs[pair].previousTurn = turn;
         val f: Double = 15000.0;
-        val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
-        val rightturn: Double =/*  if(turn > 0) */ withDeadband(turn, 0.05)// else 0.0;
+        val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.1)// else 0.0;
+        val rightturn: Double =/*  if(turn > 0) */ withDeadband(turn, 0.1)// else 0.0;
         pairs[pair].left.motor.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
         pairs[pair].right.motor.set(ControlMode.Velocity, (withDeadband(-throttle + rightturn, 0.1)) * f);
         lastLeftSetpoint = (withDeadband(-throttle - leftturn, 0.1)) * f;
