@@ -14,17 +14,18 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.*
 
 
-class ToggleCurrent(_drivetrain: Drivetrain) : CommandBase() {
+class LimitCurrent(_drivetrain: Drivetrain) : CommandBase() {
   private val drivetrain: Drivetrain = _drivetrain;
 
   init {
   }
 
   override fun initialize() {
-    drivetrain.leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
-    drivetrain.leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
-    drivetrain.rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
-    drivetrain.rightFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
+    println("LIMITING CURRENT")
+    drivetrain.leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100);
+    drivetrain.leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100);
+    drivetrain.rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100);
+    drivetrain.rightFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100);
   }
 
   override fun execute() {

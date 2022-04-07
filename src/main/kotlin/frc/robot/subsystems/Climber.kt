@@ -33,13 +33,13 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     )
     private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
-    private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
-    private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
+    // private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
+    // private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
 
-    public val leftSensor0 = AnalogInput(ClimberConstants.Ports.lsensor0)
-    public val rightSensor0 = AnalogInput(ClimberConstants.Ports.rsensor0)
-    public val leftSensor1 = AnalogInput(ClimberConstants.Ports.lsensor1)
-    public val rightSensor1 = AnalogInput(ClimberConstants.Ports.rsensor1)
+    // public val leftSensor0 = AnalogInput(ClimberConstants.Ports.lsensor0)
+    // public val rightSensor0 = AnalogInput(ClimberConstants.Ports.rsensor0)
+    // public val leftSensor1 = AnalogInput(ClimberConstants.Ports.lsensor1)
+    // public val rightSensor1 = AnalogInput(ClimberConstants.Ports.rsensor1)
 
 
     // configure the motors and add to shuffleboard
@@ -53,7 +53,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                     setNeutralMode(NeutralMode.Brake)
                     setSensorPhase(false)
 
-                    configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+                    configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
                     // bang bang PID
                     config_kP(0, 10000.0, 100)
@@ -92,14 +92,14 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         }
     }
 
-    val left0: Double
-        get() = leftSensor0.getValue().toDouble()
-    val right0: Double
-        get() = rightSensor0.getValue().toDouble()
-    val left1: Double 
-        get() = leftSensor1.getValue().toDouble()
-    val right1: Double
-        get() = rightSensor1.getValue().toDouble()
+    // val left0: Double
+    //     get() = leftSensor0.getValue().toDouble()
+    // val right0: Double
+    //     get() = rightSensor0.getValue().toDouble()
+    // val left1: Double 
+    //     get() = leftSensor1.getValue().toDouble()
+    // val right1: Double
+    //     get() = rightSensor1.getValue().toDouble()
 
     fun getAllVelocities() : List<Double> {
         var returning: MutableList<Double> = mutableListOf<Double>();
@@ -137,21 +137,21 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         //println("setting velocity to: " + ((withDeadband(-throttle, 0.1)) * f))
     }
 
-    public fun setPair0(throttle: Double, turn: Double = 0.0) {
-        val f: Double = 15000.0;
-        val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
-        pairs[0].left.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
-        m_controller.setGoal(left0);
-        pairs[0].right.set(ControlMode.Velocity, m_controller.calculate(right0));
-    }
+    // public fun setPair0(throttle: Double, turn: Double = 0.0) {
+    //     val f: Double = 15000.0;
+    //     val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
+    //     pairs[0].left.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
+    //     m_controller.setGoal(left0);
+    //     pairs[0].right.set(ControlMode.Velocity, m_controller.calculate(right0));
+    // }
 
-    public fun setPair1(throttle: Double, turn: Double = 0.0) {
-        val f: Double = 15000.0;
-        val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
-        pairs[1].left.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
-        m_controller.setGoal(left1);
-        pairs[1].right.set(ControlMode.Velocity, m_controller.calculate(right1));
-    }
+    // public fun setPair1(throttle: Double, turn: Double = 0.0) {
+    //     val f: Double = 15000.0;
+    //     val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
+    //     pairs[1].left.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
+    //     m_controller.setGoal(left1);
+    //     pairs[1].right.set(ControlMode.Velocity, m_controller.calculate(right1));
+    // }
 
     public fun setPair(pair: Int, throttle: Double) {
         val f: Double = 0.5;

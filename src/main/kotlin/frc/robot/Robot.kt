@@ -47,7 +47,7 @@ class Robot : TimedRobot() {
     if(m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    ToggleCurrent(m_robotContainer.m_drivetrain)
+    LimitCurrent(m_robotContainer.m_drivetrain)
 
   }
 

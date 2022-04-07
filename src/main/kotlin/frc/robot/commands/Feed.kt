@@ -7,18 +7,18 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.FeederConstants;
 
 
-class Feed(_feeder: Feeder) : CommandBase() {
+class Feed(_feeder: Feeder, _velocity: Double = FeederConstants.idlePercent) : CommandBase() {
   private val feeder: Feeder = _feeder
-
+  private val velocity: Double = _velocity
 
   init {
     addRequirements(_feeder);
-    feeder.currentVel = FeederConstants.idlePercent
+    feeder.currentVel = velocity
 
   }
 
   override fun initialize() {
-    feeder.currentVel = FeederConstants.idlePercent
+    feeder.currentVel = velocity
   }
 
   override fun execute() {

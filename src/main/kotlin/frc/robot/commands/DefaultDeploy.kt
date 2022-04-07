@@ -20,10 +20,10 @@ class DefaultDeploy(_deploy: DeploySubsystem) : CommandBase() {
   override fun execute() {
       val gotten = deploy.encoder.getPosition()
       println("setpoint: " + deploy.setpointTicks)
-      if(Math.abs(gotten - deploy.setpointTicks) < 10.0) {
+      if(Math.abs(gotten - deploy.setpointTicks) < 2.0) {
           return;
       }
-      if(gotten < deploy.setpointTicks) {
+      if(gotten < deploy.setpointTicks && deploy.setpointTicks != 0.0) {
           deploy.runDeploy(0.2);
       } else {
           deploy.runDeploy(-0.2);
