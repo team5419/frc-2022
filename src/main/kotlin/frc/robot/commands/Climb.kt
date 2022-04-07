@@ -9,14 +9,14 @@ import kotlin.math.roundToInt
 class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
   private val climber: Climber = _climber;
   private val codriver: XboxController = _codriver;
-  private var selected: Int = 0;
+  //private var selected: Int = 0;
 
   init {
     addRequirements(_climber);
   }
 
   override fun initialize() {
-    selected = 0;
+    //selected = 0;
   }
 
   override fun execute() {
