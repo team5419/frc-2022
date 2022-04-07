@@ -132,6 +132,12 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     val pose: Pose2d
         get() = odometry.getPoseMeters()
 
+    fun resetOdometry() {
+        odometry.resetPosition(Pose2d(0.0, 0.0, Rotation2d(0.0)), Rotation2d(angle))
+        leftLeader.setSelectedSensorPosition(0.0)
+        rightLeader.setSelectedSensorPosition(0.0)
+    }
+
     // unit conversion functions
     fun nativeUnitsToMeters(units: Double): Double =
         (DriveConstants.wheelCircumference * units.toDouble() / DriveConstants.ticksPerRotation)
@@ -203,8 +209,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         var t_right = inverted * (throttle + turn2)
         var left = (t_left + withSkim(t_right)) * slow
         var right = (t_right + withSkim(t_left)) * slow
-        leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.1))
-        rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.1))
+        leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.05))
+        rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.05))
 
         // set percent outputs of drivetrain motors
         //leftLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle - turn) * slow, 0.001))

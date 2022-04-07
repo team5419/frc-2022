@@ -36,8 +36,8 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
     shooter.shoot(main, kicker)
     println("shooting")
 
-    //driver.setRumble(RumbleType.kLeftRumble, 1.0);
-    //driver.setRumble(RumbleType.kRightRumble, 1.0);
+    driver.setRumble(RumbleType.kLeftRumble, 1.0);
+    driver.setRumble(RumbleType.kRightRumble, 1.0);
   }
 
   override fun execute() {
@@ -61,7 +61,7 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
       lights.setColor(RGB(0, 0, 0))
       shooter.stop()
       indexer.stop()
-      // driver.setRumble(RumbleType.kLeftRumble, 0.0);
-      // driver.setRumble(RumbleType.kRightRumble, 0.0);
+      driver.setRumble(RumbleType.kLeftRumble, 0.0);
+      driver.setRumble(RumbleType.kRightRumble, 0.0);
   }
 }

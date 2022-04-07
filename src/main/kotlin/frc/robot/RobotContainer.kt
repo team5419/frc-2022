@@ -108,9 +108,12 @@ class RobotContainer(tab: ShuffleboardTab) {
     val lBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kLeftBumper.value)
     lBumperCodriver.whenHeld(Deploy(m_deploy, 0.8))
 
-    // invert drivetrain
+    // invert drivetrain (press X)
+    
     val xButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
+    
     xButtonCodriver.whenPressed(InvertDrive(m_drivetrain))
+    //xButtonCodriver.whenHeld(ClimbButton(m_climber))
   }
 
 
