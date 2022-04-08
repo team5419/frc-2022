@@ -48,8 +48,7 @@ class Robot : TimedRobot() {
     if(m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    LimitCurrent(m_robotContainer.m_drivetrain)
-
+    m_robotContainer.m_drivetrain.currentLimit = 20.0
   }
 
   override fun teleopPeriodic() {}

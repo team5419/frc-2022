@@ -39,7 +39,7 @@ class FiveBallAuto(m_drivetrain: Drivetrain, m_shooter: Shooter, m_vision: Visio
         
             ParallelRaceGroup(
                 RunIntake(intake, deploy, feeder, 0.0),
-                ToggleCurrent(drivetrain),
+                ToggleCurrent(drivetrain, 60.0),
                 Feed(feeder, 0.6),
                 //DefaultDeploy(deploy),
                 SequentialCommandGroup(

@@ -70,7 +70,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
-            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 50, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 50)
 
             setNeutralMode(NeutralMode.Coast)
         }
@@ -87,6 +88,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             enableVoltageCompensation(true)
             
             configClosedLoopPeakOutput(0, 0.1, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 50, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 50)
         }
 
         rightFollower.apply {
@@ -101,6 +104,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             enableVoltageCompensation(true)
 
             configClosedLoopPeakOutput(0, 0.1, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 50, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 50)
         }
 
          gyro.apply {
@@ -226,6 +231,15 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
                 leftLeader.setNeutralMode(NeutralMode.Coast)
                 rightLeader.setNeutralMode(NeutralMode.Coast)
             }
+        }
+
+    public var currentLimit: Double = 20.0
+        set(value: Double) {
+            println("setting current limit to ${value}");
+            leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
+            leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
+            rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
+            rightFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
         }
 
     override fun periodic() {
