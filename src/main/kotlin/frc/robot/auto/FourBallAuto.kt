@@ -43,14 +43,14 @@ class FourBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                     // run intake and move to second shoot position
                     RamseteAction(subsystems, listOf(
                         Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-4.0, -1.8, Rotation2d.fromDegrees(0.0))
+                        Pose2d(-4.0, -1.5, Rotation2d.fromDegrees(0.0))
                     ), false),
                     Wait(0.25),
                     // intake 2 balls from the human player station
                     // moves to new shot location
                     ParallelRaceGroup(
                         RamseteAction(subsystems, listOf(
-                            Pose2d(-4.0, -1.8, Rotation2d.fromDegrees(0.0)), 
+                            Pose2d(-4.0, -1.5, Rotation2d.fromDegrees(0.0)), 
                             Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
                         ), true),
                         SpinUp(subsystems, 15250.0, 15250.0)

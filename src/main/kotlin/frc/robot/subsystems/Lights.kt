@@ -42,7 +42,7 @@ class Lights(tab: ShuffleboardTab) : SubsystemBase() {
 
     public fun setColor(rgb: RGB) {
         currentRGB = rgb;
-        candle.setLEDs(rgb.g, rgb.r, rgb.b, 255, 0, 5)
+        candle.setLEDs(rgb.g, rgb.r, rgb.b)
     }
 
     public fun off() {

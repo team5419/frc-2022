@@ -17,7 +17,7 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
     val driver: XboxController = m_driver
     
     init {
-        val backwards1: Double = -0.7;
+        val backwards1: Double = 0.0; // -0.7;
         val backwards2: Double = 0.9;
         val angle: Double = 60.0
         val x1: Double = 0.3 - backwards1 * Math.cos(Math.toRadians(angle));
@@ -33,7 +33,7 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
             ParallelRaceGroup(
                 RunIntake(subsystems, 0.0),
                 ToggleCurrent(subsystems, 60.0),
-                Feed(subsystems, 0.6),
+                //Feed(subsystems, 0.6),
                 //DefaultDeploy(deploy),
                 SequentialCommandGroup(
                     StartFeeding(subsystems),
@@ -50,13 +50,13 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                     // run intake and move to second shoot position
                     RamseteAction(subsystems, listOf(
                         Pose2d(-0.9, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-4.0, -1.2, Rotation2d.fromDegrees(0.0))
+                        Pose2d(-4.0, -1.5, Rotation2d.fromDegrees(0.0))
                     ), false),
                     Wait(0.0),
                     // intake 2 balls from the human player station
                     ParallelRaceGroup(
                         RamseteAction(subsystems, listOf(
-                            Pose2d(-4.0, -1.2, Rotation2d.fromDegrees(0.0)),
+                            Pose2d(-4.0, -1.5, Rotation2d.fromDegrees(0.0)),
                             Pose2d(x1, y1, Rotation2d.fromDegrees(-angle))
                         ), true),
                         SpinUp(subsystems, 14500.0, 13500.0),

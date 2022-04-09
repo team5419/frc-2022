@@ -40,8 +40,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     )
     private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
-     private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
-     private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
+    //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
+    //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
 
     private var lastLeftSetpoint: Double = 0.0
     // public val leftSensor0 = AnalogInput(ClimberConstants.Ports.lsensor0)

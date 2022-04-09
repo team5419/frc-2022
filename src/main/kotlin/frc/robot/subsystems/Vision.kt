@@ -14,6 +14,10 @@ import frc.robot.Lookup
 import frc.robot.LookupEntry
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+import edu.wpi.first.networktables.NetworkTableEntry
+import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 
 class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
@@ -66,7 +70,21 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         layout.addNumber("Offset", { getHorizontalOffset() })
         layout.addBoolean("Aligned", { turnAligned() })
         layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
-        
+        // layout.add("TURN P", VisionConstants.TurnPID.P)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .withProperties(mapOf("min" to 0.0, "max" to 5.0))
+        //     .getEntry()
+        //     .addListener({ value: EntryNotification -> this.turnController.setP(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
+        // layout.add("TURN I", VisionConstants.TurnPID.I)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .withProperties(mapOf("min" to 0.0, "max" to 0.5))
+        //     .getEntry()
+        //     .addListener({ value: EntryNotification -> this.turnController.setI(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
+        // layout.add("TURN D", VisionConstants.TurnPID.D)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .withProperties(mapOf("min" to 0.0, "max" to 0.5))
+        //     .getEntry()
+        //     .addListener({ value: EntryNotification -> this.turnController.setD(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
     }
 
     // check if the limelight is picking up on the target
@@ -75,6 +93,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public fun turnAligned(): Boolean {
+        //return isTargetFound() && Math.abs(getHorizontalOffset() + VisionConstants.targetOffset) < 0.05 && m_drivetrain.averageSpeed < 0.1
         return isTargetFound() && turnController.atSetpoint() && m_drivetrain.averageSpeed < 0.1
     }
 
