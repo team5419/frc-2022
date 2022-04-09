@@ -7,27 +7,24 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.FeederConstants
+import frc.robot.classes.SubsystemHolder
 
-
-class RunIntake(_intake: Intake, _deploy: DeploySubsystem, _feeder: Feeder, _time: Double = 0.0, _velocity: Double = 1.0) : CommandBase() {
-  
-  private val intake: Intake = _intake
-  private val deploy: DeploySubsystem = _deploy
-  private val feeder: Feeder = _feeder
+class RunIntake(_subsystems: SubsystemHolder, _time: Double = 0.0, _velocity: Double = 1.0) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val time: Double = _time
   private val timer: Timer = Timer()
-  private val previousVel: Double = feeder.currentVel
+  private val previousVel: Double = subsystems.feeder.currentVel
   private val velocity: Double = _velocity
 
   init {
-    addRequirements(_intake)
+    addRequirements(_subsystems.intake)
   }
 
   override fun initialize() {
       timer.reset()
       timer.start()
-      feeder.currentVel = FeederConstants.activePercent
-      intake.intake(velocity)
+      subsystems.feeder.currentVel = FeederConstants.activePercent
+      subsystems.intake.intake(velocity)
       //deploy.changeSetpoint(25.0);
   }
 
@@ -36,9 +33,9 @@ class RunIntake(_intake: Intake, _deploy: DeploySubsystem, _feeder: Feeder, _tim
   }
 
   override fun end(interrupted: Boolean) {
-    intake.stop()
+    subsystems.intake.stop()
     timer.stop()
-    feeder.currentVel = previousVel;
+    subsystems.feeder.currentVel = previousVel;
     //deploy.changeSetpoint(0.0)
     println("ended")
   }

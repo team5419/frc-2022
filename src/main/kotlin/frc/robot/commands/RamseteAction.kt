@@ -18,9 +18,10 @@ import frc.robot.DriveConstants
 import edu.wpi.first.math.spline.SplineHelper
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.classes.SubsystemHolder
 
-class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: Boolean = false) : CommandBase() {
-    private val drivetrain: Drivetrain = m_subsystem
+class RamseteAction(m_subsystem: SubsystemHolder, m_poses: List<Pose2d>, m_reversed: Boolean = false) : CommandBase() {
+    private val drivetrain: Drivetrain = m_subsystem.drivetrain
     private val poses: List<Pose2d> = m_poses
     private val reversed: Boolean = m_reversed
     private val maxVelocity: Double = DriveConstants.Ramsete.maxVelocity
@@ -56,7 +57,7 @@ class RamseteAction(m_subsystem: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
     //add "checkForObsticles()" function, if returns true, split the path at the midpoint and call two seperate ramsete actions (do this recursively)
 
     init {
-        addRequirements(m_subsystem);
+        addRequirements(m_subsystem.drivetrain);
     }
 
     override fun initialize() {

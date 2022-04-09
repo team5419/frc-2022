@@ -151,9 +151,9 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         }
         pairs[pair].previousThrottle = throttle;
         pairs[pair].previousTurn = turn;
-        val f: Double = 15000.0;
-        val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.1)// else 0.0;
-        val rightturn: Double =/*  if(turn > 0) */ withDeadband(turn, 0.1)// else 0.0;
+        val f: Double = 21000.0;
+        val leftturn: Double = if (turn < 0) withDeadband(turn, 0.1) else 0.0;
+        val rightturn: Double =  if(turn > 0)  withDeadband(turn, 0.1) else 0.0;
         pairs[pair].left.motor.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
         pairs[pair].right.motor.set(ControlMode.Velocity, (withDeadband(-throttle + rightturn, 0.1)) * f);
         lastLeftSetpoint = (withDeadband(-throttle - leftturn, 0.1)) * f;
@@ -164,8 +164,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         val f: Double = 15000.0;
         val leftturn: Double = /*if (turn < 0)*/ withDeadband(turn, 0.05)// else 0.0;
         pairs[pair].left.motor.set(ControlMode.Velocity, (withDeadband(-throttle - leftturn, 0.1)) * f);
-        m_controller.setGoal(left(pair));
-        pairs[pair].right.motor.set(ControlMode.Velocity, m_controller.calculate(right(pair)));
+        //m_controller.setGoal(left(pair));
+        //pairs[pair].right.motor.set(ControlMode.Velocity, m_controller.calculate(right(pair)));
         // note from theo:
         // this function uses a pid controller to control the right climber hook
         // it sets the left hook normally and then uses the sensor values to calculate the output for the right hook

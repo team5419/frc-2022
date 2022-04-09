@@ -8,27 +8,25 @@ import frc.robot.IndexerConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
-
-class Outtake(_feeder: Feeder, _indexer: Indexer, _intake: Intake)  : CommandBase() {
-  private val feeder: Feeder = _feeder
-  private val indexer: Indexer = _indexer
-  private val intake: Intake = _intake
-  private val previousVel: Double = feeder.currentVel
+import frc.robot.classes.SubsystemHolder
+class Outtake(_subsystems: SubsystemHolder)  : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
+  private val previousVel: Double = subsystems.feeder.currentVel
   private var startingPosition: Double = 0.0
 
   init {
-    addRequirements(_indexer)
-    addRequirements(_intake)
+    addRequirements(_subsystems.indexer)
+    addRequirements(_subsystems.intake)
   }
 
   override fun initialize() {
-    startingPosition = indexer.encoder.getPosition()
-    feeder.currentVel = -0.9; //FeederConstants.reversePercent
-    intake.reverse()
+    startingPosition = subsystems.indexer.encoder.getPosition()
+    subsystems.feeder.currentVel = -0.9; //FeederConstants.reversePercent
+    subsystems.intake.reverse()
   }
 
   override fun execute() {
-    indexer.index(-0.5);
+    subsystems.indexer.index(-0.5);
     // if(Math.abs(indexer.encoder.getPosition() - startingPosition) < IndexerConstants.ticksPerIndex) {
     //     indexer.index(-1.0)
     // } else {
@@ -41,8 +39,8 @@ class Outtake(_feeder: Feeder, _indexer: Indexer, _intake: Intake)  : CommandBas
   }
 
   override fun end(interrupted: Boolean) {
-      feeder.currentVel = previousVel
-      intake.stop()
-      indexer.stop()
+      subsystems.feeder.currentVel = previousVel
+      subsystems.intake.stop()
+      subsystems.indexer.stop()
   }
 }

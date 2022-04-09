@@ -18,15 +18,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.FeederConstants
+import frc.robot.classes.SubsystemHolder
 
-
-class Shoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _lights: Lights, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0) : SequentialCommandGroup() {
-  private val vision: Vision = _vision;
-  private val drivetrain: Drivetrain = _drivetrain;
-  private val shooter: Shooter = _shooter;
-  private val indexer: Indexer = _indexer;
-  private val lights: Lights = _lights;
-  private val feeder: Feeder = _feeder;
+class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0) : SequentialCommandGroup() {
+  private val subsystems: SubsystemHolder = _subsystems;
   private val driver: XboxController = _driver;
   private val main: Double = _main;
   private val kicker: Double = _kicker;
@@ -35,14 +30,14 @@ class Shoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexe
   init {
     addCommands(
         ParallelRaceGroup(
-            ShootAndFeed(shooter, feeder, indexer, lights, driver, main, kicker, time),
-            CycleIndexer(indexer, shooter, 50)
+            ShootAndFeed(subsystems, driver, main, kicker, time),
+            CycleIndexer(subsystems, 50)
         )
     )
   }
 
   override fun end(interrupted: Boolean) {
-    shooter.stop();
-    feeder.currentVel = FeederConstants.idlePercent
+    subsystems.shooter.stop();
+    subsystems.feeder.currentVel = FeederConstants.idlePercent
   }
 }

@@ -11,21 +11,21 @@ import frc.robot.commands.WaitForShooter
 import frc.robot.commands.Index
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-class CycleIndexer(_indexer: Indexer, _shooter: Shooter, _numtimes: Int = 1) : SequentialCommandGroup() {
-  private val indexer: Indexer = _indexer;
-  private val shooter: Shooter = _shooter;
+import frc.robot.classes.SubsystemHolder
+class CycleIndexer(_subsystems: SubsystemHolder, _numtimes: Int = 1) : SequentialCommandGroup() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val numtimes: Int = _numtimes
 
   init {
     // for(i in 1..numtimes) {
          addCommands(
     //         WaitForShooter(shooter, 0.0), 
-            Index(indexer, shooter)  
+            Index(subsystems)  
          )
     // }
   }
 
   override fun end(interrupted: Boolean) {
-    indexer.stop()
+    subsystems.indexer.stop()
   }
 }

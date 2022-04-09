@@ -5,23 +5,23 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.FeederConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.classes.SubsystemHolder
 
-class Drive(_drivetrain: Drivetrain, _driver: XboxController, _isSlow: Boolean = false, _feeder: Feeder) : CommandBase() {
-  private val drivetrain: Drivetrain = _drivetrain;
+class Drive(_subsystems: SubsystemHolder, _driver: XboxController, _isSlow: Boolean = false) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val driver: XboxController = _driver;
   private val isSlow: Boolean = _isSlow;
-  private val feeder: Feeder = _feeder;
 
   init {
-    addRequirements(_drivetrain);
+    addRequirements(_subsystems.drivetrain);
   }
 
   override fun initialize() {
-    feeder.currentVel = FeederConstants.idlePercent
+    subsystems.feeder.currentVel = FeederConstants.idlePercent
   }
 
   override fun execute() {
-    drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), isSlow);
+    subsystems.drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), isSlow);
   }
 
   override fun end(interrupted: Boolean) {}

@@ -17,16 +17,11 @@ import frc.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.classes.SubsystemHolder
 
 
-
-class AutoAlignAndShoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _indexer: Indexer, _feeder: Feeder, _lights: Lights, _main: Double = -1.0, _kicker: Double = -1.0, _driver: XboxController, _throttling: Boolean = false) : SequentialCommandGroup() {
-  private val vision: Vision = _vision;
-  private val drivetrain: Drivetrain = _drivetrain;
-  private val shooter: Shooter = _shooter;
-  private val indexer: Indexer = _indexer;
-  private val lights: Lights = _lights;
-  private val feeder: Feeder = _feeder;
+class AutoAlignAndShoot(_subsystems: SubsystemHolder, _main: Double = -1.0, _kicker: Double = -1.0, _driver: XboxController, _throttling: Boolean = false) : SequentialCommandGroup() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val main: Double = _main;
   private val kicker: Double = _kicker;
   private val throttling : Boolean = _throttling;
@@ -37,15 +32,15 @@ class AutoAlignAndShoot(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shoo
     addCommands(
         SequentialCommandGroup(
             ParallelRaceGroup(
-                SpinUp(shooter),
-                AutoAlign(vision, drivetrain, shooter, lights, 1.5, throttling)
+                SpinUp(subsystems),
+                AutoAlign(subsystems, 1.5, throttling)
             ),
-            Shoot(vision, drivetrain, shooter, indexer, feeder, lights, driver, main, kicker)
+            Shoot(subsystems, driver, main, kicker)
         )
     )
   }
 
   override fun end(interrupted: Boolean) {
-    drivetrain.drive(0.0, 0.0, false);
+    subsystems.drivetrain.setPercent(0.0, 0.0)
   }
 }

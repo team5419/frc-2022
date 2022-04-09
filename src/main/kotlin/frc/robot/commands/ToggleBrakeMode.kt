@@ -12,16 +12,16 @@ import frc.robot.classes.RGB;
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.*
+import frc.robot.classes.SubsystemHolder
 
-
-class ToggleBrakeMode(_drivetrain: Drivetrain) : CommandBase() {
-  private val drivetrain: Drivetrain = _drivetrain;
+class ToggleBrakeMode(_subsystems: SubsystemHolder) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
 
   init {
   }
 
   override fun initialize() {
-    drivetrain.brakeMode = false
+    subsystems.drivetrain.brakeMode = false
   }
 
   override fun execute() {

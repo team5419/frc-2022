@@ -5,20 +5,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.FeederConstants;
+import frc.robot.classes.SubsystemHolder
 
-
-class Feed(_feeder: Feeder, _velocity: Double = FeederConstants.idlePercent) : CommandBase() {
-  private val feeder: Feeder = _feeder
+class Feed(_subsystems: SubsystemHolder, _velocity: Double = FeederConstants.idlePercent) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val velocity: Double = _velocity
 
   init {
-    addRequirements(_feeder);
-    feeder.currentVel = velocity
+    addRequirements(_subsystems.feeder);
+    subsystems.feeder.currentVel = velocity
 
   }
 
   override fun initialize() {
-    feeder.currentVel = velocity
+    subsystems.feeder.currentVel = velocity
   }
 
   override fun execute() {

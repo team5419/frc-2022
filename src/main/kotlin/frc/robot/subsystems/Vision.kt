@@ -66,6 +66,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         layout.addNumber("Offset", { getHorizontalOffset() })
         layout.addBoolean("Aligned", { turnAligned() })
         layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
+        
     }
 
     // check if the limelight is picking up on the target

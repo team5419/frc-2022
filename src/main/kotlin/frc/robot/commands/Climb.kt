@@ -5,14 +5,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import kotlin.math.roundToInt
+import frc.robot.classes.SubsystemHolder
 
-class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
-  private val climber: Climber = _climber;
+class Climb(_subsystems: SubsystemHolder, _codriver: XboxController) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val codriver: XboxController = _codriver;
   //private var selected: Int = 0;
 
   init {
-    addRequirements(_climber);
+    addRequirements(_subsystems.climber);
   }
 
   override fun initialize() {
@@ -33,8 +34,8 @@ class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
    // but that's okay because programming team is awesome and there are instructions for you to follow
    // (i'll mention them in future steps)
    // anyway continue to step 2
-   climber.setPairVelocity(0, codriver.getRightY(), codriver.getRightX() * 0.2)
-   climber.setPairVelocity(1, codriver.getLeftY(), codriver.getLeftX() * 0.2)
+   subsystems.climber.setPairVelocity(0, codriver.getRightY(), codriver.getRightX() * 0.2)
+   subsystems.climber.setPairVelocity(1, codriver.getLeftY(), codriver.getLeftX() * 0.2)
 
    // step 2: normal control with minimum and maximum hard stops. before you begin, follow these steps:
    // - go back and uncomment step 1 (normal control)

@@ -11,33 +11,31 @@ import frc.robot.subsystems.Lights;
 import frc.robot.classes.RGB;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType
+import frc.robot.classes.SubsystemHolder
 
-class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _lights: Lights, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
-  private val shooter: Shooter = _shooter;
+class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val main: Double = _main;
   private val kicker: Double = _kicker;
-  private val feeder: Feeder = _feeder;
-  private val indexer: Indexer = _indexer
   private val time: Double = _time
   private val timer: Timer = Timer()
-  private val lights: Lights = _lights;
   private val driver: XboxController = _driver;
 
   init {
-    addRequirements(_shooter)
+    addRequirements(_subsystems.shooter)
     //addRequirements(_indexer)
   }
 
   override fun initialize() {
     timer.reset()
     timer.start()
-    feeder.currentVel = FeederConstants.activePercent
-    lights.setColor(shooter.currentColor);
-    shooter.shoot(main, kicker)
+    subsystems.feeder.currentVel = FeederConstants.activePercent
+    subsystems.lights.setColor(subsystems.shooter.currentColor);
+    subsystems.shooter.shoot(main, kicker)
     println("shooting")
 
-    driver.setRumble(RumbleType.kLeftRumble, 1.0);
-    driver.setRumble(RumbleType.kRightRumble, 1.0);
+    // driver.setRumble(RumbleType.kLeftRumble, 1.0);
+    // driver.setRumble(RumbleType.kRightRumble, 1.0);
   }
 
   override fun execute() {
@@ -52,16 +50,20 @@ class ShootAndFeed(_shooter: Shooter, _feeder: Feeder, _indexer: Indexer, _light
   }
 
   override fun isFinished(): Boolean {
-    return (time > 0.0 && timer.get() >= time) && (!indexer.atPositionOne() && !indexer.atPositionTwo() && !indexer.atPositionThree())
+    return time != 0.0 && timer.get() > time
+    // if(time > 0.0 && timer.get() < time) {
+    //   return false;
+    // }
+    // return (!subsystems.indexer.atPositionOne() && !subsystems.indexer.atPositionTwo() && !subsystems.indexer.atPositionThree())
   }
 
   override fun end(interrupted: Boolean) {
       timer.stop()
-      feeder.currentVel = FeederConstants.idlePercent
-      lights.setColor(RGB(0, 0, 0))
-      shooter.stop()
-      indexer.stop()
-      driver.setRumble(RumbleType.kLeftRumble, 0.0);
-      driver.setRumble(RumbleType.kRightRumble, 0.0);
+      subsystems.feeder.currentVel = FeederConstants.idlePercent
+      subsystems.lights.setColor(RGB(0, 0, 0))
+      subsystems.shooter.stop()
+      subsystems.indexer.stop()
+      // driver.setRumble(RumbleType.kLeftRumble, 0.0);
+      // driver.setRumble(RumbleType.kRightRumble, 0.0);
   }
 }

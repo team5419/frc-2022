@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.IndexerConstants
 import frc.robot.subsystems.Lights
 import frc.robot.classes.RGB
+import frc.robot.classes.SubsystemHolder
 
 
-class DefaultIndex(_indexer: Indexer, _lights: Lights) : CommandBase() {
-  private val indexer: Indexer = _indexer
-  private val lights: Lights = _lights
+class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
 
   private val timer: Timer = Timer()
 
   init {
-    addRequirements(_indexer);
+    addRequirements(_subsystems.indexer);
   }
 
   override fun initialize() {
@@ -28,15 +28,15 @@ class DefaultIndex(_indexer: Indexer, _lights: Lights) : CommandBase() {
 
   override fun execute() {
     if(timer.get() == 0.0) {
-      if(indexer.atPositionOne() && indexer.atPositionTwo() && indexer.atPositionThree()) {
-        lights.setColor(RGB(0, 255, 0));
+      if(subsystems.indexer.atPositionOne() && subsystems.indexer.atPositionTwo() && subsystems.indexer.atPositionThree()) {
+        subsystems.lights.setColor(RGB(0, 255, 0));
         timer.start();
-      } else if(indexer.atPositionThree()) {
-        lights.setColor(RGB(126, 66, 245));
+      } else if(subsystems.indexer.atPositionThree()) {
+        subsystems.lights.setColor(RGB(126, 66, 245));
         timer.start();
       } else {
-        if(lights.isEqualTo(0, 255, 0) || lights.isEqualTo(126, 66, 245)) {
-          lights.setColor(RGB(0, 0, 0));
+        if(subsystems.lights.isEqualTo(0, 255, 0) || subsystems.lights.isEqualTo(126, 66, 245)) {
+          subsystems.lights.setColor(RGB(0, 0, 0));
           timer.start();
         }
       }
@@ -46,15 +46,15 @@ class DefaultIndex(_indexer: Indexer, _lights: Lights) : CommandBase() {
       timer.reset();
     }
     
-    if(indexer.atPositionOne() && (!indexer.atPositionTwo()) && (!indexer.atPositionThree())) {
-        indexer.index(0.4);
+    if(subsystems.indexer.atPositionOne() && (!subsystems.indexer.atPositionTwo()) && (!subsystems.indexer.atPositionThree())) {
+        subsystems.indexer.index(0.4);
     } else {
-        indexer.stop();
+        subsystems.indexer.stop();
     }
   }
 
   override fun end(interrupted: Boolean) {
-    indexer.stop()
+    subsystems.indexer.stop()
     timer.stop();
   }
 

@@ -12,31 +12,29 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.classes.RGB;
 import frc.robot.subsystems.Lights;
+import frc.robot.classes.SubsystemHolder;
 
-class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _lights: Lights, _time: Double = 0.0, _throttling: Boolean = true) : CommandBase() {
-  private val vision: Vision = _vision;
-  private val drivetrain: Drivetrain = _drivetrain;
-  private val shooter: Shooter = _shooter;
+class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: Boolean = true) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private var setpoint: LookupEntry = LookupEntry(0.0, 0.0, 0.0, RGB(0, 0, 0))
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val throttling: Boolean = _throttling
-  private val lights: Lights = _lights;
 
   init {
-    addRequirements(_vision);
-    addRequirements(_drivetrain);
+    addRequirements(_subsystems.vision);
+    addRequirements(_subsystems.drivetrain);
   }
 
   override fun initialize() {
-    vision.on();
-    drivetrain.brakeMode = true;
+    subsystems.vision.on();
+    subsystems.drivetrain.brakeMode = true;
     //println("started aligning")
-    setpoint = vision.getShotSetpoint();
-    shooter.mainVelocity = setpoint.mainVelocity;
-    shooter.kickerVelocity = setpoint.kickerVelocity;
-    shooter.currentColor = setpoint.color;
-    lights.setColor(setpoint.color);
+    setpoint = subsystems.vision.getShotSetpoint();
+    subsystems.shooter.mainVelocity = setpoint.mainVelocity;
+    subsystems.shooter.kickerVelocity = setpoint.kickerVelocity;
+    subsystems.shooter.currentColor = setpoint.color;
+    subsystems.lights.setColor(setpoint.color);
     timer.reset()
     timer.start()
   }
@@ -46,22 +44,23 @@ class AutoAlign(_vision: Vision, _drivetrain: Drivetrain, _shooter: Shooter, _li
     //println("actual distance = ${vision.getHorizontalDistance()}");
     var throttleOutput: DriveSignal = DriveSignal(0.0, 0.0)
     if(throttling) {
-      throttleOutput = vision.autoAlignThrottle(setpoint.distance)
+      throttleOutput = subsystems.vision.autoAlignThrottle(setpoint.distance)
     }
-    var turnOutput: DriveSignal = vision.autoAlignTurn();
-    drivetrain.setPercent(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
+    var turnOutput: DriveSignal = subsystems.vision.autoAlignTurn();
+    println("SETPOINT LEFT ${throttleOutput.left + turnOutput.left}");
+    subsystems.drivetrain.setPercent(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
   }
 
   override fun isFinished() : Boolean {
-    return time != 0.0 && (timer.get() > time || (timer.get() > 0.2 && vision.turnAligned() && vision.throttleAligned(setpoint.distance)))
+    return time != 0.0 && (timer.get() > time || (timer.get() > 0.2 && subsystems.vision.turnAligned() && ((!throttling) || subsystems.vision.throttleAligned(setpoint.distance))))
   }
 
   override fun end(interrupted: Boolean) {
-      //println("done aligning")
-      vision.off();
+      println("done aligning")
+      subsystems.vision.off();
       timer.stop()
-      lights.setColor(RGB(0, 0, 0));
-      drivetrain.setPercent(0.0, 0.0)
-      drivetrain.brakeMode = false;
+      subsystems.lights.setColor(RGB(0, 0, 0));
+      subsystems.drivetrain.setPercent(0.0, 0.0)
+      subsystems.drivetrain.brakeMode = false;
   }
 }

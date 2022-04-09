@@ -9,15 +9,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Lights;
 import frc.robot.classes.RGB;
+import frc.robot.classes.SubsystemHolder
 
-class StartFeeding(_feeder: Feeder)  : CommandBase() {
-  private val feeder: Feeder = _feeder;
+class StartFeeding(_subsystems: SubsystemHolder)  : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
 
   init {
   }
 
   override fun initialize() {
-    feeder.currentVel = FeederConstants.idlePercent;
+    subsystems.feeder.currentVel = FeederConstants.idlePercent;
   }
 
   override fun execute() {

@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.commands.Feed
+import frc.robot.classes.SubsystemHolder
 
-
-class WaitForShooter(_shooter: Shooter, _time: Double) : CommandBase() {
-  private val shooter: Shooter = _shooter;
+class WaitForShooter(_subsystems: SubsystemHolder, _time: Double) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val time: Double = _time;
   private val timer: Timer = Timer()
 
@@ -29,8 +29,8 @@ class WaitForShooter(_shooter: Shooter, _time: Double) : CommandBase() {
 
   // end command if time has elapsed
   override fun isFinished(): Boolean {
-    println("done spinning up: ${shooter.isSpedUp()}")
-    return (timer.get() >= time) && shooter.isSpedUp() 
+    println("done spinning up: ${subsystems.shooter.isSpedUp()}")
+    return (timer.get() >= time) && subsystems.shooter.isSpedUp() 
   }
 
   override fun end(interrupted: Boolean) {

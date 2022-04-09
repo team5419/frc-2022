@@ -12,17 +12,17 @@ import frc.robot.classes.RGB;
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.*
+import frc.robot.classes.SubsystemHolder
 
-
-class ToggleCurrent(_drivetrain: Drivetrain, _current: Double = 40.0) : CommandBase() {
-  private val drivetrain: Drivetrain = _drivetrain;
+class ToggleCurrent(_subsystems: SubsystemHolder, _current: Double = 40.0) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   private val current: Double = _current;
 
   init {
   }
 
   override fun initialize() {
-    drivetrain.currentLimit = current
+    subsystems.drivetrain.currentLimit = current
     // drivetrain.leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
     // drivetrain.leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
     // drivetrain.rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 60.0, 0.0, 0.0), 100);
@@ -37,7 +37,7 @@ class ToggleCurrent(_drivetrain: Drivetrain, _current: Double = 40.0) : CommandB
   }
 
   override fun end(interrupted: Boolean) {
-    drivetrain.currentLimit = 20.0
+    subsystems.drivetrain.currentLimit = 20.0
     // drivetrain.leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100);
     // drivetrain.leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100);
     // drivetrain.rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100);

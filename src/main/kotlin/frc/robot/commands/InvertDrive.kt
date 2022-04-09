@@ -5,15 +5,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.IndexerConstants
+import frc.robot.classes.SubsystemHolder
 
-
-class InvertDrive(_drivetrain: Drivetrain) : CommandBase() {
-  private val drivetrain: Drivetrain = _drivetrain
+class InvertDrive(_subsystems: SubsystemHolder) : CommandBase() {
+  private val subsystems: SubsystemHolder = _subsystems
   init {
   }
 
   override fun initialize() {
-    drivetrain.inverted *= -1;
+    subsystems.drivetrain.inverted *= -1;
   }
 
   override fun execute() {
