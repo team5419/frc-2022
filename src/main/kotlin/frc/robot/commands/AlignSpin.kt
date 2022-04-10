@@ -37,5 +37,6 @@ class AlignSpin(_subsystems: SubsystemHolder, _main: Double = -1.0, _kicker: Dou
 
   override fun end(interrupted: Boolean) {
     subsystems.drivetrain.setPercent(0.0, 0.0)
+    subsystems.lights.setColor(RGB(0, 0, 0));
   }
 }

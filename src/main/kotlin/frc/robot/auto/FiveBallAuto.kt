@@ -17,7 +17,7 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
     val driver: XboxController = m_driver
     
     init {
-        val backwards1: Double = 0.0; // -0.7;
+        val backwards1: Double = -0.7; // -0.7;
         val backwards2: Double = 0.9;
         val angle: Double = 60.0
         val x1: Double = 0.3 - backwards1 * Math.cos(Math.toRadians(angle));
@@ -46,17 +46,17 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(subsystems, 0.5, false),
-                    Shoot(subsystems, driver, 15250.0, 15250.0, 1.25),
+                    Shoot(subsystems, driver, 15250.0, 15250.0, 1.0),
                     // run intake and move to second shoot position
                     RamseteAction(subsystems, listOf(
                         Pose2d(-0.9, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-4.0, -1.5, Rotation2d.fromDegrees(0.0))
+                        Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0))
                     ), false),
                     Wait(0.0),
                     // intake 2 balls from the human player station
                     ParallelRaceGroup(
                         RamseteAction(subsystems, listOf(
-                            Pose2d(-4.0, -1.5, Rotation2d.fromDegrees(0.0)),
+                            Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0)),
                             Pose2d(x1, y1, Rotation2d.fromDegrees(-angle))
                         ), true),
                         SpinUp(subsystems, 14500.0, 13500.0),
@@ -64,7 +64,7 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                     ),
                     // shoots 2 balls
                     AutoAlign(subsystems, 0.5, false),
-                    Shoot(subsystems, driver, 14500.0, 13500.0, 1.25),
+                    Shoot(subsystems, driver, 14500.0, 13500.0, 1.5),
                     // move backward and pick up last ball
                     ParallelRaceGroup(
                         RamseteAction(subsystems, listOf(
@@ -75,7 +75,7 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                     ),
                     // shoots 1 ball
                     AutoAlign(subsystems, 0.5, false),
-                    Shoot(subsystems, driver, 15500.0, 15000.0, 1.0)
+                    Shoot(subsystems, driver, 15500.0, 15000.0, 3.0)
                 )
             ) 
         )

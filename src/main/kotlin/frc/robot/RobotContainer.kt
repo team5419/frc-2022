@@ -100,7 +100,8 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // break mode (press B)
     val bButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
-    bButtonCodriver.whenPressed(ToggleBrakeMode(m_subsystems))
+    bButtonCodriver.toggleWhenPressed(Rainbow(m_subsystems))
+    //bButtonCodriver.whenPressed(ToggleBrakeMode(m_subsystems))
 
     // raise intake (hold right bumper)
     val rBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)

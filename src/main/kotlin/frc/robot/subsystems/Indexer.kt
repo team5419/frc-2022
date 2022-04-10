@@ -60,9 +60,9 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
         }
         layout.addNumber("Position", { encoder.getPosition() })
         // layout.addNumber("Velocity", { encoder.getVelocity() })
-        // layout.addNumber("Sensor 1", { sensor1.getValue().toDouble() })
-        // layout.addNumber("Sensor 2", { sensor2.getValue().toDouble() })
-        // layout.addNumber("Sensor 3", { sensor3.getValue().toDouble() })
+        layout.addNumber("Sensor 1", { sensor1.getValue().toDouble() })
+        layout.addNumber("Sensor 2", { sensor2.getValue().toDouble() })
+        layout.addNumber("Sensor 3", { sensor3.getValue().toDouble() })
     }
 
     public fun stop() {

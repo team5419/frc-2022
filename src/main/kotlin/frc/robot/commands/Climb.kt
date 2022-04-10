@@ -6,21 +6,44 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
 import kotlin.math.roundToInt
 import frc.robot.classes.SubsystemHolder
+import frc.robot.classes.RGB
 
 class Climb(_subsystems: SubsystemHolder, _codriver: XboxController) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private val codriver: XboxController = _codriver;
   //private var selected: Int = 0;
-
+  private val timer: Timer = Timer()
+  private var hasUpdated: Boolean = false;
   init {
     addRequirements(_subsystems.climber);
   }
 
   override fun initialize() {
     //selected = 0;
+    timer.reset()
   }
 
   override fun execute() {
+    val righty: Double = codriver.getRightY();
+   val rightx: Double = codriver.getRightX();
+   val lefty: Double = codriver.getLeftY();
+   val leftx: Double = codriver.getLeftX();
+    if(!hasUpdated) {
+      if(Math.abs(righty) > 0.1 || Math.abs(rightx) > 0.1 || Math.abs(lefty) > 0.1 || Math.abs(leftx) > 0.1) {
+        subsystems.lights.setColor(RGB(0, 255, 255));
+        timer.start();
+        hasUpdated = true;
+      } else if(subsystems.lights.isEqualTo(0, 255, 255)) {
+        subsystems.lights.setColor(RGB(0, 0, 0))
+        timer.start()
+        hasUpdated = true;
+      }
+    }
+    if(timer.get() >= 5.0) {
+      timer.stop();
+      timer.reset();
+      hasUpdated = false;
+    }
    // ok have fun testing and relax knowing that you aren't responsible for the faulty code
    // i've labeled each section with numbers
    // test out one section at a time, and pay attention to any special instructions
@@ -34,8 +57,8 @@ class Climb(_subsystems: SubsystemHolder, _codriver: XboxController) : CommandBa
    // but that's okay because programming team is awesome and there are instructions for you to follow
    // (i'll mention them in future steps)
    // anyway continue to step 2
-   subsystems.climber.setPairVelocity(0, codriver.getRightY(), codriver.getRightX() * 0.2)
-   subsystems.climber.setPairVelocity(1, codriver.getLeftY(), codriver.getLeftX() * 0.2)
+   subsystems.climber.setPairVelocity(0, righty, rightx * 0.2)
+   subsystems.climber.setPairVelocity(1, lefty, leftx * 0.2)
 
    // step 2: normal control with minimum and maximum hard stops. before you begin, follow these steps:
    // - go back and uncomment step 1 (normal control)

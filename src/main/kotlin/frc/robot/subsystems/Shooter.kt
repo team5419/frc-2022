@@ -26,7 +26,7 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     public var mainVelocity: Double = ShooterConstants.mainVelocity
     public var kickerVelocity: Double = ShooterConstants.kickerVelocity
-    public var currentColor: RGB = RGB(255, 0, 0);
+    public var currentColor: RGB = RGB(0, 0, 255);
     public var setpointMain = 0.0
     public var setpointKicker = 0.0
     public var shooterMultiplier : Double = 1.0

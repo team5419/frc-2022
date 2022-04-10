@@ -16,6 +16,7 @@ class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
 
   private val timer: Timer = Timer()
+  private var hasUpdated: Boolean = false
 
   init {
     addRequirements(_subsystems.indexer);
@@ -27,23 +28,27 @@ class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun execute() {
-    if(timer.get() == 0.0) {
+    if(!hasUpdated) {
       if(subsystems.indexer.atPositionOne() && subsystems.indexer.atPositionTwo() && subsystems.indexer.atPositionThree()) {
+        subsystems.lights.setColor(RGB(255, 0, 0));
+        timer.start();
+        hasUpdated = true;
+      } else if(subsystems.indexer.atPositionThree()) {
         subsystems.lights.setColor(RGB(0, 255, 0));
         timer.start();
-      } else if(subsystems.indexer.atPositionThree()) {
-        subsystems.lights.setColor(RGB(126, 66, 245));
-        timer.start();
+        hasUpdated = true;
       } else {
-        if(subsystems.lights.isEqualTo(0, 255, 0) || subsystems.lights.isEqualTo(126, 66, 245)) {
+        if(subsystems.lights.isEqualTo(0, 255, 0) || subsystems.lights.isEqualTo(255, 0, 0)) {
           subsystems.lights.setColor(RGB(0, 0, 0));
           timer.start();
+          hasUpdated = true;
         }
       }
     }
     if(timer.get() >= 0.5) {
       timer.stop();
       timer.reset();
+      hasUpdated = false;
     }
     
     if(subsystems.indexer.atPositionOne() && (!subsystems.indexer.atPositionTwo()) && (!subsystems.indexer.atPositionThree())) {

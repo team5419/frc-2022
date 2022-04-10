@@ -20,25 +20,35 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.FeederConstants
 import frc.robot.classes.SubsystemHolder
 
-class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0) : SequentialCommandGroup() {
+class Rainbow(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems;
-  private val driver: XboxController = _driver;
-  private val main: Double = _main;
-  private val kicker: Double = _kicker;
-  private val time : Double = _time;
+  private var current: Int = 0;
+  private var direction: Int = 1;
 
   init {
-    addCommands(
-        ParallelRaceGroup(
-            ShootAndFeed(subsystems, driver, main, kicker, time),
-            CycleIndexer(subsystems, 50)
-        )
-    )
+  }
+
+  override fun initialize() {
+      current = 0;
+      direction = 1;
+  }
+
+  override fun execute() {
+      //println("current = ${current}")
+      current += direction * 6;
+      if(current > 255) {
+          direction = -1;
+      } else if(current < 0) {
+          direction = 1;
+      }
+      subsystems.lights.setColor(RGB(0, 255 - current, current))
+  }
+
+  override fun isFinished(): Boolean {
+      return false
   }
 
   override fun end(interrupted: Boolean) {
-    subsystems.shooter.stop();
-    subsystems.feeder.currentVel = FeederConstants.idlePercent
-    subsystems.lights.setColor(RGB(0, 0, 0))
+    //subsystems.lights.setColor(RGB(0, 0, 0))
   }
 }
