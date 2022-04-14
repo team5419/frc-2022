@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.robot.classes.SubsystemHolder
-class FourBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : SequentialCommandGroup() {
+class FourBall2(_subsystems: SubsystemHolder, m_driver: XboxController) : SequentialCommandGroup() {
     val subsystems: SubsystemHolder = _subsystems
     val driver: XboxController = m_driver
     
@@ -24,12 +24,10 @@ class FourBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                 //Feed(feeder),
                 SequentialCommandGroup(
                     StartFeeding(subsystems),
-                    ParallelRaceGroup(
-                        RamseteAction(subsystems, listOf(
-                            Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                            Pose2d(-0.3, 0.0, Rotation2d(0.0))
-                        ), false)
-                    ),
+                    RamseteAction(subsystems, listOf(
+                        Pose2d(0.0, 0.0, Rotation2d(0.0)), 
+                        Pose2d(-0.3, 0.0, Rotation2d(0.0))
+                    ), false),
                     ParallelRaceGroup(
                         SpinUp(subsystems, 15500.0, 15500.0),
                         RamseteAction(subsystems, listOf(
@@ -39,8 +37,8 @@ class FourBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(subsystems, 0.75, false),
-                    Shoot(subsystems, driver, 15500.0, 15500.0, 1.25),
-                    // run intake and move to second shoot position
+                    Shoot(subsystems, driver, 15500.0, 15500.0, 1.5),
+                    // // run intake and move to second shoot position
                     RamseteAction(subsystems, listOf(
                         Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
                         Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0))
@@ -53,11 +51,11 @@ class FourBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                             Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0)), 
                             Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
                         ), true),
-                        SpinUp(subsystems, 15250.0, 15250.0)
+                        SpinUp(subsystems)
                     ),
                     // shoots 2 balls
-                    AutoAlign(subsystems, 0.5, false),
-                    Shoot(subsystems, driver, 15250.0, 15250.0, 2.5)
+                    AutoAlign(subsystems, 1.0),
+                    Shoot(subsystems, driver, 14300.0, 14300.0, 2.5)
                 )
             )
             
