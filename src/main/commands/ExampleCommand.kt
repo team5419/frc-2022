@@ -17,30 +17,29 @@ import frc.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.classes.SubsystemHolder
 
+import frc.robot.classes.SubsystemHolder;
 
-class AutoAlignAndShoot(_subsystems: SubsystemHolder, _main: Double = -1.0, _kicker: Double = -1.0, _driver: XboxController, _throttling: Boolean = false) : SequentialCommandGroup() {
-  private val subsystems: SubsystemHolder = _subsystems
-  private val main: Double = _main;
-  private val kicker: Double = _kicker;
-  private val throttling : Boolean = _throttling;
-  private val driver : XboxController = _driver;
-
+class ExampleCommand() : CommandBase() {
 
   init {
-    addCommands(
-        SequentialCommandGroup(
-            ParallelRaceGroup(
-                SpinUp(subsystems),
-                AutoAlign(subsystems, 1.5, throttling)
-            ),
-            Shoot(subsystems, driver, main, kicker)
-        )
-    )
+      println("this is run when kotlin makes the command")
+  }
+
+  override fun initialize() {
+      println("this is run when the command starts")
+  }
+
+  override fun execute() {
+      println("this is run every frame when the command is running")
+  }
+
+  override fun isFinished(): Boolean {
+      println("this is run to check whether the command should finish")
+      return false
   }
 
   override fun end(interrupted: Boolean) {
-    subsystems.drivetrain.setPercent(0.0, 0.0)
+    println("this is run when the command ends")
   }
 }
