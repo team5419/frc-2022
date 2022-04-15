@@ -14,7 +14,7 @@ import frc.robot.classes.RGB;
 import frc.robot.subsystems.Lights;
 import frc.robot.classes.SubsystemHolder;
 
-class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: Boolean = true) : CommandBase() {
+class TurnBack(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: Boolean = true) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private var setpoint: LookupEntry = LookupEntry(0.0, 0.0, 0.0, RGB(0, 0, 0))
   private val time: Double = _time
@@ -27,7 +27,6 @@ class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: 
   }
 
   override fun initialize() {
-    subsystems.vision.genRandom()
     subsystems.vision.on();
     subsystems.drivetrain.brakeMode = true;
     //println("started aligning")
@@ -50,7 +49,7 @@ class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: 
     }
     var turnOutput: DriveSignal = subsystems.vision.autoAlignTurn();
     println("SETPOINT LEFT ${throttleOutput.left + turnOutput.left}");
-    subsystems.drivetrain.setPercent(turnOutput.left, turnOutput.right)
+    subsystems.drivetrain.setPercent( -turnOutput.left, -turnOutput.right)
   }
 
   override fun isFinished() : Boolean {

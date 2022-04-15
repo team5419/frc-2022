@@ -19,6 +19,10 @@ import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.networktables.EntryNotification
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 
+import kotlin.math.sin
+import kotlin.random.Random
+
+
 class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
     private val mLimelight = NetworkTableInstance.getDefault().getTable("limelight")
@@ -28,8 +32,16 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     private val mCameraAngle: Double = VisionConstants.cameraAngle
     public val maxSpeed = VisionConstants.maxAutoAlignSpeed
 
+    private var turnAmount = 0.0
+
+    fun genRandom(): Double {
+        //return mLimelight.getEntry("tx").getDouble(0.0)
+         turnAmount = Random.nextDouble(-10.0, 10.0)
+         return turnAmount
+    }
+
     fun getHorizontalOffset(): Double {
-        return mLimelight.getEntry("tx").getDouble(0.0)
+        return turnAmount
     }
 
     fun getVerticalOffset(): Double {
@@ -89,7 +101,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     // check if the limelight is picking up on the target
     public fun isTargetFound(): Boolean {
-        return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() != 0.0
+        return true
     }
 
     public fun turnAligned(): Boolean {
@@ -106,7 +118,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         var output = turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
 
         // do we need to align / can we align?
-        if(!turnAligned() && isTargetFound()) {
+        if(!turnAligned()) {
             return DriveSignal(output, -output)
         }
 

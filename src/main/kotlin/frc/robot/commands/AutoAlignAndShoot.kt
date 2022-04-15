@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.classes.SubsystemHolder
 
+import kotlin.math.sin
+import kotlin.random.Random
 
 class AutoAlignAndShoot(_subsystems: SubsystemHolder, _main: Double = -1.0, _kicker: Double = -1.0, _driver: XboxController, _throttling: Boolean = false) : SequentialCommandGroup() {
   private val subsystems: SubsystemHolder = _subsystems
@@ -35,7 +37,8 @@ class AutoAlignAndShoot(_subsystems: SubsystemHolder, _main: Double = -1.0, _kic
                 SpinUp(subsystems),
                 AutoAlign(subsystems, 1.5, throttling)
             ),
-            Shoot(subsystems, driver, main, kicker)
+            Shoot(subsystems, driver, Random.nextDouble(12000.0, 16000.0), kicker),
+            TurnBack(subsystems, 1.5, throttling)
         )
     )
   }
