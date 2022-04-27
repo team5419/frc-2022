@@ -118,6 +118,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         layout.addNumber("angle", { angle })
         layout.addNumber("x", { pose.getX() })
         layout.addNumber("y", { pose.getY() });
+        layout.addNumber("target", { originalAngle })
     }
 
     fun getAllVelocities() : List<Double> {
@@ -132,6 +133,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     // get angle from gyro
     val angle: Double
         get() = -gyro.getFusedHeading()
+
+    var originalAngle : Double = 0.0
 
     // constructs object with angle from gyro (assuming starting position is (0,0))
     var odometry = DifferentialDriveOdometry(Rotation2d(angle))

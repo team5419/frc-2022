@@ -36,9 +36,9 @@ class AutoAlignAndShoot(_subsystems: SubsystemHolder, _main: Double = -1.0, _kic
             ParallelRaceGroup(
                 SpinUp(subsystems),
                 AutoAlign(subsystems, 1.5, throttling)
-            ),
-            Shoot(subsystems, driver, Random.nextDouble(12000.0, 16000.0), kicker),
-            TurnBack(subsystems, 1.5, throttling)
+            )
+            //Shoot(subsystems, driver, Random.nextDouble(12000.0, 16000.0), kicker),
+            //TurnBack(subsystems, 1.5, throttling)
         )
     )
   }

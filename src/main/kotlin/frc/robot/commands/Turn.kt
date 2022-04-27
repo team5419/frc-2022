@@ -20,10 +20,10 @@ import kotlin.math.sin
 import kotlin.random.Random
 import kotlin.math.sign
 
-//im citrus service
 
 
-class TurnBack(_subsystems: SubsystemHolder) : CommandBase() {
+
+class Turn(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private var angle : Double = 0.0
   private var targetAngle : Double = 0.0
@@ -37,27 +37,35 @@ class TurnBack(_subsystems: SubsystemHolder) : CommandBase() {
 
     angle = subsystems.drivetrain.angle
 
-    targetAngle = subsystems.drivetrain.originalAngle
+    subsystems.drivetrain.originalAngle = angle
+
+    targetAngle = angle + Random.nextDouble(-45.0, 45.0)
   }
+
 
   override fun execute() {
 
     angle = subsystems.drivetrain.angle
 
-    if (angle != targetAngle){
-      //subsystems.drivetrain.setPercent((targetAngle - angle)/500 + .1, -(targetAngle - angle)/500 + .1)
+    println("Current angle: " + angle)
+    println("Target angle: " + targetAngle)
+
+    if (angle != targetAngle){  
+
+        //subsystems.drivetrain.setPercent((targetAngle - angle)/500 + .1, -(targetAngle - angle)/500 + .1)
         subsystems.drivetrain.setPercent(sign(targetAngle - angle)*.1, -sign(targetAngle - angle)*.1)
     }
     
   }
 
   override fun isFinished() : Boolean {
+    println("checking if fin: ${abs(subsystems.drivetrain.angle - targetAngle) <= 10}")
     return abs(subsystems.drivetrain.angle - targetAngle) <= 10
   }
 
   override fun end(interrupted: Boolean) {
-      subsystems.drivetrain.setPercent(0.0,0.0)
-      
+    subsystems.drivetrain.setPercent(0.0,0.0)
+    println("Ended turn")
     subsystems.drivetrain.brakeMode = false;
   }
 }

@@ -36,7 +36,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     fun genRandom(): Double {
         //return mLimelight.getEntry("tx").getDouble(0.0)
-         turnAmount = Random.nextDouble(-10.0, 10.0)
+         turnAmount = Random.nextDouble(-45.0, 45.0)
          return turnAmount
     }
 
@@ -78,7 +78,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         }
 
     // add the PID controller to shuffleboard
-    init {
+    init {//
         layout.addNumber("Offset", { getHorizontalOffset() })
         layout.addBoolean("Aligned", { turnAligned() })
         layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
