@@ -25,27 +25,33 @@ class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
   override fun initialize() {
     timer.reset();
     timer.stop();
+    hasUpdated = false;
   }
 
   override fun execute() {
     if(!hasUpdated) {
+      //println("not updated")
       if(subsystems.indexer.atPositionOne() && subsystems.indexer.atPositionTwo() && subsystems.indexer.atPositionThree()) {
         subsystems.lights.setColor(RGB(255, 0, 0));
         timer.start();
         hasUpdated = true;
       } else if(subsystems.indexer.atPositionThree()) {
+        //println("going to 3")
         subsystems.lights.setColor(RGB(0, 255, 0));
         timer.start();
         hasUpdated = true;
-      } else {
-        if(subsystems.lights.isEqualTo(0, 255, 0) || subsystems.lights.isEqualTo(255, 0, 0)) {
+      } else if(subsystems.lights.isEqualTo(0, 255, 0) || subsystems.lights.isEqualTo(255, 0, 0)) {
+          //println("turning off")
           subsystems.lights.setColor(RGB(0, 0, 0));
           timer.start();
           hasUpdated = true;
-        }
+      } else {
+        //println("no color change (hasUpdated = false)")
       }
     }
+    //println("running indexer: ${timer.get()} and ${hasUpdated}")
     if(timer.get() >= 0.5) {
+      //println("setting to false")
       timer.stop();
       timer.reset();
       hasUpdated = false;
@@ -59,8 +65,7 @@ class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    subsystems.indexer.stop()
-    timer.stop();
+    subsystems.indexer.stop();
   }
 
   // end command if time has elapsed

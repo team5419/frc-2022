@@ -41,6 +41,7 @@ class Lights(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun setColor(rgb: RGB) {
+        println("setting color (red = ${rgb.r})")
         currentRGB = rgb;
         candle.setLEDs(rgb.g, rgb.r, rgb.b)
     }

@@ -21,7 +21,7 @@ class Index(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun execute() {
-    println("setting indexer !!!");
+    //println("setting indexer !!!");
     if(subsystems.shooter.isSpedUp()) {
       subsystems.indexer.index(0.4);
     } else {
