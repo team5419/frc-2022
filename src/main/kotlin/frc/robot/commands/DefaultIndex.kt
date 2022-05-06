@@ -25,6 +25,7 @@ class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
   override fun initialize() {
     timer.reset();
     timer.stop();
+    hasUpdated = false;
   }
 
   override fun execute() {

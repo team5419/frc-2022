@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.FeederConstants
 import frc.robot.classes.SubsystemHolder
+import frc.robot.commands.Turn
 
 
 import kotlin.math.sin
@@ -37,8 +38,8 @@ class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double
       ParallelRaceGroup(
         ShootAndFeed(subsystems, driver, Random.nextDouble(14000.0, 20000.0), Random.nextDouble(14000.0, 20000.0), 5.0),
         CycleIndexer(subsystems, 50)
-      )
-      //TurnBack(subsystems)
+      ),
+      TurnBack(subsystems)
     )
   }
 

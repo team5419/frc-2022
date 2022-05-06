@@ -28,4 +28,8 @@ class CycleIndexer(_subsystems: SubsystemHolder, _numtimes: Int = 1) : Sequentia
   override fun end(interrupted: Boolean) {
     subsystems.indexer.stop()
   }
+
+  override fun isFinished(): Boolean {
+    return false
+  }
 }

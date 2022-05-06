@@ -53,14 +53,23 @@ class Turn(_subsystems: SubsystemHolder) : CommandBase() {
     if (angle != targetAngle){  
 
         //subsystems.drivetrain.setPercent((targetAngle - angle)/500 + .1, -(targetAngle - angle)/500 + .1)
-        subsystems.drivetrain.setPercent(sign(targetAngle - angle)*.1, -sign(targetAngle - angle)*.1)
+        subsystems.drivetrain.setPercent(-sign(targetAngle - angle)*.1, sign(targetAngle - angle)*.1)
     }
     
   }
 
   override fun isFinished() : Boolean {
-    println("checking if fin: ${abs(subsystems.drivetrain.angle - targetAngle) <= 10}")
-    return abs(subsystems.drivetrain.angle - targetAngle) <= 10
+    //return abs(subsystems.drivetrain.angle - targetAngle) <= 10
+    println("original: " + subsystems.drivetrain.originalAngle)
+    if (subsystems.drivetrain.originalAngle > targetAngle){
+      println("PAst desired angle (going left) -- target angle: " + targetAngle)
+      println(subsystems.drivetrain.angle < targetAngle)
+      return subsystems.drivetrain.angle < targetAngle
+    } else {
+      println("PAst desired angle (going right) -- target angle: " + targetAngle)
+      println(subsystems.drivetrain.angle > targetAngle)
+      return subsystems.drivetrain.angle > targetAngle
+    }
   }
 
   override fun end(interrupted: Boolean) {
