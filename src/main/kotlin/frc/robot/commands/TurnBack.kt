@@ -27,7 +27,7 @@ class TurnBack(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private var angle : Double = 0.0
   private var targetAngle : Double = 0.0
-
+  private var starting: Double = 0.0
 
   init {
   }
@@ -38,6 +38,7 @@ class TurnBack(_subsystems: SubsystemHolder) : CommandBase() {
     angle = subsystems.drivetrain.angle
 
     targetAngle = subsystems.drivetrain.originalAngle
+    starting = angle
   }
 
   override fun execute() {
@@ -52,7 +53,16 @@ class TurnBack(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun isFinished() : Boolean {
-    return abs(subsystems.drivetrain.angle - targetAngle) <= 10
+    println("original: " + starting)
+    if (starting > targetAngle){
+      println("PAst desired angle (going left) -- target angle: " + targetAngle)
+      println(subsystems.drivetrain.angle < targetAngle)
+      return subsystems.drivetrain.angle < targetAngle
+    } else {
+      println("PAst desired angle (going right) -- target angle: " + targetAngle)
+      println(subsystems.drivetrain.angle > targetAngle)
+      return subsystems.drivetrain.angle > targetAngle
+    }
   }
 
   override fun end(interrupted: Boolean) {

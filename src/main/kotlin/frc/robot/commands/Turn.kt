@@ -60,8 +60,17 @@ class Turn(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun isFinished() : Boolean {
-    println("checking if fin: ${abs(subsystems.drivetrain.angle - targetAngle) <= 10}")
-    return abs(subsystems.drivetrain.angle - targetAngle) <= 10
+    //return abs(subsystems.drivetrain.angle - targetAngle) <= 10
+    println("original: " + subsystems.drivetrain.originalAngle)
+    if (subsystems.drivetrain.originalAngle > targetAngle){
+      println("PAst desired angle (going left) -- target angle: " + targetAngle)
+      println(subsystems.drivetrain.angle < targetAngle)
+      return subsystems.drivetrain.angle < targetAngle
+    } else {
+      println("PAst desired angle (going right) -- target angle: " + targetAngle)
+      println(subsystems.drivetrain.angle > targetAngle)
+      return subsystems.drivetrain.angle > targetAngle
+    }
   }
 
   override fun end(interrupted: Boolean) {

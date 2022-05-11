@@ -42,6 +42,7 @@ class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main:
   }
 
   override fun execute() {
+    println("shooting")
     // if(indexer.atPositionTwo() || indexer.atPositionThree()) {
     //   feeder.currentVel = -0.1;
     // } else {
@@ -66,6 +67,7 @@ class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main:
       subsystems.lights.setColor(RGB(0, 0, 0))
       subsystems.shooter.stop()
       subsystems.indexer.stop()
+      subsystems.drivetrain.setPercent(0.0, 0.0)
       // driver.setRumble(RumbleType.kLeftRumble, 0.0);
       // driver.setRumble(RumbleType.kRightRumble, 0.0);
   }
