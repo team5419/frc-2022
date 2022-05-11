@@ -27,7 +27,10 @@ class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main:
   }
 
   override fun initialize() {
+  
+
     timer.reset()
+
     timer.start()
     subsystems.feeder.currentVel = FeederConstants.activePercent
     subsystems.lights.setColor(subsystems.shooter.currentColor);

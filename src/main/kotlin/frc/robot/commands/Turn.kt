@@ -39,7 +39,8 @@ class Turn(_subsystems: SubsystemHolder) : CommandBase() {
 
     subsystems.drivetrain.originalAngle = angle
 
-    targetAngle = angle + Random.nextDouble(-45.0, 45.0)
+    targetAngle = angle + Random.nextDouble(-90.0, 90.0)
+
   }
 
 
@@ -53,7 +54,7 @@ class Turn(_subsystems: SubsystemHolder) : CommandBase() {
     if (angle != targetAngle){  
 
         //subsystems.drivetrain.setPercent((targetAngle - angle)/500 + .1, -(targetAngle - angle)/500 + .1)
-        subsystems.drivetrain.setPercent(sign(targetAngle - angle)*.1, -sign(targetAngle - angle)*.1)
+        subsystems.drivetrain.setPercent(-sign(targetAngle - angle)*.1, sign(targetAngle - angle)*.1)
     }
     
   }

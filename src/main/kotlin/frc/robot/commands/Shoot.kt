@@ -35,10 +35,11 @@ class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double
     addCommands(
       Turn(subsystems),
       ParallelRaceGroup(
-        ShootAndFeed(subsystems, driver, Random.nextDouble(14000.0, 20000.0), Random.nextDouble(14000.0, 20000.0), 5.0),
+        ShootAndFeed(subsystems, driver, Random.nextDouble(17000.0, 20000.0), Random.nextDouble(17000.0, 20000.0), 2.5),
         CycleIndexer(subsystems, 50)
-      )
-      //TurnBack(subsystems)
+      ),
+      TurnBack(subsystems)
+
     )
   }
 
@@ -46,5 +47,7 @@ class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double
     subsystems.shooter.stop();
     subsystems.feeder.currentVel = FeederConstants.idlePercent
     subsystems.lights.setColor(RGB(0, 0, 0))
+    subsystems.drivetrain.setPercent(0.0, 0.0)
+
   }
 }

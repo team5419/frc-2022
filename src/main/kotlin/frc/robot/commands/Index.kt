@@ -12,17 +12,26 @@ import frc.robot.classes.SubsystemHolder
 class Index(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private var startingPosition: Double = 0.0
+  private var twoBalls = false
   init {
     addRequirements(_subsystems.indexer);
   }
 
   override fun initialize() {
     startingPosition = subsystems.indexer.encoder.getPosition()
+
+
+    
+    twoBalls = false
+    if (subsystems.indexer.sensor1.getValue().toDouble() > 1000){
+      twoBalls = true
+    }
+
   }
 
   override fun execute() {
     println("setting indexer !!!");
-    if(subsystems.shooter.isSpedUp()) {
+    if(subsystems.shooter.isSpedUp() && !(twoBalls && subsystems.indexer.sensor1.getValue() < 1000)) {
       subsystems.indexer.index(0.4);
     } else {
       subsystems.indexer.index(0.0);

@@ -71,7 +71,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // shoot (hold right bumper)
     val rBumperDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
-    rBumperDriver.whenHeld(Shoot(m_subsystems, driver));
+    rBumperDriver.whenPressed(Shoot(m_subsystems, driver));
 
     // intake (hold X)
     val xButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)

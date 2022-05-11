@@ -20,7 +20,7 @@ class CycleIndexer(_subsystems: SubsystemHolder, _numtimes: Int = 1) : Sequentia
     // for(i in 1..numtimes) {
          addCommands(
     //         WaitForShooter(shooter, 0.0), 
-            Index(subsystems)  
+            Index(subsystems) 
          )
     // }
   }
