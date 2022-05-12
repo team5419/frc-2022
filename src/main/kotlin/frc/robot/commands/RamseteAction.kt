@@ -8,6 +8,10 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig
 import edu.wpi.first.math.trajectory.constraint.CentripetalAccelerationConstraint
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics
+
+import edu.wpi.first.math.kinematics.SwerveDriveWheelSpeeds // does this exist lmfao
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics
+
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Pose2d
@@ -29,7 +33,8 @@ class RamseteAction(m_subsystem: SubsystemHolder, m_poses: List<Pose2d>, m_rever
     private val maxVoltage: Double = 12.0 // volts
     
     // wpilib stuff - just trust it
-    val driveKinematics = DifferentialDriveKinematics(DriveConstants.Ramsete.trackWidth)
+    //val driveKinematics = DifferentialDriveKinematics(DriveConstants.Ramsete.trackWidth) 
+    val driveKinematics = SwerveDriveKinematics(Drivetrain.m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation)// changed to swerve
     val feedforward = SimpleMotorFeedforward(DriveConstants.Ramsete.ks, DriveConstants.Ramsete.kv, DriveConstants.Ramsete.ka)
     val voltageConstraint = DifferentialDriveVoltageConstraint(feedforward, driveKinematics, maxVoltage)
     val driveKinematicsConstraint = DifferentialDriveKinematicsConstraint(driveKinematics, maxVelocity)

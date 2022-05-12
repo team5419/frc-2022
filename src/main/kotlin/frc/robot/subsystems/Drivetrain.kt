@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.sensors.PigeonIMU
 import com.ctre.phoenix.motorcontrol.can.TalonFX
@@ -130,6 +131,17 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         );
     }
 
+    // Locations for the swerve drive modules relative to the robot center
+    val Translation2D: m_frontLeftLocation = Translation2d(0.381, 0.381);
+    val Translation2D: m_frontRightLocation = Translation2d(0.381, -0.381);
+    val Translation2D: m_backLeftLocation = Translation2d(-0.381, 0.381);
+    val Translation2D: m_backRightLocation = Translation2d(-0.381, -0.381);
+
+    // Creating my kinematics object using the module locations
+    val SwerveDriveKinematics: m_kinematics = SwerveDriveKinematics(
+    m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
+    ); // should this be done in ramseteaction??
+
     // get angle from gyro
     val angle: Double
         get() = -gyro.getFusedHeading()
@@ -137,7 +149,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     var originalAngle : Double = 0.0
 
     // constructs object with angle from gyro (assuming starting position is (0,0))
-    var odometry = DifferentialDriveOdometry(Rotation2d(angle))
+    var odometry = SwerveDriveOdometry(Rotation2d(angle))
 
     // returns the x and y position of the robot
     val pose: Pose2d
@@ -250,7 +262,14 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     override fun periodic() {
         // update the odometry of the field with new gyro and encoder values
-        odometry.update(Rotation2d.fromDegrees(angle), leftDistance, rightDistance)
+        //odometry.update(Rotation2d.fromDegrees(angle), leftDistance, rightDistance)
+
+        val gyroAngle = Rotation2d.fromDegrees(-angle);
+
+        // Update the pose
+        val m_pose = m_odometry.update(angle, m_frontLeftModule.getState(), m_frontRightModule.getState(),
+            m_backLeftModule.getState(), m_backRightModule.getState());
+
     }
 
     override fun simulationPeriodic() {
