@@ -23,25 +23,61 @@ import frc.robot.classes.SubsystemHolder
 class Rainbow(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems;
   private var current: Int = 0;
-  private var direction: Int = 1;
 
   init {
   }
 
   override fun initialize() {
       current = 0;
-      direction = 1;
+  }
+
+  fun hsvToRgb(h: Int, s: Int, v: Int): RGB {
+    val c: Int = Math.round((v.toDouble() / 100) * (s / 100)).toInt();
+    val x: Int = Math.round(c * (1 - Math.abs(((h.toDouble() / 60) % 2) - 1))).toInt();
+    val m: Int = Math.round((v.toDouble() / 100) - c).toInt();
+    
+    var r: Int = 0;
+    var g: Int = 0;
+    var b: Int = 0;
+    val hmod: Int = Math.floor(h.toDouble() / 60).toInt();
+    when(hmod) {
+      0 -> {
+        r = c;
+        g = x;
+      }
+      1 -> {
+        r = x;
+        g = c;
+      }
+      2 -> {
+        g = c;
+        b = x;
+      }
+      3 -> {
+        g = x;
+        b = c;
+      }
+      4 -> {
+        r = x;
+        b = c;
+      }
+      5 -> {
+        r = c;
+        b = x;
+      }
+    }
+    r = (r + m) * 255;
+    g = (g + m) * 255;
+    b = (b + m) * 255;
+    return RGB(r, g, b);
   }
 
   override fun execute() {
-      //println("current = ${current}")
-      current += direction * 9;
-      if(current > 255) {
-          direction = -1;
-      } else if(current < 0) {
-          direction = 1;
+      current++;
+      if(current > 359) {
+        current = 0;
       }
-      subsystems.lights.setColor(RGB(0, 255, 255 - current))
+      subsystems.lights.setColor(hsvToRgb(current, 100, 100));
   }
 
 //     override fun excute(theoIsDumb){
