@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
-import frc.robot.auto.*;
+//import frc.robot.auto.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -21,21 +21,15 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d
 
 // robot structure declared here (subsystems, commands, button mappings)
 class RobotContainer(tab: ShuffleboardTab) {
-  val driver = XboxController(0);
-  val codriver = XboxController(1);
+  val driver = XboxController(0)
+  val codriver = XboxController(1)
 
-  public val drivetrain = ExampleDrivetrain(tab);
+  public val throttle = JoystickButton(driver, 1)
 
-  //button bindings
-  val moveForward = JoystickButton(driver, 1);
-  val moveBackward = JoystickButton(driver, 2);
-  val turnLeft = JoystickButton(driver, 3);
-  val turnRight = JoystickButton(driver, 4);
+  public val drivetrain = ExampleDrivetrain(tab)
 
   init {
-    moveForward.whenPressed(MoveForward(drivetrain));
-    moveBackward.whenPressed(MoveBackward());
-    turnLeft.whenPressed(TurnLeft());
-    turnRight.whenPressed(TurnRight());
+    //throttle.toggleWhenPressed(Drive(drivetrain, driver))
+    drivetrain.setDefaultCommand(Drive(drivetrain, driver))
   }
 }

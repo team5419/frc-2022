@@ -3,10 +3,10 @@ import kotlin.math.PI
 
 object DriveConstants {
     object Ports {
-        val leftLeader = -1; 
-        val leftFollower = -1; 
-        val rightLeader = -1; 
-        val rightFollower = -1; 
+        val leftLeader = 3; 
+        val leftFollower = 4; 
+        val rightLeader = 1; 
+        val rightFollower = 2; 
     }
     const val slowMultiplier: Double = 0.25
 
