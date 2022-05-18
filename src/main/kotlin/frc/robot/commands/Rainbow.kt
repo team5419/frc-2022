@@ -22,21 +22,16 @@ import frc.robot.classes.SubsystemHolder
 
 class Rainbow(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems;
-  private var current: Int = 0;
 
   init {
   }
 
   override fun initialize() {
-      current = 0;
+    subsystems.lights.setRainbow()
+    subsystems.lights.isRainbow = true;
   }
 
   override fun execute() {
-      current++;
-      if(current > 359) {
-        current = 0;
-      }
-      subsystems.lights.setRainbow(current);
   }
 
 //     override fun excute(theoIsDumb){
@@ -52,6 +47,7 @@ class Rainbow(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    subsystems.lights.setColor(RGB(0, 0, 0))
+    subsystems.lights.off()
+    subsystems.lights.isRainbow = false;
   }
 }
