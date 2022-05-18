@@ -28,8 +28,18 @@ class RobotContainer(tab: ShuffleboardTab) {
 
   public val drivetrain = ExampleDrivetrain(tab)
 
+  val slowMode: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value);
+  val mediumMode: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value);
+  val fastMode: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value);
+
   init {
     //throttle.toggleWhenPressed(Drive(drivetrain, driver))
     drivetrain.setDefaultCommand(Drive(drivetrain, driver))
+
+    slowMode.whenPressed(ChangeMultiplier(drivetrain, 0.1))
+    mediumMode.whenPressed(ChangeMultiplier(drivetrain, 0.5))
+    fastMode.whenPressed(ChangeMultiplier(drivetrain, 1.0))
+
+
   }
 }

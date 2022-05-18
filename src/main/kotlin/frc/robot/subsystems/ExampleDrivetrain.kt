@@ -26,6 +26,8 @@ class ExampleDrivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     public val followerRight: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
     public val leaderRight: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
 
+    public var multiplier: Double = 0.5
+
     init {
         leaderLeft.apply {
             configFactoryDefault(100)
