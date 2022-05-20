@@ -2,13 +2,8 @@ package frc.robot;
 import kotlin.math.PI
 
 object DriveConstants {
-    object Ports {
-        val leftLeader = 2; // 3
-        val leftFollower = 3; //4
-        val rightLeader = 4; //1
-        val rightFollower = 5; // 2
-        val gyroPort = 20;
-    }
+    val turnerPorts = arrayOf(0, 1, 2, 3)
+    val driverPorts = arrayOf(4, 5, 6, 7)
 
     val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     val gearRatio: Double = (10.3333 / 1.0)

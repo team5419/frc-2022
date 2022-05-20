@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics
+import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.sensors.PigeonIMU
 import com.ctre.phoenix.motorcontrol.can.TalonFX
@@ -15,15 +17,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+import edu.wpi.first.wpilibj.motorcontrol.Talon
 import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Translation2d
 
 class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    public val leftLeader: TalonFX = TalonFX(DriveConstants.Ports.leftLeader)
-    public val leftFollower: TalonFX = TalonFX(DriveConstants.Ports.leftFollower)
-    public val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
-    public val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
+    public val turners: MutableList<TalonFX> = mutableListOf()
+    public val drivers: MutableList<TalonFX> = mutableListOf()
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
     public var inverted: Int = 1
     private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList).withPosition(2, 0).withSize(1, 2);
@@ -31,116 +33,73 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     private var previousTurn: Double = -2.0;
     // configure the motors and add to shuffleboard
     init {
-        leftLeader.apply {
-            configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
+        for(i in 0..3) {
+            turners.add(TalonFX(DriveConstants.turnerPorts[i]))
+            turners[i].apply {
+                configFactoryDefault(100)
+                configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
-            setSensorPhase(false)
-            setInverted(false)
+                setSensorPhase(false)
+                setInverted(false)
 
-            config_kP( 0, DriveConstants.PID.P , 100 )
-            config_kI( 0, DriveConstants.PID.I , 100 )
-            config_kD( 0, DriveConstants.PID.D , 100 )
-            config_kF( 0, 0.0 , 100 )
+                // config_kP( 0, DriveConstants.PID.P , 100 )
+                // config_kI( 0, DriveConstants.PID.I , 100 )
+                // config_kD( 0, DriveConstants.PID.D , 100 )
+                // config_kF( 0, 0.0 , 100 )
 
-            setSelectedSensorPosition(0.0, 0, 100)
+                setSelectedSensorPosition(0.0, 0, 100)
 
-            configVoltageCompSaturation(12.0, 100)
-            enableVoltageCompensation(true)
-            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
-            setControlFramePeriod(ControlFrame.Control_3_General, 10)
+                configVoltageCompSaturation(12.0, 100)
+                enableVoltageCompensation(true)
+                setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+                setControlFramePeriod(ControlFrame.Control_3_General, 10)
 
-            setNeutralMode(NeutralMode.Coast)
+                setNeutralMode(NeutralMode.Coast)
 
-            configClosedLoopPeakOutput(0, 0.1, 100)
+                configClosedLoopPeakOutput(0, 0.1, 100)
+            }
+            drivers.add(TalonFX(DriveConstants.driverPorts[i]))
+            drivers[i].apply {
+                configFactoryDefault(100)
+                configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+                setSensorPhase(false)
+                setInverted(false)
+
+                // config_kP( 0, DriveConstants.PID.P , 100 )
+                // config_kI( 0, DriveConstants.PID.I , 100 )
+                // config_kD( 0, DriveConstants.PID.D , 100 )
+                // config_kF( 0, 0.0 , 100 )
+
+                setSelectedSensorPosition(0.0, 0, 100)
+
+                configVoltageCompSaturation(12.0, 100)
+                enableVoltageCompensation(true)
+                setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+                setControlFramePeriod(ControlFrame.Control_3_General, 10)
+
+                setNeutralMode(NeutralMode.Coast)
+
+                configClosedLoopPeakOutput(0, 0.1, 100)
+            }
         }
 
-        rightLeader.apply {
-            configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
-
-            setSensorPhase(true)
-            setInverted(true)
-
-            config_kP( 0, DriveConstants.PID.P , 100 )
-            config_kI( 0, DriveConstants.PID.I , 100 )
-            config_kD( 0, DriveConstants.PID.D , 100 )
-            config_kF( 0, 0.0 , 100 )
-
-            setSelectedSensorPosition(0.0, 0, 100)
-
-            configVoltageCompSaturation(12.0, 100)
-            enableVoltageCompensation(true)
-            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
-            setControlFramePeriod(ControlFrame.Control_3_General, 10)
-
-            setNeutralMode(NeutralMode.Coast)
-        }
-
-        leftFollower.apply {
-            configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
-
-            // follow the master
-            follow(leftLeader)
-            setInverted(InvertType.FollowMaster)
-
-            configVoltageCompSaturation(12.0, 100)
-            enableVoltageCompensation(true)
-            
-            configClosedLoopPeakOutput(0, 0.1, 100)
-            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
-            setControlFramePeriod(ControlFrame.Control_3_General, 10)
-        }
-
-        rightFollower.apply {
-            configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
-
-            // follow the master
-            follow(rightLeader)
-            setInverted(InvertType.FollowMaster)
-
-            configVoltageCompSaturation(12.0, 100)
-            enableVoltageCompensation(true)
-
-            configClosedLoopPeakOutput(0, 0.1, 100)
-            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
-            setControlFramePeriod(ControlFrame.Control_3_General, 10)
-        }
-
-         gyro.apply {
+        gyro.apply {
             configFactoryDefault(100)
             setFusedHeading(0.0, 100)
         }
-        //layout.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
-        //layout.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
-        //layout.addBoolean("brake mode", { brakeMode})
-        layout.addNumber("angle", { angle })
-        layout.addNumber("x", { pose.getX() })
-        layout.addNumber("y", { pose.getY() });
-        layout.addNumber("target", { originalAngle })
-    }
-
-    fun getAllVelocities() : List<Double> {
-        return listOf(
-            leftLeader.getSelectedSensorVelocity(0),
-            leftFollower.getSelectedSensorVelocity(0),
-            rightLeader.getSelectedSensorVelocity(0),
-            rightFollower.getSelectedSensorVelocity(0)
-        );
     }
 
     // Locations for the swerve drive modules relative to the robot center
-    val Translation2D: m_frontLeftLocation = Translation2d(0.381, 0.381);
-    val Translation2D: m_frontRightLocation = Translation2d(0.381, -0.381);
-    val Translation2D: m_backLeftLocation = Translation2d(-0.381, 0.381);
-    val Translation2D: m_backRightLocation = Translation2d(-0.381, -0.381);
+    val m_frontLeftLocation: Translation2d = Translation2d(0.381, 0.381);
+    val m_frontRightLocation: Translation2d = Translation2d(0.381, -0.381);
+    val m_backLeftLocation: Translation2d = Translation2d(-0.381, 0.381);
+    val m_backRightLocation: Translation2d = Translation2d(-0.381, -0.381);
 
     // Creating my kinematics object using the module locations
-    val SwerveDriveKinematics: m_kinematics = SwerveDriveKinematics(
-    m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-    ); // should this be done in ramseteaction??
+    val m_kinematics: SwerveDriveKinematics = SwerveDriveKinematics(
+        m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
+    );
 
     // get angle from gyro
     val angle: Double
@@ -149,7 +108,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     var originalAngle : Double = 0.0
 
     // constructs object with angle from gyro (assuming starting position is (0,0))
-    var odometry = SwerveDriveOdometry(Rotation2d(angle))
+    var odometry = SwerveDriveOdometry(m_kinematics, Rotation2d(angle))
 
     // returns the x and y position of the robot
     val pose: Pose2d
@@ -157,8 +116,6 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     fun resetOdometry() {
         odometry.resetPosition(Pose2d(0.0, 0.0, Rotation2d(0.0)), Rotation2d(angle))
-        leftLeader.setSelectedSensorPosition(0.0)
-        rightLeader.setSelectedSensorPosition(0.0)
     }
 
     // unit conversion functions
@@ -168,107 +125,46 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         units * 10.0 / DriveConstants.ticksPerRotation * DriveConstants.wheelCircumference
     fun metersPerSecondToNativeUnits(units: Double)
         = (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
-
-    // get distances and velocities of both sides of the robot from the encoders
-    val leftDistance: Double
-        get() = nativeUnitsToMeters(leftLeader.getSelectedSensorPosition(0))
-    val rightDistance: Double
-        get() = nativeUnitsToMeters(rightLeader.getSelectedSensorPosition(0))
-    val leftVelocity: Double // meters per second
-        get() = nativeUnitsToMetersPerSecond(leftLeader.getSelectedSensorVelocity(0))
-    val rightVelocity: Double
-        get() = nativeUnitsToMetersPerSecond(rightLeader.getSelectedSensorVelocity(0))
-    val averageSpeed: Double // meters per second
-        get() = ((Math.abs(leftVelocity) + Math.abs(rightVelocity))/2)
+    fun radiansToNativeUnits(units: Double): Double {
+        return (units / (2 * Math.PI)) * (DriveConstants.ticksPerRotation / 10)
+    }
 
     // set the percent output of the drivetrain motors
-    fun setPercent(left: Double, right: Double){
-        
-        leftLeader.set(ControlMode.PercentOutput, left)
-        rightLeader.set(ControlMode.PercentOutput, right)
+    fun drive(forward: Double, left: Double, rotation: Double) {
+        val speeds: ChassisSpeeds = ChassisSpeeds(forward, left, rotation)
+        val states = m_kinematics.toSwerveModuleStates(speeds)
+        for(i in 0..3) {
+            drivers[i].set(ControlMode.Velocity, metersPerSecondToNativeUnits(states[i].speedMetersPerSecond))
+            turners[i].set(ControlMode.Velocity, radiansToNativeUnits(states[i].angle.getRadians()))
+        }
     }
-
-    // set the velocity of the drivetrain motors
-    fun setVelocity(leftVelocity: Double, rightVelocity: Double, leftFF: Double, rightFF: Double) {
-        leftLeader.set(
-            ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity),
-            DemandType.ArbitraryFeedForward, leftFF / 12.0
-        )
-        rightLeader.set(
-            ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity),
-            DemandType.ArbitraryFeedForward, rightFF / 12.0
-        )
-    }
-
-    // maintains a deadband
     fun withDeadband(movement: Double, deadband: Double): Double {
         if(abs(movement) <= deadband) return 0.0;
         if(abs(movement) > 1.0) return sign(movement);
         return movement;
     }
 
-    fun withSkim(velocity : Double): Double {
-        if(velocity > 1.0) return -(velocity - 1.0)
-        else if(velocity < -1.0) return -(velocity + 1.0)
-        else return 0.0
-    }
-
-    public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
-
-        // code to not overload CAN network
-        if(throttle == previousThrottle && turn == previousTurn) {
-            return;
-        }
-        previousThrottle = throttle;
-        previousTurn = turn;
-
-        // set slow multiplier
-        var slow: Double = 1.0
-        if(isSlow) slow = DriveConstants.slowMultiplier
-
-        // NICER WAY TO CONTROL ROBOT????????????
-        var turn2 = withDeadband(turn, 0.1) * (throttle + 0.5)
-        var t_left = inverted * (throttle - turn2)
-        var t_right = inverted * (throttle + turn2)
-        var left = (t_left + withSkim(t_right)) * slow
-        var right = (t_right + withSkim(t_left)) * slow
-        leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.05))
-        rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.05))
-
-        // set percent outputs of drivetrain motors
-        //leftLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle - turn) * slow, 0.001))
-        //rightLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle + turn) * slow, 0.001))
-    }
-
     public var brakeMode = false
         set(value: Boolean) {
-            if(value) {
-                leftLeader.setNeutralMode(NeutralMode.Brake)
-                rightLeader.setNeutralMode(NeutralMode.Brake)
-            } else {
-                leftLeader.setNeutralMode(NeutralMode.Coast)
-                rightLeader.setNeutralMode(NeutralMode.Coast)
+            for(i in 0..3) {
+                if( value) {
+                    turners[i].setNeutralMode(NeutralMode.Brake)
+                    drivers[i].setNeutralMode(NeutralMode.Brake)
+                } else {
+                    turners[i].setNeutralMode(NeutralMode.Coast)
+                    drivers[i].setNeutralMode(NeutralMode.Coast)
+                }
             }
-        }
-
-    public var currentLimit: Double = 20.0
-        set(value: Double) {
-            println("setting current limit to ${value}");
-            leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
-            leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
-            rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
-            rightFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
         }
 
     override fun periodic() {
         // update the odometry of the field with new gyro and encoder values
         //odometry.update(Rotation2d.fromDegrees(angle), leftDistance, rightDistance)
 
-        val gyroAngle = Rotation2d.fromDegrees(-angle);
+        //val gyroAngle = Rotation2d.fromDegrees(-angle);
 
         // Update the pose
-        val m_pose = m_odometry.update(angle, m_frontLeftModule.getState(), m_frontRightModule.getState(),
-            m_backLeftModule.getState(), m_backRightModule.getState());
+        //val m_pose = odometry.update(Rotation2d(angle), m_kinematics.toSwerveModuleStates());
 
     }
 
