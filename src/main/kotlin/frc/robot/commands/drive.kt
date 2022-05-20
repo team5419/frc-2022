@@ -42,8 +42,8 @@ class Drive(_drivetrain: ExampleDrivetrain, _controller: XboxController) : Comma
 
   override fun execute() {
       //println("this is run every frame when the command is running") //controller.getLeftY().toDouble()
-      drivetrain.leaderLeft.set(ControlMode.PercentOutput, drivetrain.multiplier*(controller.getLeftY() - controller.getRightX())) // the % output of the motor, between -1 and 1
-      drivetrain.leaderRight.set(ControlMode.PercentOutput, -drivetrain.multiplier*(controller.getLeftY() + controller.getRightX())) // the % output of the motor, between -1 and 1
+      drivetrain.leaderLeft.set(ControlMode.PercentOutput, drivetrain.multiplier*(controller.getLeftY() - 0.5*controller.getRightX())) // the % output of the motor, between -1 and 1
+      drivetrain.leaderRight.set(ControlMode.PercentOutput, -drivetrain.multiplier*(controller.getLeftY() + 0.5*controller.getRightX())) // the % output of the motor, between -1 and 1
   }
 
   override fun isFinished(): Boolean {
