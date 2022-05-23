@@ -39,7 +39,7 @@ class Turn(_subsystems: SubsystemHolder) : CommandBase() {
 
     subsystems.drivetrain.originalAngle = angle
 
-    targetAngle = angle + Random.nextDouble(-90.0, 90.0)
+    targetAngle = angle + Random.nextDouble(-40.0, 40.0)
 
   }
 
@@ -76,6 +76,6 @@ class Turn(_subsystems: SubsystemHolder) : CommandBase() {
   override fun end(interrupted: Boolean) {
     subsystems.drivetrain.setPercent(0.0,0.0)
     println("Ended turn")
-    subsystems.drivetrain.brakeMode = false;
+    //subsystems.drivetrain.brakeMode = false;
   }
 }
