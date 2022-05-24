@@ -50,11 +50,14 @@ class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main:
   }
 
   override fun isFinished(): Boolean {
-    return time != 0.0 && timer.get() > time
-    // if(time > 0.0 && timer.get() < time) {
-    //   return false;
-    // }
-    // return (!subsystems.indexer.atPositionOne() && !subsystems.indexer.atPositionTwo() && !subsystems.indexer.atPositionThree())
+    //return time != 0.0 && timer.get() > time
+    if(time > 0.0) {
+      if(timer.get() < time) {
+        return false;
+      }
+      return (!subsystems.indexer.atPositionOne() && !subsystems.indexer.atPositionTwo() && !subsystems.indexer.atPositionThree())
+    }
+    return false
   }
 
   override fun end(interrupted: Boolean) {

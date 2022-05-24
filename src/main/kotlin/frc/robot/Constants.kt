@@ -93,14 +93,14 @@ object VisionConstants {
     public val cameraAngle = 17.0 // degrees
     public val cameraHeight = 0.254 // meters
     public val targetHeight = 1.5 // meters
-    public val turnTolerance = 3.0 // 3.0 // arbitrary
+    public val turnTolerance = 0.8 // 3.0 // arbitrary
     public val throttleTolerance = 3.0 // arbitrary
     public val maxAutoAlignSpeed = 0.15
     public val targetOffset = 0.0
     public const val maxOffsetFor2XZoom = 10.0
 
     object TurnPID {
-        public const val P = 0.01 // .02
+        public const val P = 0.02 // .01
         public const val I = 0.006 // .006
         public const val D = 0.0005 // .0005
     }

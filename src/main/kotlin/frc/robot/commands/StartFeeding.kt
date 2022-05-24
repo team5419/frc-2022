@@ -11,14 +11,15 @@ import frc.robot.subsystems.Lights;
 import frc.robot.classes.RGB;
 import frc.robot.classes.SubsystemHolder
 
-class StartFeeding(_subsystems: SubsystemHolder)  : CommandBase() {
+class StartFeeding(_subsystems: SubsystemHolder, _percent: Double = FeederConstants.idlePercent)  : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
+  private val percent: Double = _percent
 
   init {
   }
 
   override fun initialize() {
-    subsystems.feeder.currentVel = FeederConstants.idlePercent;
+    subsystems.feeder.currentVel = percent;
   }
 
   override fun execute() {
