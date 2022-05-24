@@ -31,17 +31,10 @@ class Rainbow(_subsystems: SubsystemHolder) : CommandBase() {
   override fun initialize() {
       current = 0;
       direction = 1;
+      subsystems.lights.setRainbow()
   }
 
   override fun execute() {
-      //println("current = ${current}")
-      current += direction * 9;
-      if(current > 255) {
-          direction = -1;
-      } else if(current < 0) {
-          direction = 1;
-      }
-      subsystems.lights.setColor(RGB(0, 255, 255 - current))
   }
 
 //     override fun excute(theoIsDumb){
@@ -57,6 +50,6 @@ class Rainbow(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    subsystems.lights.setColor(RGB(0, 0, 0))
+    subsystems.lights.off()
   }
 }
