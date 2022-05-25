@@ -36,7 +36,7 @@ class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double
     addCommands(
       Turn(subsystems),
       ParallelRaceGroup(
-        ShootAndFeed(subsystems, driver, Random.nextDouble(17000.0, 20000.0), Random.nextDouble(17000.0, 20000.0), 2.5),
+        ShootAndFeed(subsystems, driver, Random.nextDouble(19000.0, 22000.0), Random.nextDouble(19000.0, 22000.0), 2.5),
         CycleIndexer(subsystems, 50)
       ),
       TurnBack(subsystems)

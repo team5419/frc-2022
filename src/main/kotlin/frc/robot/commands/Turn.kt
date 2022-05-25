@@ -39,7 +39,7 @@ class Turn(_subsystems: SubsystemHolder) : CommandBase() {
 
     subsystems.drivetrain.originalAngle = angle
 
-    targetAngle = angle + Random.nextDouble(-90.0, 90.0)
+    targetAngle = angle + Random.nextDouble(-45.0, 45.0)
 
   }
 
