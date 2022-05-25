@@ -68,6 +68,6 @@ class TurnBack(_subsystems: SubsystemHolder) : CommandBase() {
   override fun end(interrupted: Boolean) {
       subsystems.drivetrain.setPercent(0.0,0.0)
       
-    subsystems.drivetrain.brakeMode = false
+    //subsystems.drivetrain.brakeMode = false
   }
 }
