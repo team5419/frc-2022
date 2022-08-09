@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.sensors.PigeonIMU
@@ -20,17 +21,21 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.wpilibj.motorcontrol.Talon
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.wpilibj.smartdashboard.Field2d
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 
 class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     public val turners: MutableList<TalonFX> = mutableListOf()
     public val drivers: MutableList<TalonFX> = mutableListOf()
-    public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
+    public var states: Array<SwerveModuleState> = arrayOf()
+    public val gyro: PigeonIMU = PigeonIMU(/*DriveConstants.Ports.gyroPort*/0)
     public var inverted: Int = 1
     private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList).withPosition(2, 0).withSize(1, 2);
     private var previousThrottle: Double = -2.0;
     private var previousTurn: Double = -2.0;
+    private val field: Field2d = Field2d();
     // configure the motors and add to shuffleboard
     init {
         for(i in 0..3) {
@@ -88,6 +93,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             configFactoryDefault(100)
             setFusedHeading(0.0, 100)
         }
+        SmartDashboard.putData("Field", field);
     }
 
     // Locations for the swerve drive modules relative to the robot center
@@ -111,11 +117,12 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     var odometry = SwerveDriveOdometry(m_kinematics, Rotation2d(angle))
 
     // returns the x and y position of the robot
-    val pose: Pose2d
-        get() = odometry.getPoseMeters()
+    fun pose(): Pose2d {
+        return odometry.getPoseMeters()
+    }
 
-    fun resetOdometry() {
-        odometry.resetPosition(Pose2d(0.0, 0.0, Rotation2d(0.0)), Rotation2d(angle))
+    fun resetOdometry(pose: Pose2d) {
+        odometry.resetPosition(pose, Rotation2d(angle));
     }
 
     // unit conversion functions
@@ -132,10 +139,13 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     // set the percent output of the drivetrain motors
     fun drive(forward: Double, left: Double, rotation: Double) {
         val speeds: ChassisSpeeds = ChassisSpeeds(forward, left, rotation)
-        val states = m_kinematics.toSwerveModuleStates(speeds)
+        states = m_kinematics.toSwerveModuleStates(speeds)
+        updateMotors(states);
+    }
+    fun updateMotors(myStates: Array<SwerveModuleState>) {
         for(i in 0..3) {
-            drivers[i].set(ControlMode.Velocity, metersPerSecondToNativeUnits(states[i].speedMetersPerSecond))
-            turners[i].set(ControlMode.Velocity, radiansToNativeUnits(states[i].angle.getRadians()))
+            drivers[i].set(ControlMode.Velocity, metersPerSecondToNativeUnits(myStates[i].speedMetersPerSecond))
+            turners[i].set(ControlMode.Velocity, radiansToNativeUnits(myStates[i].angle.getRadians()))
         }
     }
     fun withDeadband(movement: Double, deadband: Double): Double {
@@ -158,14 +168,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
         }
 
     override fun periodic() {
-        // update the odometry of the field with new gyro and encoder values
-        //odometry.update(Rotation2d.fromDegrees(angle), leftDistance, rightDistance)
-
-        //val gyroAngle = Rotation2d.fromDegrees(-angle);
-
-        // Update the pose
-        //val m_pose = odometry.update(Rotation2d(angle), m_kinematics.toSwerveModuleStates());
-
+        odometry.update(Rotation2d(angle), states[0], states[1], states[2], states[3]);
     }
 
     override fun simulationPeriodic() {
