@@ -1,17 +1,17 @@
 package frc.robot;
 import kotlin.math.PI
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 object DriveConstants {
-    val turnerPorts = arrayOf(0, 1, 2, 3)
-    val driverPorts = arrayOf(4, 5, 6, 7)
-
-    val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
+    val turnerPorts: Array<Int> = arrayOf(0, 1, 2, 3)
+    val driverPorts: Array<Int> = arrayOf(4, 5, 6, 7)
+    val autoCheckVelocities: Array<Double> = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     val gearRatio: Double = (10.3333 / 1.0)
     val ticksPerRotation: Double = (2048.0 * gearRatio)
-    const val wheelRadius = 0.0508
-    const val wheelDiameter = wheelRadius * 2.0
-    const val wheelCircumference = wheelDiameter * PI
-
+    const val wheelRadius: Double = 0.0508
+    const val wheelDiameter: Double = wheelRadius * 2.0
+    const val wheelCircumference: Double = wheelDiameter * PI
+    
     object Ramsete {
         const val kv: Double = 2.3 // arbitrary
         const val ka: Double = 0.463
@@ -24,11 +24,16 @@ object DriveConstants {
         const val zeta: Double = 0.7 // unitless
         const val trackWidth: Double = 1.781 // meters
     }
-
+    val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(Ramsete.ks, Ramsete.kv, Ramsete.ka);
     const val driverPort: Int = 0
     const val slowMultiplier: Double = 0.25
 
-    object PID {
+    object DrivePID {
+        const val P: Double = 0.0
+        const val I: Double = 0.0
+        const val D: Double = 0.0
+    }
+    object TurnPID {
         const val P: Double = 0.0
         const val I: Double = 0.0
         const val D: Double = 0.0
