@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.sensors.PigeonIMU
+import com.ctre.phoenix.sensors.BasePigeonSimCollection
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.*
@@ -24,6 +25,7 @@ import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import frc.robot.subsystems.SwerveModule;
+import frc.robot.Util;
 
 class Drivetrain() : SubsystemBase() {
 
@@ -34,8 +36,10 @@ class Drivetrain() : SubsystemBase() {
         SwerveModule(DriveConstants.driverPorts[2], DriveConstants.turnerPorts[2]),
         SwerveModule(DriveConstants.driverPorts[3], DriveConstants.turnerPorts[3])
     );
-    public val gyro: PigeonIMU = PigeonIMU(/*DriveConstants.Ports.gyroPort*/0)
-    public var inverted: Int = 1
+    public val gyro: PigeonIMU = PigeonIMU(DriveConstants.gyroPort);
+    private val gyroSim: BasePigeonSimCollection = BasePigeonSimCollection(gyro, false);
+    private var yaw: Double = 0.0;
+    public var inverted: Int = 1;
     private val tab: ShuffleboardTab = Shuffleboard.getTab("Drivetrain");
     private val field: Field2d = Field2d();
     private var previousMove: ChassisSpeeds = ChassisSpeeds();
@@ -55,17 +59,6 @@ class Drivetrain() : SubsystemBase() {
         tab.add("turning (rad)", { previousMove.omegaRadiansPerSecond });
     }
 
-    // Locations for the swerve drive modules relative to the robot center
-    val m_frontLeftLocation: Translation2d = Translation2d(0.381, 0.381);
-    val m_frontRightLocation: Translation2d = Translation2d(0.381, -0.381);
-    val m_backLeftLocation: Translation2d = Translation2d(-0.381, 0.381);
-    val m_backRightLocation: Translation2d = Translation2d(-0.381, -0.381);
-
-    // Creating my kinematics object using the module locations
-    val m_kinematics: SwerveDriveKinematics = SwerveDriveKinematics(
-        m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-    );
-
     // get angle from gyro
     val angle: Double
         get() = -gyro.getFusedHeading()
@@ -73,7 +66,7 @@ class Drivetrain() : SubsystemBase() {
     var originalAngle : Double = 0.0
 
     // constructs object with angle from gyro (assuming starting position is (0,0))
-    var odometry = SwerveDriveOdometry(m_kinematics, Rotation2d(angle))
+    var odometry = SwerveDriveOdometry(DriveConstants.kinematics, Rotation2d(angle))
 
     // returns the x and y position of the robot
     fun pose(): Pose2d {
@@ -88,14 +81,15 @@ class Drivetrain() : SubsystemBase() {
     fun drive(forward: Double, left: Double, rotation: Double) {
         val speeds: ChassisSpeeds = ChassisSpeeds(forward, left, rotation);
         this.previousMove = speeds;
-        val states: Array<SwerveModuleState> = m_kinematics.toSwerveModuleStates(speeds);
+        val states: Array<SwerveModuleState> = DriveConstants.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.Ramsete.maxVelocity);
         updateMotors(states);
     }
-    fun updateMotors(myStates: Array<SwerveModuleState>) {
+    fun updateMotors(myStates: Array<SwerveModuleState>): Int {
         for(i in 0..drivers.size - 1) {
             drivers[i].setDesiredState(myStates[i]);
         }
+        return 0;
     }
     fun withDeadband(movement: Double, deadband: Double): Double {
         if(abs(movement) <= deadband) return 0.0;
@@ -115,9 +109,29 @@ class Drivetrain() : SubsystemBase() {
     }
     override fun periodic() {
         val res: Array<SwerveModuleState> = getStates();
-        odometry.update(Rotation2d(angle), res[0], res[1], res[2], res[3]);
+        val cangle: Rotation2d = Rotation2d(angle);
+        val cpose: Pose2d = pose();
+        odometry.update(cangle, res[0], res[1], res[2], res[3]);
+        for(i in 0..drivers.size - 1) {
+            val modulePositionFromChassis: Translation2d = DriveConstants.modulePositions[i]
+                    .rotateBy(cangle)
+                    .plus(cpose.getTranslation());
+            val pose: Pose2d = Pose2d(modulePositionFromChassis, drivers[i].getTurn().plus(cpose.getRotation()));
+            field.getObject("Swerve Module ${i}").setPose(pose);
+          }
+          field.setRobotPose(cpose);
     }
 
     override fun simulationPeriodic() {
+        for(i in 0..drivers.size - 1) {
+            drivers[i].simulationPeriodic(DriveConstants.simUpdateTime);
+        }
+        val modStates: Array<SwerveModuleState> = getStates();
+
+        val chassisSpeed: ChassisSpeeds = DriveConstants.kinematics.toChassisSpeeds(modStates[0], modStates[1], modStates[2], modStates[3]);
+        val chassisRotationSpeed: Double = chassisSpeed.omegaRadiansPerSecond;
+
+        yaw += chassisRotationSpeed * DriveConstants.simUpdateTime;
+        gyroSim.setRawHeading(-Util.radiansToDegrees(yaw));
     }
 }

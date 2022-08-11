@@ -8,6 +8,7 @@
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "image": "C:\\Users\\Admin\\Desktop\\Code\\frc-2022\\2022-field.png",
         "window": {
           "visible": true
         }
@@ -16,7 +17,32 @@
   },
   "NetworkTables": {
     "LiveWindow": {
-      "open": true
+      "Drivetrain": {
+        "open": true
+      }
+    },
+    "Shuffleboard": {
+      "Drivetrain": {
+        "brake": {
+          "open": true
+        },
+        "forward m": {
+          "open": true
+        },
+        "open": true,
+        "sideways m": {
+          "open": true
+        },
+        "turning (rad)": {
+          "open": true
+        },
+        "x m": {
+          "open": true
+        },
+        "y m": {
+          "open": true
+        }
+      }
     },
     "SmartDashboard": {
       "Field": {

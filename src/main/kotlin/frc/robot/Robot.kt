@@ -10,14 +10,13 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
 
-val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
 
 class Robot : TimedRobot() {
-  private val m_robotContainer = RobotContainer(tab);
+  private val m_robotContainer = RobotContainer();
   //private var m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
   override fun robotInit() {
-    NetworkTableInstance.getDefault().setUpdateRate(0.05)
+    NetworkTableInstance.getDefault().setUpdateRate(0.02)
   }
 
   override fun robotPeriodic() {

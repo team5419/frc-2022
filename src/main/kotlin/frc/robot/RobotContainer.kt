@@ -24,10 +24,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d
 import frc.robot.ShooterConstants
 
 // robot structure declared here (subsystems, commands, button mappings)
-class RobotContainer(tab: ShuffleboardTab) {
+class RobotContainer() {
 
   // subsystems
-  public val m_drivetrain = Drivetrain(tab);
+  public val m_drivetrain = Drivetrain();
   // creates a tab in shuffleboard to select autonomous routine
   // val autoSelector = SendableChooser<SequentialCommandGroup>()
   val driver = XboxController(0);
@@ -52,7 +52,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   }
   
   fun configureButtonBindings(driver: XboxController) {
-
+    
   }
 
 

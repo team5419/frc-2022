@@ -1,28 +1,49 @@
 package frc.robot;
 import kotlin.math.PI
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 object DriveConstants {
+    val simUpdateTime: Double = 0.02;
     val turnerPorts: Array<Int> = arrayOf(0, 1, 2, 3)
     val driverPorts: Array<Int> = arrayOf(4, 5, 6, 7)
+    val gyroPort: Int = 8;
     val autoCheckVelocities: Array<Double> = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     val gearRatio: Double = (10.3333 / 1.0)
     val ticksPerRotation: Double = (2048.0 * gearRatio)
     const val wheelRadius: Double = 0.0508
     const val wheelDiameter: Double = wheelRadius * 2.0
     const val wheelCircumference: Double = wheelDiameter * PI
+    const val controllerDeadband: Double = 0.05;
+
+    // Locations for the swerve drive modules relative to the robot center
+    val frontLeftLocation: Translation2d = Translation2d(0.381, 0.381);
+    val frontRightLocation: Translation2d = Translation2d(0.381, -0.381);
+    val backLeftLocation: Translation2d = Translation2d(-0.381, 0.381);
+    val backRightLocation: Translation2d = Translation2d(-0.381, -0.381);
+
+    val modulePositions: Array<Translation2d> = arrayOf(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
+
+    // Creating my kinematics object using the module locations
+    val kinematics: SwerveDriveKinematics = SwerveDriveKinematics(
+        frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation
+    );
     
     object Ramsete {
+        const val kpx: Double = 0.0;
+        const val kpy: Double = 0.0;
+        const val kptheta: Double = 0.0;
+        const val kMaxAngularSpeedRadiansPerSecond: Double = 2.0 * Math.PI;
+        val kMaxAngularSpeedRadiansPerSecondSquared: Double = Math.pow(kMaxAngularSpeedRadiansPerSecond, 2.0);
+        public val kThetaControllerConstraints: TrapezoidProfile.Constraints =
+                TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
         const val kv: Double = 2.3 // arbitrary
         const val ka: Double = 0.463
         const val ks: Double = 0.191
         const val maxVelocity: Double = 3.0 // all in m/?
         const val maxAcceleration: Double = 1.5
-        const val maxCentripetalAcceleration: Double = 3.0
-        const val maxVoltage: Double = 12.0 // volts
-        const val beta: Double = 2.0 // m^-2
-        const val zeta: Double = 0.7 // unitless
-        const val trackWidth: Double = 1.781 // meters
     }
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(Ramsete.ks, Ramsete.kv, Ramsete.ka);
     const val driverPort: Int = 0
@@ -37,6 +58,10 @@ object DriveConstants {
         const val P: Double = 0.0
         const val I: Double = 0.0
         const val D: Double = 0.0
+    }
+    object Modules {
+        public val kMaxModuleAngularSpeedRadiansPerSecond: Double = 2 * Math.PI;
+        public val kMaxModuleAngularAccelerationRadiansPerSecondSquared: Double = 2 * Math.PI;
     }
 }
 

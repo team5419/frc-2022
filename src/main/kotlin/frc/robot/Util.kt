@@ -1,5 +1,4 @@
 package frc.robot;
-package frc.robot.commands; 
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -15,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.DriveConstants;
 import frc.robot.commands.Drive
-public object Util {
+object Util {
     public fun radiansToNativeUnits(units: Double): Double {
         return (units / (2 * Math.PI)) * (DriveConstants.ticksPerRotation / 10)
     }
@@ -30,5 +29,14 @@ public object Util {
     }
     public fun metersPerSecondToNativeUnits(units: Double): Double {
         return (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
+    }
+    public fun withDeadband(input: Double): Double {
+        return if (input <= DriveConstants.controllerDeadband) 0.0 else input; 
+    }
+    public fun degreesToRadians(input: Double): Double {
+        return input * Math.PI / 180.0;
+    }
+    public fun radiansToDegrees(input: Double): Double {
+        return input * 180.0 / Math.PI;
     }
 }

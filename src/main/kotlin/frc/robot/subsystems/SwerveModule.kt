@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Pose2d;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.ControlFrame;
@@ -12,11 +13,15 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import frc.robot.Util;
 import frc.robot.DriveConstants;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 public class SwerveModule {
     private val driveMotor: TalonFX;
     private val turnMotor: TalonFX;
     private var lastAngle: Double;
+    private val driveSim: FlywheelSim;
+    private val turnSim: FlywheelSim;
     constructor(drivePort: Int, turnPort: Int, driveInverted: Boolean = false, turnInverted: Boolean = false) {
         this.driveMotor = TalonFX(drivePort);
         this.turnMotor = TalonFX(turnPort);
@@ -65,12 +70,13 @@ public class SwerveModule {
 
             configClosedLoopPeakOutput(0, 0.1, 100)
         }
+        this.driveMotor = 
         this.lastAngle = getTurn().radians;
     }
 
-    private fun getTurn(): Rotation2d {
+  public fun getTurn(): Rotation2d {
         return Rotation2d(Util.nativeUnitsToRadians(turnMotor.getSelectedSensorPosition(0)));
-    }
+  }
 
   public fun getState(): SwerveModuleState {
     return SwerveModuleState(Util.nativeUnitsToMetersPerSecond(driveMotor.getSelectedSensorVelocity((0))), getTurn());
@@ -83,6 +89,21 @@ public class SwerveModule {
     turnOutput = Util.radiansToNativeUnits(turnOutput);
     driveMotor.set(ControlMode.Velocity, driveOutput, DemandType.ArbitraryFeedForward, DriveConstants.feedForward.calculate(desiredState.speedMetersPerSecond));
     turnMotor.set(ControlMode.Position, turnOutput);
+  }
+
+  public fun simulationPeriodic(dt: Double) {
+    // m_turnMotorSim.setInputVoltage(m_turnOutput / ModuleConstants.kMaxModuleAngularSpeedRadiansPerSecond * RobotController.getBatteryVoltage());
+    // m_driveMotorSim.setInputVoltage(m_driveOutput / Constants.DriveConstants.kMaxSpeedMetersPerSecond * RobotController.getBatteryVoltage());
+
+    // m_turnMotorSim.update(dt);
+    // m_driveMotorSim.update(dt);
+
+    // // Calculate distance traveled using RPM * dt
+    // m_simTurnEncoderDistance += m_turnMotorSim.getAngularVelocityRadPerSec() * dt;
+    // m_turningEncoderSim.setDistance(m_simTurnEncoderDistance);
+    // m_turningEncoderSim.setRate(m_turnMotorSim.getAngularVelocityRadPerSec());
+
+    // m_driveEncoderSim.setRate(m_driveMotorSim.getAngularVelocityRadPerSec());
   }
 
   public fun resetEncoders() {
