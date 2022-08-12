@@ -4,12 +4,14 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
 
 object DriveConstants {
     val simUpdateTime: Double = 0.02;
     val turnerPorts: Array<Int> = arrayOf(0, 1, 2, 3)
     val driverPorts: Array<Int> = arrayOf(4, 5, 6, 7)
-    val gyroPort: Int = 8;
+    val cancoderPorts: Array<Int> = arrayOf(8, 9, 10, 11)
+    val gyroPort: Int = 12;
     val autoCheckVelocities: Array<Double> = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     val gearRatio: Double = (10.3333 / 1.0)
     val ticksPerRotation: Double = (2048.0 * gearRatio)
@@ -30,7 +32,13 @@ object DriveConstants {
     val kinematics: SwerveDriveKinematics = SwerveDriveKinematics(
         frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation
     );
+    val driveMotorGearRatio: Double = 6.75;
+    val turnMotorGearRatio: Double = 12.8;
+    val driveMotorGearbox: DCMotor = DCMotor.getFalcon500(1);
+    val turnMotorGearbox: DCMotor = DCMotor.getNeo550(1);
     
+    val kvRadians: Double = 0.16;
+    val kaRadians: Double = 0.0348;
     object Ramsete {
         const val kpx: Double = 0.0;
         const val kpy: Double = 0.0;
