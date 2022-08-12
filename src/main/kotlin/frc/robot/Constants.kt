@@ -5,6 +5,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.PIDController;
 
 object DriveConstants {
     val simUpdateTime: Double = 0.02;
@@ -43,8 +45,8 @@ object DriveConstants {
         const val kpx: Double = 0.0;
         const val kpy: Double = 0.0;
         const val kptheta: Double = 0.0;
-        const val kMaxAngularSpeedRadiansPerSecond: Double = 2.0 * Math.PI;
-        val kMaxAngularSpeedRadiansPerSecondSquared: Double = Math.pow(kMaxAngularSpeedRadiansPerSecond, 2.0);
+        const val kMaxAngularSpeedRadiansPerSecond: Double = 10.0 * Math.PI ;
+        val kMaxAngularSpeedRadiansPerSecondSquared: Double = 10.0 * Math.PI;
         public val kThetaControllerConstraints: TrapezoidProfile.Constraints =
                 TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
         const val kv: Double = 2.3 // arbitrary
@@ -56,20 +58,30 @@ object DriveConstants {
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(Ramsete.ks, Ramsete.kv, Ramsete.ka);
     const val driverPort: Int = 0
     const val slowMultiplier: Double = 0.25
-
-    object DrivePID {
-        const val P: Double = 0.0
-        const val I: Double = 0.0
-        const val D: Double = 0.0
-    }
-    object TurnPID {
-        const val P: Double = 0.0
-        const val I: Double = 0.0
-        const val D: Double = 0.0
-    }
     object Modules {
+        object DrivePID {
+            const val P: Double = 0.0
+            const val I: Double = 0.0
+            const val D: Double = 0.0
+        }
+        object TurnPID {
+            const val P: Double = 0.0
+            const val I: Double = 0.0
+            const val D: Double = 0.0
+        }
         public val kMaxModuleAngularSpeedRadiansPerSecond: Double = 2 * Math.PI;
         public val kMaxModuleAngularAccelerationRadiansPerSecondSquared: Double = 2 * Math.PI;
+        public val encoderCPR: Double = 2048.0;
+        public val wheelDiameter: Double = 10.16; //cm 
+        public val kDriveEncoderDistancePerPulse: Double =
+                (wheelRadius * Math.PI) / (encoderCPR * driveMotorGearRatio);
+
+        public val kTurningEncoderDistancePerPulse: Double =
+                (2.0 * Math.PI) / (encoderCPR * turnMotorGearRatio);
+        public val driveController: PIDController = PIDController(DrivePID.P, DrivePID.I, DrivePID.D);
+        public val turnController: ProfiledPIDController = ProfiledPIDController(TurnPID.P, TurnPID.I, TurnPID.D, TrapezoidProfile.Constraints(
+            kMaxModuleAngularSpeedRadiansPerSecond, kMaxModuleAngularAccelerationRadiansPerSecondSquared
+        ));
     }
 }
 

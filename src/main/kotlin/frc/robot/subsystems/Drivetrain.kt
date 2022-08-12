@@ -24,17 +24,20 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import frc.robot.subsystems.SwerveModule;
+import frc.robot.modules.SwerveModule;
+import frc.robot.modules.ISwerveModule;
+import frc.robot.modules.SimulatedSwerveModule;
+import frc.robot.modules.Module;
 import frc.robot.Util;
 
-class Drivetrain() : SubsystemBase() {
+class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     // declare motors and ports
-    public val drivers: Array<SwerveModule> = arrayOf(
-        SwerveModule(DriveConstants.driverPorts[0], DriveConstants.turnerPorts[0]),
-        SwerveModule(DriveConstants.driverPorts[1], DriveConstants.turnerPorts[1]),
-        SwerveModule(DriveConstants.driverPorts[2], DriveConstants.turnerPorts[2]),
-        SwerveModule(DriveConstants.driverPorts[3], DriveConstants.turnerPorts[3])
+    public val drivers: Array<ISwerveModule> = arrayOf(
+        Module.create(DriveConstants.driverPorts[0], DriveConstants.turnerPorts[0], DriveConstants.cancoderPorts[0], simulated),
+        Module.create(DriveConstants.driverPorts[1], DriveConstants.turnerPorts[1], DriveConstants.cancoderPorts[1], simulated),
+        Module.create(DriveConstants.driverPorts[2], DriveConstants.turnerPorts[2], DriveConstants.cancoderPorts[2], simulated),
+        Module.create(DriveConstants.driverPorts[3], DriveConstants.turnerPorts[3], DriveConstants.cancoderPorts[3], simulated)
     );
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.gyroPort);
     private val gyroSim: BasePigeonSimCollection = BasePigeonSimCollection(gyro, false);
