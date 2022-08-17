@@ -53,13 +53,6 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
             setFusedHeading(0.0, 100)
         }
         SmartDashboard.putData("Field", field);
-        tab.add("angle (rad)", { angle });
-        tab.add("x m", { pose().getX() });
-        tab.add("y m", { pose().getY() });
-        tab.add("brake", { brakeMode });
-        tab.add("forward m/s", { previousMove.vxMetersPerSecond });
-        tab.add("sideways m/s", { previousMove.vyMetersPerSecond });
-        tab.add("turning (rad)", { previousMove.omegaRadiansPerSecond });
     }
 
     // get angle from gyro
@@ -90,6 +83,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     }
     fun updateMotors(myStates: Array<SwerveModuleState>): Int {
         for(i in 0..drivers.size - 1) {
+           // println("Module ${i}: speed: ${myStates[i].speedMetersPerSecond}, angle: ${myStates[i].angle}");
             drivers[i].setDesiredState(myStates[i]);
         }
         return 0;
@@ -123,6 +117,14 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
             field.getObject("Swerve Module ${i}").setPose(pose);
           }
           field.setRobotPose(cpose);
+
+        SmartDashboard.putNumber("angle (rad)", angle);
+        SmartDashboard.putNumber("x m", pose().getX());
+        SmartDashboard.putNumber("y m", pose().getY());
+        SmartDashboard.putBoolean("brake", brakeMode);
+        SmartDashboard.putNumber("forward m/s", previousMove.vxMetersPerSecond);
+        SmartDashboard.putNumber("sideways m/s", previousMove.vyMetersPerSecond);
+        SmartDashboard.putNumber("turning (rad)", previousMove.omegaRadiansPerSecond);
     }
 
     override fun simulationPeriodic() {

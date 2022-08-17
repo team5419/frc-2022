@@ -31,7 +31,7 @@ object Util {
         return (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
     }
     public fun withDeadband(input: Double): Double {
-        return if (input <= DriveConstants.controllerDeadband) 0.0 else input; 
+        return if (Math.abs(input) <= DriveConstants.controllerDeadband) 0.0 else input; 
     }
     public fun degreesToRadians(input: Double): Double {
         return input * Math.PI / 180.0;

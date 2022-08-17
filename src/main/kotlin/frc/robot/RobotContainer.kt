@@ -27,7 +27,7 @@ import frc.robot.ShooterConstants
 class RobotContainer() {
 
   // subsystems
-  public val m_drivetrain = Drivetrain();
+  public val m_drivetrain = Drivetrain(true);
   // creates a tab in shuffleboard to select autonomous routine
   // val autoSelector = SendableChooser<SequentialCommandGroup>()
   val driver = XboxController(0);

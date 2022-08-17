@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.*;
 
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
@@ -13,15 +13,18 @@ import edu.wpi.first.networktables.NetworkTableInstance
 
 class Robot : TimedRobot() {
   private val m_robotContainer = RobotContainer();
+  
   //private var m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
   override fun robotInit() {
     NetworkTableInstance.getDefault().setUpdateRate(0.02)
+    println(NetworkTableInstance.kDefaultPort)
   }
 
   override fun robotPeriodic() {
     // schedule/manage commands and run subsystem periodic methods
     CommandScheduler.getInstance().run();
+    //master.add("test1", { 123 });
   }
 
   override fun disabledInit() {

@@ -19,11 +19,21 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController, _isSlow: Boolean =
   }
 
   override fun execute() {
-    println("Driving");
     val rightx: Double = Util.withDeadband(driver.getRightX().toDouble());
     val righty: Double = Util.withDeadband(driver.getRightY().toDouble());
-    var angle: Double = if (righty < 0) -Math.acos(rightx) else Math.acos(rightx);
-    drivetrain.drive(Util.withDeadband(driver.getLeftY().toDouble()), Util.withDeadband(driver.getLeftX().toDouble()), angle);
+    val mag: Double = Math.pow(Math.pow(rightx, 2.0) + Math.pow(righty, 2.0), 0.5);
+    println("mag = ${mag}");
+    val lefty: Double = Util.withDeadband(driver.getLeftY().toDouble())
+    val leftx: Double = Util.withDeadband(driver.getLeftX().toDouble())
+    if(mag == 0.0) {
+      drivetrain.drive(lefty, leftx, 0.0);
+      return;
+    }
+    val angle: Double = if (righty < 0) 2 * Math.PI - Math.acos(rightx / mag) else Math.acos(rightx / mag);
+    println("angle = ${angle}")
+    drivetrain.drive(lefty, leftx, angle - (drivetrain.angle % (2 * Math.PI)));
+    //println("forward: ${lefty}, right: ${leftx}, angle: ${angle}");
+    
   }
 
   override fun end(interrupted: Boolean) {}

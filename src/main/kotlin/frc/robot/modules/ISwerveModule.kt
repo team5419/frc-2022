@@ -14,7 +14,7 @@ interface ISwerveModule {
 object Module {
     public fun create(drivePort: Int, turnPort: Int, encoderPort: Int, isSim: Boolean = false, driveInverted: Boolean = false, turnInverted: Boolean = false): ISwerveModule {
         if(isSim) {
-            return SimulatedSwerveModule(drivePort, drivePort * 10, turnPort, turnPort * 10);
+            return SimulatedSwerveModule(drivePort, encoderPort, turnPort, encoderPort + 4);
         } else {
             return SwerveModule(drivePort, turnPort, encoderPort, driveInverted, turnInverted);
         }

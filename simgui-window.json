@@ -16,6 +16,11 @@
       "Pos": "60,60",
       "Size": "202,194"
     },
+    "###/LiveWindow/Drivetrain": {
+      "Collapsed": "0",
+      "Pos": "216,127",
+      "Size": "186,98"
+    },
     "###/SmartDashboard/Field": {
       "Collapsed": "0",
       "Pos": "245,25",
@@ -28,12 +33,12 @@
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "887,727",
+      "Pos": "701,716",
       "Size": "976,278"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "932,38",
+      "Pos": "902,155",
       "Size": "937,437"
     },
     "###Other Devices": {
@@ -48,7 +53,7 @@
     },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "-7,315",
+      "Pos": "417,653",
       "Size": "232,254"
     },
     "###Timing": {
