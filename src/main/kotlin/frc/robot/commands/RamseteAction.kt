@@ -1,4 +1,4 @@
-package frc.robot.auto;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -66,6 +66,7 @@ public class RamseteAction(
   public override fun end(isInterrupted: Boolean) {
     timer.stop();
     drivetrain.updateMotors(DriveConstants.kinematics.toSwerveModuleStates((ChassisSpeeds.fromFieldRelativeSpeeds(0.0, 0.0, 0.0, Rotation2d.fromDegrees(0.0)))));
+    println("over");
   }
   public fun getInitialPose(): Pose2d {
     return trajectory.getInitialPose();

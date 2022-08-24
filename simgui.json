@@ -5,15 +5,13 @@
       "/LiveWindow/Drivetrain": "Subsystem",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
-      "/LiveWindow/Drivetrain": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
         "image": "C:\\Users\\Admin\\Desktop\\Code\\frc-2022\\2022-field.png",
         "window": {
@@ -25,26 +23,22 @@
   "NetworkTables": {
     "LiveWindow": {
       ".status": {
-        "open": true
+        "open": false
       },
       "Drivetrain": {
-        "open": true
+        "open": false
       }
     },
     "Shuffleboard": {
-      ".metadata": {
-        "open": true
-      },
       "Drivetrain": {
         "brake": {
-          "open": true
-        },
-        "open": true
+          "open": false
+        }
       },
       "Master": {
-        "open": true,
+        "open": false,
         "test": {
-          "open": true
+          "open": false
         }
       }
     },
@@ -54,7 +48,7 @@
       },
       "open": true,
       "test": {
-        "open": true
+        "open": false
       }
     }
   }

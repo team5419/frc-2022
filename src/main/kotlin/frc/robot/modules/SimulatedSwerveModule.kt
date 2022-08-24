@@ -81,8 +81,8 @@ public class SimulatedSwerveModule : ISwerveModule {
     val state: SwerveModuleState = SwerveModuleState.optimize(desiredState, getTurn());
     val newDriveOutput: Double = DriveConstants.Modules.driveController.calculate(driveBaseEncoder.getRate(), state.speedMetersPerSecond);
   
-    var newTurnOutput: Double = if ((Math.abs(desiredState.speedMetersPerSecond)) <= (DriveConstants.Ramsete.maxVelocity * 0.01)) this.turnOutput 
-    else DriveConstants.Modules.turnController.calculate(turnBaseEncoder.getDistance(), state.angle.radians);
+    var newTurnOutput: Double = /*if ((Math.abs(desiredState.speedMetersPerSecond)) <= (DriveConstants.Ramsete.maxVelocity * 0.01)) this.turnOutput 
+    else */ DriveConstants.Modules.turnController.calculate(turnBaseEncoder.getDistance(), state.angle.radians);
 
     this.driveOutput = newDriveOutput;
     this.turnOutput = newTurnOutput;

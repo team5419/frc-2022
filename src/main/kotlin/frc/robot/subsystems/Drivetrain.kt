@@ -69,13 +69,13 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
         return odometry.getPoseMeters()
     }
 
-    fun resetOdometry(pose: Pose2d) {
+    fun resetOdometry(pose: Pose2d = Pose2d(0.0, 0.0, Rotation2d(0.0))) {
         odometry.resetPosition(pose, Rotation2d(angle));
     }
 
     // set the percent output of the drivetrain motors
     fun drive(forward: Double, left: Double, rotation: Double) {
-        val speeds: ChassisSpeeds = ChassisSpeeds(forward, left, rotation);
+        val speeds: ChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, rotation, Rotation2d(this.angle));
         this.previousMove = speeds;
         val states: Array<SwerveModuleState> = DriveConstants.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.Ramsete.maxVelocity);

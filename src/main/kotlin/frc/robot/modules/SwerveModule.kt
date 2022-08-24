@@ -97,8 +97,8 @@ public class SwerveModule : ISwerveModule {
     val state: SwerveModuleState = SwerveModuleState.optimize(desiredState, getTurn());
     val newDriveOutput: Double = DriveConstants.Modules.driveController.calculate(getDrive(), state.speedMetersPerSecond);
 
-    var newTurnOutput: Double = if ((Math.abs(desiredState.speedMetersPerSecond)) <= (DriveConstants.Ramsete.maxVelocity * 0.01)) this.lastAngle 
-    else DriveConstants.Modules.turnController.calculate(turnEncoder.getPosition(), state.angle.radians);
+    var newTurnOutput: Double = /*if ((Math.abs(desiredState.speedMetersPerSecond)) <= (DriveConstants.Ramsete.maxVelocity * 0.01)) this.lastAngle 
+    else*/ DriveConstants.Modules.turnController.calculate(turnEncoder.getPosition(), state.angle.radians);
     this.lastAngle = newTurnOutput;
 
     driveMotor.set(ControlMode.PercentOutput, newDriveOutput);

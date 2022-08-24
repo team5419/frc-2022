@@ -32,23 +32,15 @@ class RobotContainer() {
   // val autoSelector = SendableChooser<SequentialCommandGroup>()
   val driver = XboxController(0);
   // val codriver = XboxController(1);
+  private val autoCommand: Command;
 
   init {
-
     configureButtonBindings(driver);
     setDefaults();
-    
-    // create and add autonomous routines to selector in shuffleboard
-    //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
-    // tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
-    // autoSelector.setDefaultOption("Baseline", Baseline())
-    // autoSelector.addOption("Baseline", Baseline())
-    // autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_subsystems, driver))
-    // autoSelector.addOption("Four Ball Auto", FourBallAuto(m_subsystems, driver))
-    // autoSelector.addOption("Four Ball Auto 2", FourBall2(m_subsystems, driver))
-    // autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_subsystems, driver))
-    //autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter))
-
+    autoCommand = RamseteAction(m_drivetrain, listOf(
+      Pose2d(0.0, 0.0, Rotation2d(0.0)),
+      Pose2d(10.0, 10.0, Rotation2d(0.0))
+    ), { Rotation2d(0.0) });
   }
   
   fun configureButtonBindings(driver: XboxController) {
@@ -57,9 +49,9 @@ class RobotContainer() {
 
 
   // select autonomous command
-  // fun getAutonomousCommand(): Command {
-  //   return autoSelector.getSelected() ?: Baseline()
-  // }
+  fun getAutonomousCommand(): Command {
+     return autoCommand;
+   }
 
   fun setDefaults() {
       // set default commands

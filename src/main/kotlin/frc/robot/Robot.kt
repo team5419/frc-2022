@@ -14,7 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance
 class Robot : TimedRobot() {
   private val m_robotContainer = RobotContainer();
   
-  //private var m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+  private var m_autonomousCommand: Command = m_robotContainer.getAutonomousCommand();
 
   override fun robotInit() {
     NetworkTableInstance.getDefault().setUpdateRate(0.02)
@@ -35,21 +35,16 @@ class Robot : TimedRobot() {
 
   // runs autonomous command selected in RobotContainer.kt
   override fun autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.setDefaults();
-    // if(m_autonomousCommand != null) {
-    //   m_autonomousCommand.schedule();
-    // }
-    //m_robotContainer.m_drivetrain.resetOdometry()
+    m_autonomousCommand.schedule();
+    m_robotContainer.m_drivetrain.resetOdometry();
   }
 
   override fun autonomousPeriodic() {}
 
   override fun teleopInit() {
-    // cancel all autonomous commands when teleop starts
-    // if(m_autonomousCommand != null) {
-    //   m_autonomousCommand.cancel();
-    // }
+    m_autonomousCommand.cancel();
     //m_robotContainer.m_drivetrain.currentLimit = 20.0
   }
 

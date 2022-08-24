@@ -11,11 +11,6 @@
     }
   },
   "Window": {
-    "###/FMSInfo": {
-      "Collapsed": "0",
-      "Pos": "60,60",
-      "Size": "202,194"
-    },
     "###/LiveWindow/Drivetrain": {
       "Collapsed": "0",
       "Pos": "216,127",
@@ -23,37 +18,32 @@
     },
     "###/SmartDashboard/Field": {
       "Collapsed": "0",
-      "Pos": "245,25",
-      "Size": "879,613"
+      "Pos": "20,310",
+      "Size": "974,555"
     },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "14,600",
+      "Pos": "607,36",
       "Size": "281,190"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "701,716",
-      "Size": "976,278"
+      "Pos": "1036,187",
+      "Size": "976,82"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "902,155",
-      "Size": "937,437"
+      "Pos": "1024,197",
+      "Size": "937,643"
     },
     "###Other Devices": {
       "Collapsed": "0",
       "Pos": "1281,25",
       "Size": "312,868"
     },
-    "###RoboRIO": {
-      "Collapsed": "0",
-      "Pos": "5,125",
-      "Size": "141,164"
-    },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "417,653",
+      "Pos": "277,79",
       "Size": "232,254"
     },
     "###Timing": {

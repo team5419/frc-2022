@@ -55,6 +55,7 @@ object DriveConstants {
         const val maxVelocity: Double = 3.0 // all in m/?
         const val maxAcceleration: Double = 1.5
     }
+    const val speedMultiplier: Double = 3.0;
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(Ramsete.ks, Ramsete.kv, Ramsete.ka);
     const val driverPort: Int = 0
     const val slowMultiplier: Double = 0.25
