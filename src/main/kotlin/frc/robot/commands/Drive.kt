@@ -16,8 +16,7 @@ class Drive(_drivetrain: Drivetrain, _driver: XboxController, _isSlow: Boolean =
     addRequirements(_drivetrain);
   }
 
-  override fun initialize() {
-  }
+  override fun initialize() {}
 
   override fun execute() {
     val rightx: Double = Util.withDeadband(driver.getRightX().toDouble());

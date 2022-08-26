@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 //import frc.robot.commands.RamseteAction
+import frc.robot.Util;
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
@@ -37,10 +38,10 @@ class RobotContainer() {
   init {
     configureButtonBindings(driver);
     setDefaults();
-    autoCommand = RamseteAction(m_drivetrain, listOf(
+    autoCommand = Util.generateRamsete(m_drivetrain, listOf(
       Pose2d(0.0, 0.0, Rotation2d(0.0)),
       Pose2d(10.0, 10.0, Rotation2d(0.0))
-    ), { Rotation2d(0.0) });
+    ));
   }
   
   fun configureButtonBindings(driver: XboxController) {

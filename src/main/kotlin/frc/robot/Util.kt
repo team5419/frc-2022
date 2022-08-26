@@ -9,11 +9,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.DriveConstants;
-import frc.robot.commands.Drive
+import frc.robot.commands.Drive;
+import frc.robot.commands.StopDrivetrain;
+import edu.wpi.first.wpilibj2.command.Command;
+
 object Util {
     public fun radiansToNativeUnits(units: Double): Double {
         return (units / (2 * Math.PI)) * (DriveConstants.ticksPerRotation / 10)
@@ -39,4 +43,39 @@ object Util {
     public fun radiansToDegrees(input: Double): Double {
         return input * 180.0 / Math.PI;
     }
+
+
+    public fun generateRamsete(drivetrain: Drivetrain, poses: List<Pose2d>): Command {
+        // Create config for trajectory
+        val config: TrajectoryConfig =
+            TrajectoryConfig(
+                    DriveConstants.Ramsete.maxVelocity,
+                    DriveConstants.Ramsete.maxAcceleration)
+                // Add kinematics to ensure max speed is actually obeyed
+                .setKinematics(DriveConstants.kinematics);
+    
+        // An example trajectory to follow.  All units in meters.
+        val exampleTrajectory: Trajectory =
+            TrajectoryGenerator.generateTrajectory(
+                // Start at the origin facing the +X direction
+                poses,
+                config);
+        val kxcontroller: PIDController = PIDController(DriveConstants.Ramsete.kpx, 0.0, 0.0);
+        val kycontroller: PIDController = PIDController(DriveConstants.Ramsete.kpy, 0.0, 0.0);
+        val thetacontroller: ProfiledPIDController = ProfiledPIDController(DriveConstants.Ramsete.kptheta, 0.0, 0.0, DriveConstants.Ramsete.kThetaControllerConstraints);
+        val swerveControllerCommand: SwerveControllerCommand =
+            SwerveControllerCommand(
+                exampleTrajectory,
+                drivetrain::pose,
+                DriveConstants.kinematics,
+                kxcontroller,
+                kycontroller,
+                thetacontroller,
+                { input: Array<SwerveModuleState> -> drivetrain.updateMotors(input) },
+                arrayOf(drivetrain));
+    
+        // Reset odometry to the starting pose of the trajectory.
+        drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
+        return swerveControllerCommand.andThen(StopDrivetrain(drivetrain));
+      }
 }
