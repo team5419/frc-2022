@@ -11,33 +11,29 @@ import edu.wpi.first.math.controller.PIDController
 import frc.robot.classes.DriveSignal
 import frc.robot.VisionConstants
 import frc.robot.Lookup
+import frc.robot.LookupEntry
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+import edu.wpi.first.networktables.NetworkTableEntry
+import edu.wpi.first.networktables.EntryListenerFlags
+import edu.wpi.first.networktables.EntryNotification
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 
 class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     val m_drivetrain: Drivetrain = drivetrain
     private val mLimelight = NetworkTableInstance.getDefault().getTable("limelight")
-
-    val inverted: Boolean = false
+    private val layout: ShuffleboardLayout = tab.getLayout("Vision", BuiltInLayouts.kList).withPosition(3, 0).withSize(2, 4);
     private val mTargetHeight: Double = VisionConstants.targetHeight
     private val mCameraHeight: Double = VisionConstants.cameraHeight
     private val mCameraAngle: Double = VisionConstants.cameraAngle
     public val maxSpeed = VisionConstants.maxAutoAlignSpeed
 
     fun getHorizontalOffset(): Double {
-        if (inverted) {
-            return -mLimelight.getEntry("tx").getDouble(0.0)
-        } 
-        else {
-            return mLimelight.getEntry("tx").getDouble(0.0)
-        }
+        return mLimelight.getEntry("tx").getDouble(0.0)
     }
 
     fun getVerticalOffset(): Double {
-        if (inverted) {
-            return -mLimelight.getEntry("ty").getDouble(0.0)
-        } 
-        else {
-            return mLimelight.getEntry("ty").getDouble(0.0)
-        }
+        return mLimelight.getEntry("ty").getDouble(0.0)
     }
 
     // calculate horizontal distance based on verticle and horizontal offset
@@ -46,7 +42,9 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     //calculate which setpoint is closest
-    public fun getShotSetpoint() = Lookup.getClosest(getHorizontalDistance())
+    public fun getShotSetpoint(): LookupEntry {
+        return Lookup.getClosest(getHorizontalDistance())
+    }
 
     // PID loop controller
     public val turnController: PIDController =
@@ -69,45 +67,58 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     // add the PID controller to shuffleboard
     init {
-        tab.addNumber("Offset", { getHorizontalOffset() })
-        tab.addBoolean("Aligned", { aligned() })
-        tab.addNumber("Horizontal Distance", { getHorizontalDistance() })
+        layout.addNumber("Offset", { getHorizontalOffset() })
+        layout.addBoolean("Aligned", { turnAligned() })
+        layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
+        // layout.add("TURN P", VisionConstants.TurnPID.P)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .withProperties(mapOf("min" to 0.0, "max" to 5.0))
+        //     .getEntry()
+        //     .addListener({ value: EntryNotification -> this.turnController.setP(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
+        // layout.add("TURN I", VisionConstants.TurnPID.I)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .withProperties(mapOf("min" to 0.0, "max" to 0.5))
+        //     .getEntry()
+        //     .addListener({ value: EntryNotification -> this.turnController.setI(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
+        // layout.add("TURN D", VisionConstants.TurnPID.D)
+        //     .withWidget(BuiltInWidgets.kNumberSlider)
+        //     .withProperties(mapOf("min" to 0.0, "max" to 0.5))
+        //     .getEntry()
+        //     .addListener({ value: EntryNotification -> this.turnController.setD(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
     }
 
     // check if the limelight is picking up on the target
     public fun isTargetFound(): Boolean {
-        return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() > 0.0
+        return mLimelight.getEntry("tv").getDouble(0.0) > 0.0 && getVerticalOffset() != 0.0
     }
 
-    public fun aligned(): Boolean {
+    public fun turnAligned(): Boolean {
+        //return isTargetFound() && Math.abs(getHorizontalOffset() + VisionConstants.targetOffset) < 0.05 && m_drivetrain.averageSpeed < 0.1
         return isTargetFound() && turnController.atSetpoint() && m_drivetrain.averageSpeed < 0.1
     }
 
-    public fun autoAlignTurn() : DriveSignal {
+    public fun throttleAligned(distance : Double): Boolean {
+        return isTargetFound() && Math.abs(getHorizontalDistance() - distance) < 0.05
+    }
 
+    public fun autoAlignTurn() : DriveSignal {
         // get the pid loop output
         var output = turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
 
-        // can we align / do we need to align?
-        if ( (!isTargetFound()) || aligned() )
-            return DriveSignal(0.0, 0.0)
+        // do we need to align / can we align?
+        if(!turnAligned() && isTargetFound()) {
+            return DriveSignal(output, -output)
+        }
 
-        // limit the output
-        if (output >  maxSpeed) output =  maxSpeed
-        if (output < -maxSpeed) output = -maxSpeed
-
-        return DriveSignal(output, -output)
+        return DriveSignal(0.0, 0.0)
     }
 
     public fun autoAlignThrottle(distance : Double) : DriveSignal {
-
         var output = throttleController.calculate(getHorizontalDistance() - distance)
-        var deadband = 0.1
 
-        //println(getHorizontalDistance())
-        //println("vertical ${getVerticalOffset()}")
-        if(Math.abs(getHorizontalDistance() - distance) > deadband && isTargetFound())
+        if(!throttleAligned(distance) && isTargetFound())
         {
+            println("output ${output}")
             return DriveSignal(-output, -output)
         }
 
@@ -121,7 +132,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
             if (value == field) return
             when (value) {
                 LightMode.On -> mLimelight.getEntry("ledMode").setNumber(3)
-                LightMode.Off -> mLimelight.getEntry("ledMode").setNumber(1) // 1
+                LightMode.Off -> mLimelight.getEntry("ledMode").setNumber(3) // 1
                 LightMode.Blink -> mLimelight.getEntry("ledMode").setNumber(2)
             }
             field = value

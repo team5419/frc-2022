@@ -14,27 +14,29 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import frc.robot.FeederConstants
+import frc.robot.IntakeConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 
-class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
+class DeploySubsystem(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val motor = CANSparkMax(FeederConstants.Ports.motor, MotorType.kBrushless)
-    public val encoder = motor.getEncoder() 
-    private var previousVel : Double = -2.0
+    var deployMotor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.deployMotor, MotorType.kBrushless)
+    var controller = deployMotor.getPIDController()
+    public var encoder = deployMotor.getEncoder()    
     
-    private val layout: ShuffleboardLayout = tab.getLayout("Feeder", BuiltInLayouts.kList).withPosition(2, 2).withSize(1, 2)
+    private var deploySetpoint: Double = -2.0;
+    public var setpointTicks: Double = 0.0;
     // configure the motors and add to shuffleboard
     init {
-        motor.apply {
+
+        deployMotor.apply {
             restoreFactoryDefaults()
-            setIdleMode(IdleMode.kCoast)
-            setInverted(true)
+            setIdleMode(IdleMode.kBrake)
+            setInverted(false)
             //setSensorPhase(false)
             setSmartCurrentLimit(40)
             setClosedLoopRampRate(1.0)
@@ -42,38 +44,48 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
             setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
         }
 
-        val controller = motor.getPIDController()
+        
         controller.apply {
-            setP(1.0, 1)
+            setP(0.05, 1)
             setI(0.0, 1)
             setD(0.0, 1)
+            setFF(10.0, 1)
         }
 
         encoder.apply {
             setPosition(0.0)
         }
-        //layout.addNumber("Attempted", { currentVel })
-        //layout.addNumber("Velocity", { encoder.getVelocity() })
+
+        //layout.addNumber("Velocity", { motor.getSelectedSensorVelocity() })
+        
     }
 
-    public fun stop() {
-        motor.set(0.0)
+    public fun deployStop() {
+        deployMotor.set(0.0)
     }
 
-    // public fun feed() {
-    //     motor.set(currentVel)
-    // }
 
-    public var currentVel: Double = FeederConstants.idlePercent
-    set(value: Double) {
-            if(value == previousVel) {
-                return;
-            }
-            previousVel = value;
-            motor.set(value);
+    public fun positionDeploy(position: Double) {
+        println("setting intake pos ${position}");
+        controller.setReference(position, CANSparkMax.ControlType.kPosition);
+        println("deploying intake !!!")
+
+    }
+
+    public fun changeSetpoint(setpoint: Double) {
+        setpointTicks = setpoint
+    }
+
+    public fun runDeploy(percent: Double = 1.0) {
+        if(percent == deploySetpoint) {
+            return;
+        }
+        deploySetpoint = percent;
+        deployMotor.set(percent)
     }
 
     override fun periodic() {
+        //println(encoder.getPosition());
     }
 
     override fun simulationPeriodic() {

@@ -12,17 +12,22 @@ import kotlin.math.*
 import frc.robot.DriveConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.math.geometry.Pose2d
 
 class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val leftLeader: TalonFX = TalonFX(DriveConstants.Ports.leftLeader)
-    private val leftFollower: TalonFX = TalonFX(DriveConstants.Ports.leftFollower)
-    val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
-    private val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
+    public val leftLeader: TalonFX = TalonFX(DriveConstants.Ports.leftLeader)
+    public val leftFollower: TalonFX = TalonFX(DriveConstants.Ports.leftFollower)
+    public val rightLeader: TalonFX = TalonFX(DriveConstants.Ports.rightLeader)
+    public val rightFollower: TalonFX = TalonFX(DriveConstants.Ports.rightFollower)
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
-
+    public var inverted: Int = 1
+    private val layout: ShuffleboardLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kList).withPosition(2, 0).withSize(1, 2);
+    private var previousThrottle: Double = -2.0;
+    private var previousTurn: Double = -2.0;
     // configure the motors and add to shuffleboard
     init {
         leftLeader.apply {
@@ -42,6 +47,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
             setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 10)
 
             setNeutralMode(NeutralMode.Coast)
 
@@ -65,6 +71,7 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             configVoltageCompSaturation(12.0, 100)
             enableVoltageCompensation(true)
             setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 10)
 
             setNeutralMode(NeutralMode.Coast)
         }
@@ -81,6 +88,8 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             enableVoltageCompensation(true)
             
             configClosedLoopPeakOutput(0, 0.1, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 10)
         }
 
         rightFollower.apply {
@@ -95,19 +104,24 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
             enableVoltageCompensation(true)
 
             configClosedLoopPeakOutput(0, 0.1, 100)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 10)
         }
 
          gyro.apply {
             configFactoryDefault(100)
             setFusedHeading(0.0, 100)
         }
-
-        tab.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
-        tab.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
+        //layout.addNumber("left velocity", { leftLeader.getSelectedSensorVelocity(0) + 0.0 })
+        //layout.addNumber("right velocity", { rightLeader.getSelectedSensorVelocity(0) + 0.0 })
+        //layout.addBoolean("brake mode", { brakeMode})
+        layout.addNumber("angle", { angle })
+        layout.addNumber("x", { pose.getX() })
+        layout.addNumber("y", { pose.getY() });
     }
 
-    fun getAllVelocities() : Array<Double> {
-        return arrayOf(
+    fun getAllVelocities() : List<Double> {
+        return listOf(
             leftLeader.getSelectedSensorVelocity(0),
             leftFollower.getSelectedSensorVelocity(0),
             rightLeader.getSelectedSensorVelocity(0),
@@ -125,6 +139,12 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     // returns the x and y position of the robot
     val pose: Pose2d
         get() = odometry.getPoseMeters()
+
+    fun resetOdometry() {
+        odometry.resetPosition(Pose2d(0.0, 0.0, Rotation2d(0.0)), Rotation2d(angle))
+        leftLeader.setSelectedSensorPosition(0.0)
+        rightLeader.setSelectedSensorPosition(0.0)
+    }
 
     // unit conversion functions
     fun nativeUnitsToMeters(units: Double): Double =
@@ -168,24 +188,45 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
     // maintains a deadband
     fun withDeadband(movement: Double, deadband: Double): Double {
         if(abs(movement) <= deadband) return 0.0;
+        if(abs(movement) > 1.0) return sign(movement);
         return movement;
     }
 
+    fun withSkim(velocity : Double): Double {
+        if(velocity > 1.0) return -(velocity - 1.0)
+        else if(velocity < -1.0) return -(velocity + 1.0)
+        else return 0.0
+    }
+
     public fun drive(throttle: Double, turn: Double, isSlow: Boolean) {
-        // this makes turning at full speed easier (one wheel stays at full throttle, the other is reduced by double the turn)
-        val howFarOver = max(0.0, throttle + turn - 1)
+
+        // code to not overload CAN network
+        if(throttle == previousThrottle && turn == previousTurn) {
+            return;
+        }
+        previousThrottle = throttle;
+        previousTurn = turn;
+
         // set slow multiplier
         var slow: Double = 1.0
         if(isSlow) slow = DriveConstants.slowMultiplier
+
+        // NICER WAY TO CONTROL ROBOT????????????
+        var turn2 = withDeadband(turn, 0.1) * (throttle + 0.5)
+        var t_left = inverted * (throttle - turn2)
+        var t_right = inverted * (throttle + turn2)
+        var left = (t_left + withSkim(t_right)) * slow
+        var right = (t_right + withSkim(t_left)) * slow
+        leftLeader.set(ControlMode.PercentOutput, withDeadband(left, 0.05))
+        rightLeader.set(ControlMode.PercentOutput, withDeadband(right, 0.05))
+
         // set percent outputs of drivetrain motors
-        //println("throttle output ${throttle - turn - howFarOver}, ${throttle + turn - howFarOver}")
-        leftLeader.set(ControlMode.PercentOutput, withDeadband((throttle - turn - howFarOver) * slow, 0.001))
-        rightLeader.set(ControlMode.PercentOutput, withDeadband((throttle + turn - howFarOver) * slow, 0.001))
+        //leftLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle - turn) * slow, 0.001))
+        //rightLeader.set(ControlMode.PercentOutput, withDeadband((inverted * throttle + turn) * slow, 0.001))
     }
 
     public var brakeMode = false
         set(value: Boolean) {
-            if(value == field) return
             if(value) {
                 leftLeader.setNeutralMode(NeutralMode.Brake)
                 rightLeader.setNeutralMode(NeutralMode.Brake)
@@ -193,6 +234,15 @@ class Drivetrain(tab: ShuffleboardTab) : SubsystemBase() {
                 leftLeader.setNeutralMode(NeutralMode.Coast)
                 rightLeader.setNeutralMode(NeutralMode.Coast)
             }
+        }
+
+    public var currentLimit: Double = 20.0
+        set(value: Double) {
+            println("setting current limit to ${value}");
+            leftLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
+            leftFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
+            rightLeader.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
+            rightFollower.configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, value, 0.0, 0.0), 100);
         }
 
     override fun periodic() {

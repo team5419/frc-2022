@@ -17,13 +17,24 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.IndexerConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+import edu.wpi.first.wpilibj.AnalogInput
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 
 class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = CANSparkMax(IndexerConstants.Ports.motor, MotorType.kBrushless)
+    val controller = motor.getPIDController()
     public val encoder = motor.getEncoder()    
+    public val sensor1 = AnalogInput(IndexerConstants.Ports.sensor1)
+    public val sensor2 = AnalogInput(IndexerConstants.Ports.sensor2)
+    public val sensor3 = AnalogInput(IndexerConstants.Ports.sensor3)
 
+    private var previousVel: Double = -2.0
+
+    private val layout: ShuffleboardLayout = tab.getLayout("Indexer", BuiltInLayouts.kList).withPosition(5, 0).withSize(1, 4);
     // configure the motors and add to shuffleboard
     init {
         motor.apply {
@@ -33,10 +44,11 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
             //setSensorPhase(false)
             setSmartCurrentLimit(40)
             setClosedLoopRampRate(1.0)
-            setControlFramePeriodMs(1)
+            setControlFramePeriodMs(50)
+            setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
         }
 
-        val controller = motor.getPIDController()
+        
         controller.apply {
             setP(1.0, 1)
             setI(0.0, 1)
@@ -46,16 +58,39 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
         encoder.apply {
             setPosition(0.0)
         }
-
-        tab.addNumber("Indexer Velocity", { encoder.getVelocity() })
+        layout.addNumber("Position", { encoder.getPosition() })
+        // layout.addNumber("Velocity", { encoder.getVelocity() })
+        layout.addNumber("Sensor 1", { sensor1.getValue().toDouble() })
+        layout.addNumber("Sensor 2", { sensor2.getValue().toDouble() })
+        layout.addNumber("Sensor 3", { sensor3.getValue().toDouble() })
     }
 
     public fun stop() {
-        motor.set(0.0)
+        index(0.0);
     }
 
-    public fun index() {
-        motor.set(IndexerConstants.outputPercent)
+    public fun atPositionOne() : Boolean {
+        return sensor1.getValue().toDouble() > 1000.0
+    }
+
+    public fun atPositionTwo() : Boolean {
+        return sensor2.getValue().toDouble() > 1000.0
+    }
+
+    public fun atPositionThree() : Boolean {
+        return sensor3.getValue().toDouble() > 1000.0
+    }
+
+    public fun positionIndex(position: Double) {
+        controller.setReference(position, CANSparkMax.ControlType.kPosition);
+    }
+    public fun index(percent: Double) {  
+        if(percent == previousVel) {
+            return;
+        }
+        previousVel = percent;
+        println("indexing ${percent}");
+        motor.set(IndexerConstants.outputPercent * percent)
     }
 
     override fun periodic() {

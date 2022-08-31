@@ -1,6 +1,7 @@
 package frc.robot;
+import frc.robot.classes.RGB;
 
-data class LookupEntry(val distance: Double, val mainVelocity: Double, val kickerVelocity: Double) {
+data class LookupEntry(val distance: Double, val mainVelocity: Double, val kickerVelocity: Double, val color: RGB) {
 }
 
 object Lookup {
@@ -9,24 +10,26 @@ object Lookup {
 
     init {
         table = mutableListOf<LookupEntry>()
-        add(1.68, 13000.0, 16900.0)
-        add(2.55, 20000.0, 16000.0)
+        table.add(LookupEntry(2.0, 15000.0, 15000.0, RGB(0, 0, 255)))
+        //table.add(LookupEntry(4.0, 19000.0, 19000.0, RGB(255, 0, 0)))
     }
 
-    fun add(distance: Double, mainVelocity: Double, kickerVelocity: Double) {
+    fun add(distance: Double, mainVelocity: Double, kickerVelocity: Double, color: RGB) {
         if (table.size == 0) {
-            table.add(LookupEntry(distance, mainVelocity, kickerVelocity))
+            table.add(LookupEntry(distance, mainVelocity, kickerVelocity, color))
             return
         }
 
         for (i in 0..table.size-1) {
             val entry = table.get(i)
 
-            if (entry.distance < distance) {
-                table.add(i, LookupEntry(distance, mainVelocity, kickerVelocity))
-                break
+            if (entry.distance > distance) {
+                table.add(i, LookupEntry(distance, mainVelocity, kickerVelocity, color))
+                return
             }
         }
+
+        table.add(table.size, LookupEntry(distance, mainVelocity, kickerVelocity, color))
     }
 
     fun getClosest(distance: Double): LookupEntry {
@@ -38,8 +41,7 @@ object Lookup {
                     return entry
                 }
                 val prevEntry = table.get(i - 1)
-                if(Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) return prevEntry 
-                else return entry
+                return if (Math.abs(entry.distance - distance) + 0.5 > Math.abs(prevEntry.distance - distance)) prevEntry else entry
             }
         }
 

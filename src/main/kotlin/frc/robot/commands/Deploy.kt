@@ -1,31 +1,29 @@
 package frc.robot.commands; 
 
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.DeploySubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer
-import frc.robot.FeederConstants;
+import frc.robot.IndexerConstants
 import frc.robot.classes.SubsystemHolder
 
-class Feed(_subsystems: SubsystemHolder, _velocity: Double = FeederConstants.idlePercent) : CommandBase() {
+
+class Deploy(_subsystems: SubsystemHolder, _percent: Double = 1.0) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
-  private val velocity: Double = _velocity
+  private val percent: Double = _percent
 
   init {
-    addRequirements(_subsystems.feeder);
-    subsystems.feeder.currentVel = velocity
-
   }
 
   override fun initialize() {
-    subsystems.feeder.currentVel = velocity
+    subsystems.deploy.runDeploy(percent)
   }
 
   override fun execute() {
-    //feeder.feed()
   }
 
   override fun end(interrupted: Boolean) {
+    subsystems.deploy.deployStop()
   }
 
   // end command if time has elapsed

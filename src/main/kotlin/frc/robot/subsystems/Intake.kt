@@ -17,48 +17,57 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.IntakeConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
-
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val motor = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless)
-    public val encoder = motor.getEncoder()
+    val motor = TalonFX(IntakeConstants.Ports.motor)
 
     // configure the motors and add to shuffleboard
     init {
+
         motor.apply {
-            restoreFactoryDefaults()
-            setIdleMode(IdleMode.kCoast)
-            setInverted(true)
-            //setSensorPhase(false)
-            setSmartCurrentLimit(40)
-            setClosedLoopRampRate(1.0)
-            setControlFramePeriodMs(1)
-        }
+            configFactoryDefault(100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 20.0, 0.0, 0.0), 100)
 
-        val controller = motor.getPIDController()
-        controller.apply {
-            setP(1.0, 1)
-            setI(0.0, 1)
-            setD(0.0, 1)
-        }
+            setSensorPhase(false)
+            setInverted(false)
 
-        encoder.apply {
-            setPosition(0.0)
-        }
+            config_kP( 0, 1.0, 100 )
+            config_kI( 0, 0.0, 100 )
+            config_kD( 0, 0.0, 100 )
 
-        tab.addNumber("Intake Real Velocity", { encoder.getVelocity() })
+            setSelectedSensorPosition(0.0, 0, 100)
+
+            configVoltageCompSaturation(12.0, 100)
+            enableVoltageCompensation(true)
+            setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 50, 100)
+            setControlFramePeriod(ControlFrame.Control_3_General, 50)
+            setNeutralMode(NeutralMode.Coast)
+
+            configClosedLoopPeakOutput(0, 0.1, 100)
+        }
+        
     }
 
     public fun stop() {
-        motor.set(0.0)
+        motor.set(ControlMode.PercentOutput, 0.0)
     }
 
-    public fun intake() {
-        motor.set(IntakeConstants.outputPercent)
+    public fun intake(velocity: Double = 1.0) {
+        motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent * velocity)
     }
+
+
+    public fun reverse() {
+        motor.set(ControlMode.PercentOutput, IntakeConstants.reversePercent)
+    }
+
 
     override fun periodic() {
+        //println(encoder.getPosition());
     }
 
     override fun simulationPeriodic() {

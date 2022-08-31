@@ -6,34 +6,29 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.FeederConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.Timer
-import frc.robot.commands.Feed
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Lights;
+import frc.robot.classes.RGB;
 import frc.robot.classes.SubsystemHolder
 
-class WaitForShooter(_subsystems: SubsystemHolder, _time: Double) : CommandBase() {
+class StartFeeding(_subsystems: SubsystemHolder, _percent: Double = FeederConstants.idlePercent)  : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
-  private val time: Double = _time;
-  private val timer: Timer = Timer()
+  private val percent: Double = _percent
 
   init {
   }
 
   override fun initialize() {
-    timer.reset()
-    timer.start()
+    subsystems.feeder.currentVel = percent;
   }
 
   override fun execute() {
-    println("waiting")
   }
 
-  // end command if time has elapsed
   override fun isFinished(): Boolean {
-    println("done spinning up: ${subsystems.shooter.isSpedUp()}")
-    return (timer.get() >= time) && subsystems.shooter.isSpedUp() 
+    return true;
   }
 
   override fun end(interrupted: Boolean) {
-    timer.stop()
   }
 }
