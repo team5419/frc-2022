@@ -19,7 +19,7 @@ class AutoDrive(_drivetrain: Drivetrain, _time: Double, _tab: ShuffleboardTab) :
     }
 
     override fun runMotors() {
-      drivetrain.drive(0.5, 0.0, false)
+      drivetrain.drive(0.5, 0.0, 0.0)
     }
 
     override fun getVels(): List<Double> {

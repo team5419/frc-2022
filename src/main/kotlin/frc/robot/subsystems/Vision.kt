@@ -8,7 +8,6 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import frc.robot.subsystems.Drivetrain
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.controller.PIDController
-import frc.robot.classes.DriveSignal
 import frc.robot.VisionConstants
 import frc.robot.Lookup
 import frc.robot.LookupEntry
@@ -93,36 +92,35 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public fun turnAligned(): Boolean {
-        //return isTargetFound() && Math.abs(getHorizontalOffset() + VisionConstants.targetOffset) < 0.05 && m_drivetrain.averageSpeed < 0.1
-        return isTargetFound() && turnController.atSetpoint() && m_drivetrain.averageSpeed < 0.1
+        return isTargetFound() && turnController.atSetpoint() && m_drivetrain.getAverageSpeed() < 0.1
     }
 
     public fun throttleAligned(distance : Double): Boolean {
         return isTargetFound() && Math.abs(getHorizontalDistance() - distance) < 0.05
     }
 
-    public fun autoAlignTurn() : DriveSignal {
+    public fun autoAlignTurn() : Double {
         // get the pid loop output
         var output = turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
 
         // do we need to align / can we align?
         if(!turnAligned() && isTargetFound()) {
-            return DriveSignal(output, -output)
+            return output
         }
 
-        return DriveSignal(0.0, 0.0)
+        return 0.0
     }
 
-    public fun autoAlignThrottle(distance : Double) : DriveSignal {
+    public fun autoAlignThrottle(distance : Double) : Double {
         var output = throttleController.calculate(getHorizontalDistance() - distance)
 
         if(!throttleAligned(distance) && isTargetFound())
         {
             println("output ${output}")
-            return DriveSignal(-output, -output)
+            return -output
         }
 
-        return DriveSignal(0.0, 0.0)
+        return 0.0
     }
 
     enum class LightMode { On, Off, Blink }

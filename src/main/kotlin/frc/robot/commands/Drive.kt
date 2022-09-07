@@ -1,10 +1,10 @@
 package frc.robot.commands; 
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Feeder;
-import frc.robot.FeederConstants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Util;
+import frc.robot.DriveConstants;
 import frc.robot.classes.SubsystemHolder
 
 class Drive(_subsystems: SubsystemHolder, _driver: XboxController, _isSlow: Boolean = false) : CommandBase() {
@@ -13,15 +13,16 @@ class Drive(_subsystems: SubsystemHolder, _driver: XboxController, _isSlow: Bool
   private val isSlow: Boolean = _isSlow;
 
   init {
-    addRequirements(_subsystems.drivetrain);
+    addRequirements(subsystems.drivetrain);
   }
 
-  override fun initialize() {
-    subsystems.feeder.currentVel = FeederConstants.idlePercent
-  }
+  override fun initialize() {}
 
   override fun execute() {
-    subsystems.drivetrain.drive(driver.getLeftY().toDouble(), driver.getRightX().toDouble(), isSlow);
+    val rightx: Double = Util.withDeadband(driver.getRightX().toDouble());
+    val lefty: Double = Util.withDeadband(driver.getLeftY().toDouble())
+    val leftx: Double = Util.withDeadband(driver.getLeftX().toDouble())
+    subsystems.drivetrain.drive(leftx * DriveConstants.speedMultiplier, -lefty * DriveConstants.speedMultiplier, rightx * -0.1);
   }
 
   override fun end(interrupted: Boolean) {}

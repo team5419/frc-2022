@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.subsystems.*
 import frc.robot.commands.*
+import frc.robot.Util;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -25,34 +26,34 @@ class FourBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
                 SequentialCommandGroup(
                     StartFeeding(subsystems),
                     ParallelRaceGroup(
-                        RamseteAction(subsystems, listOf(
+                        Util.generateRamsete(subsystems.drivetrain, listOf(
                             Pose2d(0.0, 0.0, Rotation2d(0.0)), 
                             Pose2d(-0.3, 0.0, Rotation2d(0.0))
-                        ), false)
+                        ))
                     ),
                     ParallelRaceGroup(
                         SpinUp(subsystems, 15500.0, 15500.0),
-                        RamseteAction(subsystems, listOf(
+                        Util.generateRamsete(subsystems.drivetrain, listOf(
                             Pose2d(-0.3, 0.0, Rotation2d(0.0)),
                             Pose2d(-1.0, 0.0, Rotation2d(0.0))
-                        ), false)
+                        ))
                     ),
                     // autoalign and index/shoot first 2 balls
                     AutoAlign(subsystems, 0.75, false),
                     Shoot(subsystems, driver, 15500.0, 15500.0, 1.25),
                     // run intake and move to second shoot position
-                    RamseteAction(subsystems, listOf(
+                    Util.generateRamsete(subsystems.drivetrain, listOf(
                         Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
                         Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0))
-                    ), false),
+                    )),
                     Wait(0.25),
                     // intake 2 balls from the human player station
                     // moves to new shot location
                     ParallelRaceGroup(
-                        RamseteAction(subsystems, listOf(
+                        Util.generateRamsete(subsystems.drivetrain, listOf(
                             Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0)), 
                             Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
-                        ), true),
+                        )),
                         SpinUp(subsystems, 15250.0, 15250.0)
                     ),
                     // shoots 2 balls

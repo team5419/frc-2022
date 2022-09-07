@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.*
 import frc.robot.commands.*
 import frc.robot.classes.SubsystemHolder
-
+import frc.robot.Util;
 import frc.robot.commands.Shoot
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -27,17 +27,17 @@ class TwoBallAuto(_subsystems: SubsystemHolder, _driver: XboxController) : Seque
                     SequentialCommandGroup(
                         StartFeeding(subsystems),
                         ParallelRaceGroup(
-                            RamseteAction(subsystems, listOf(
+                            Util.generateRamsete(subsystems.drivetrain, listOf(
                                 Pose2d(0.0, 0.0, Rotation2d(0.0)), 
                                 Pose2d(-0.3, 0.0, Rotation2d(0.0))
-                            ), false)
+                            ))
                         ),
                         ParallelRaceGroup(
                             SpinUp(subsystems, 15500.0, 15500.0),
-                            RamseteAction(subsystems, listOf(
+                            Util.generateRamsete(subsystems.drivetrain, listOf(
                                 Pose2d(-0.3, 0.0, Rotation2d(0.0)),
                                 Pose2d(-1.0, 0.0, Rotation2d(0.0))
-                            ), false)
+                            ))
                         ),
                         // autoalign and index/shoot first 2 balls
                         AutoAlign(subsystems, 1.0, false),

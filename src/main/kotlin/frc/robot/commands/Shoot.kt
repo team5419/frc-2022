@@ -7,7 +7,6 @@ import frc.robot.subsystems.Feeder
 import frc.robot.subsystems.Shooter
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.classes.DriveSignal;
 import frc.robot.LookupEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab

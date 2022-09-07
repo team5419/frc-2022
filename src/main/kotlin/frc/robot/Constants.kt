@@ -1,5 +1,12 @@
 package frc.robot;
 import kotlin.math.PI
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.PIDController;
 
 object DriveConstants {
     object Ports {
@@ -29,7 +36,6 @@ object DriveConstants {
         const val zeta: Double = 0.7 // unitless
         const val trackWidth: Double = 1.781 // meters
     }
-
     const val driverPort: Int = 0
     const val slowMultiplier: Double = 0.25
 
@@ -38,6 +44,85 @@ object DriveConstants {
         const val I: Double = 0.0
         const val D: Double = 0.0
     }
+
+    // ------------------- Swerve Constants -------------------
+    val simUpdateTime: Double = 0.02;
+    val turnerPorts: Array<Int> = arrayOf(0, 1, 2, 3)
+    val driverPorts: Array<Int> = arrayOf(4, 5, 6, 7)
+    val cancoderPorts: Array<Int> = arrayOf(8, 9, 10, 11)
+    val gyroPort: Int = 16;
+    //val autoCheckVelocities: Array<Double> = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
+    //val gearRatio: Double = (10.3333 / 1.0)
+    //val ticksPerRotation: Double = (2048.0 * gearRatio)
+    //const val wheelRadius: Double = 0.0508
+    //const val wheelDiameter: Double = wheelRadius * 2.0
+    //const val wheelCircumference: Double = wheelDiameter * PI
+    const val controllerDeadband: Double = 0.05;
+
+    // Locations for the swerve drive modules relative to the robot center
+    val frontLeftLocation: Translation2d = Translation2d(0.381, 0.381);
+    val frontRightLocation: Translation2d = Translation2d(0.381, -0.381);
+    val backLeftLocation: Translation2d = Translation2d(-0.381, 0.381);
+    val backRightLocation: Translation2d = Translation2d(-0.381, -0.381);
+
+    val modulePositions: Array<Translation2d> = arrayOf(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
+
+    // Creating my kinematics object using the module locations
+    val kinematics: SwerveDriveKinematics = SwerveDriveKinematics(
+        frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation
+    );
+    val driveMotorGearRatio: Double = 6.75;
+    val turnMotorGearRatio: Double = 12.8;
+    val driveMotorGearbox: DCMotor = DCMotor.getFalcon500(1);
+    val turnMotorGearbox: DCMotor = DCMotor.getNeo550(1);
+    
+    val kvRadians: Double = 0.16;
+    val kaRadians: Double = 0.0348;
+    object SwerveRamsete { //Swerve
+        const val kpx: Double = 0.0;
+        const val kpy: Double = 0.0;
+        const val kptheta: Double = 0.0;
+        const val kMaxAngularSpeedRadiansPerSecond: Double = 10.0 * Math.PI ;
+        val kMaxAngularSpeedRadiansPerSecondSquared: Double = 10.0 * Math.PI;
+        public val kThetaControllerConstraints: TrapezoidProfile.Constraints =
+                TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+        const val kv: Double = 2.3 // arbitrary
+        const val ka: Double = 0.463
+        const val ks: Double = 0.191
+        const val maxVelocity: Double = 3.0 // all in m/?
+        const val maxAcceleration: Double = 1.5
+    }
+    const val speedMultiplier: Double = 3.0;
+    val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(Ramsete.ks, Ramsete.kv, Ramsete.ka);
+    //const val driverPort: Int = 0
+    //const val slowMultiplier: Double = 0.25
+    object Modules {
+        object DrivePID {
+            const val P: Double = 2.3
+            const val I: Double = 0.0
+            const val D: Double = 0.0
+        }
+        object TurnPID {
+            const val P: Double = 2.4
+            const val I: Double = 0.0
+            const val D: Double = 0.0
+        }
+        public val kMaxModuleAngularSpeedRadiansPerSecond: Double = 2 * Math.PI;
+        public val kMaxModuleAngularAccelerationRadiansPerSecondSquared: Double = 2 * Math.PI;
+        public val encoderCPR: Double = 2048.0;
+        public val wheelDiameter: Double = 10.16; //cm 
+        public val kDriveEncoderDistancePerPulse: Double =
+                (wheelRadius * Math.PI) / (encoderCPR * driveMotorGearRatio);
+
+        public val kTurningEncoderDistancePerPulse: Double =
+                (2.0 * Math.PI) / (encoderCPR * turnMotorGearRatio);
+        public val driveController: PIDController = PIDController(DrivePID.P, DrivePID.I, DrivePID.D);
+        public val turnController: ProfiledPIDController = ProfiledPIDController(TurnPID.P, TurnPID.I, TurnPID.D, TrapezoidProfile.Constraints(
+            kMaxModuleAngularSpeedRadiansPerSecond, kMaxModuleAngularAccelerationRadiansPerSecondSquared
+        ));
+    }
+
+
 }
 
 object ShooterConstants {
@@ -164,4 +249,6 @@ object LightsConstants {
     object Ports {
         val lights1 = 25;
     }
+
+
 }

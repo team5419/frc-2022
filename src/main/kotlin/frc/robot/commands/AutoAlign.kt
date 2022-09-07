@@ -4,7 +4,6 @@ import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Drivetrain
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.classes.DriveSignal;
 import frc.robot.subsystems.Shooter;
 import frc.robot.LookupEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
@@ -42,13 +41,12 @@ class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: 
   override fun execute() {
     println("setpoint distance = ${setpoint.distance}");
     //println("actual distance = ${vision.getHorizontalDistance()}");
-    var throttleOutput: DriveSignal = DriveSignal(0.0, 0.0)
+    var throttleOutput: Double = 0.0;
     if(throttling) {
       throttleOutput = subsystems.vision.autoAlignThrottle(setpoint.distance)
     }
-    var turnOutput: DriveSignal = subsystems.vision.autoAlignTurn();
-    println("SETPOINT LEFT ${throttleOutput.left + turnOutput.left}");
-    subsystems.drivetrain.setPercent(throttleOutput.left + turnOutput.left, throttleOutput.right + turnOutput.right)
+    var turnOutput: Double = subsystems.vision.autoAlignTurn();
+    subsystems.drivetrain.drive(throttleOutput, 0.0, turnOutput)
   }
 
   override fun isFinished() : Boolean {
@@ -60,7 +58,7 @@ class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: 
       subsystems.vision.off();
       timer.stop()
       subsystems.lights.setColor(RGB(0, 0, 0));
-      subsystems.drivetrain.setPercent(0.0, 0.0)
+      subsystems.drivetrain.stop();
       subsystems.drivetrain.brakeMode = false;
   }
 }

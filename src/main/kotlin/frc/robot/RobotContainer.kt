@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.commands.RamseteAction
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
@@ -27,15 +26,7 @@ import frc.robot.ShooterConstants
 class RobotContainer(tab: ShuffleboardTab) {
 
   // subsystems
-  public val m_drivetrain = Drivetrain(tab);
-  // private val m_shooter = Shooter(tab);
-  // private val m_vision = Vision(tab, m_drivetrain);
-  // private val m_indexer = Indexer(tab);
-  // private val m_climber = Climber(tab);
-  // private val m_feeder = Feeder(tab);
-  // private val m_intake = Intake(tab);
-  // private val m_lights = Lights(tab);
-  // private val m_deploy = DeploySubsystem(tab);
+  public val m_drivetrain = Drivetrain(false);
   public val m_subsystems = SubsystemHolder(m_drivetrain, Shooter(tab), Intake(tab), DeploySubsystem(tab), Lights(tab), Vision(tab, m_drivetrain), Climber(tab), Feeder(tab), Indexer(tab))
 
   // creates a tab in shuffleboard to select autonomous routine
@@ -81,10 +72,6 @@ class RobotContainer(tab: ShuffleboardTab) {
     val lBumperDriver : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
     lBumperDriver.whenHeld(Drive(m_subsystems, driver, true))
 
-    // defense mode (hold B) 
-    val bButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
-    bButtonDriver.whenHeld(ToggleCurrent(m_subsystems));
-
     // safe zone shot (hold Y)
     val yButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)
     yButtonDriver.whenHeld(AutoAlignAndShoot(m_subsystems, 20000.0, 20000.0, driver))
@@ -111,13 +98,6 @@ class RobotContainer(tab: ShuffleboardTab) {
     // lower intake (hold left bumper)
     val lBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kLeftBumper.value)
     lBumperCodriver.whenHeld(Deploy(m_subsystems, 0.8))
-
-    // invert drivetrain (press X)
-    
-    val xButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    
-    xButtonCodriver.whenPressed(InvertDrive(m_subsystems))
-    //xButtonCodriver.whenHeld(ClimbButton(m_climber))
   }
 
 
