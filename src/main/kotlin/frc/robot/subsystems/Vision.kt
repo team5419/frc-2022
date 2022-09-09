@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
 import frc.robot.subsystems.Drivetrain
 import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.controller.PIDController
 import frc.robot.VisionConstants
 import frc.robot.Lookup
@@ -142,5 +143,16 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     public fun off() {
         lightMode = LightMode.Off
+    }
+
+    public override fun periodic() {
+        if(isTargetFound()) {
+            val angle: Double = m_drivetrain.angle;
+            val dist: Double = getHorizontalDistance();
+            val newY: Double = Math.sin(angle) * dist;
+            val newX: Double = Math.cos(angle) * dist;
+            m_drivetrain.odometry.resetPosition(Pose2d(newX, newY, Rotation2d(angle)), Rotation2d(angle))
+            println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
+        }
     }
 }

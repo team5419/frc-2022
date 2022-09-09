@@ -26,7 +26,7 @@ import frc.robot.ShooterConstants
 class RobotContainer(tab: ShuffleboardTab) {
 
   // subsystems
-  public val m_drivetrain = Drivetrain(false);
+  public val m_drivetrain = Drivetrain(true);
   public val m_subsystems = SubsystemHolder(m_drivetrain, Shooter(tab), Intake(tab), DeploySubsystem(tab), Lights(tab), Vision(tab, m_drivetrain), Climber(tab), Feeder(tab), Indexer(tab))
 
   // creates a tab in shuffleboard to select autonomous routine

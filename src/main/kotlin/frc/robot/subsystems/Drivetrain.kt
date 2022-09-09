@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
+import frc.robot.subsystems.Vision;
 
 import frc.robot.DriveConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
@@ -46,6 +47,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     private val tab: ShuffleboardTab = Shuffleboard.getTab("Drivetrain");
     private val field: Field2d = Field2d();
     private var previousMove: ChassisSpeeds = ChassisSpeeds();
+
     // configure the motors and add to shuffleboard
     init {
         gyro.apply {
@@ -75,6 +77,13 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     fun stop() {
         this.drive(0.0, 0.0, 0.0)
+    }
+
+    fun brake() {
+        drivers[0].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)))
+        drivers[1].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(315.0)))
+        drivers[2].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(135.0)))
+        drivers[3].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(225.0)))
     }
 
     // set the percent output of the drivetrain motors
@@ -126,6 +135,8 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
         val cangle: Rotation2d = Rotation2d(angle);
         val cpose: Pose2d = pose();
         odometry.update(cangle, res[0], res[1], res[2], res[3]);
+
+
         for(i in 0..drivers.size - 1) {
             val modulePositionFromChassis: Translation2d = DriveConstants.modulePositions[i]
                     .rotateBy(cangle)
