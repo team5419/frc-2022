@@ -3,7 +3,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 
-import frc.robot.commands.Baseline;
+import frc.robot.commands.*;
+
+import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,9 +27,14 @@ class RobotContainer(tab: ShuffleboardTab) {
   val autoSelector = SendableChooser<SequentialCommandGroup>()
   val driver = XboxController(0);
   val codriver = XboxController(1);
+  public val drivetrain_ : Drivetrain = Drivetrain();
 
   init {
+    
+  }
 
+  fun setDefaults(){
+    drivetrain_.setDefaultCommand(Drive(driver, drivetrain_))
   }
 
 

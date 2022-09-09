@@ -22,17 +22,23 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-
-class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
-
+class Drivetrain() : SubsystemBase() {
+    private val motor1: TalonFX;
+    private val motor2 : TalonFX;
     // configure the motors and add to shuffleboard
     init {
-        
+        motor1 = TalonFX(0);
+        motor2 = TalonFX(1);
+    }
+    fun drive(throttle: Double, turn : Double) {
+        motor1.set(ControlMode.PercentOutput, throttle - turn);
+        motor2.set(ControlMode.PercentOutput, throttle + turn);
     }
 
 
+
     override fun periodic() {
-        
+        //motor1.set(ControlMode.PercentOutput, 1.0);
     }
 
     override fun simulationPeriodic() {
