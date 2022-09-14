@@ -30,7 +30,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   public val drivetrain_ : Drivetrain = Drivetrain();
 
   init {
-    
+    setDefaults();
   }
 
   fun setDefaults(){

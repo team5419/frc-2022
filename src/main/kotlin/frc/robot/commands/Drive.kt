@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.XboxController;
 class Drive(_driver: XboxController, _drivetrain: Drivetrain) : CommandBase() {
     val driver: XboxController = _driver;
     val drivetrain: Drivetrain = _drivetrain;
+    init {
+        addRequirements(_drivetrain);
+    }
     public override fun initialize() {
 
     }

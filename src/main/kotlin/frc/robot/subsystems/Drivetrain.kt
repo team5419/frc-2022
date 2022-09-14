@@ -31,6 +31,7 @@ class Drivetrain() : SubsystemBase() {
         motor2 = TalonFX(1);
     }
     fun drive(throttle: Double, turn : Double) {
+        println(throttle);
         motor1.set(ControlMode.PercentOutput, throttle - turn);
         motor2.set(ControlMode.PercentOutput, throttle + turn);
     }
