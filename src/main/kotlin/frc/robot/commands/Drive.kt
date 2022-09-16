@@ -13,7 +13,7 @@ class Drive(_driver: XboxController, _drivetrain: Drivetrain) : CommandBase() {
 
     }
     public override fun execute() {
-        drivetrain.drive(driver.getLeftY(),driver.getLeftX());
+        drivetrain.drive(driver.getLeftY(),driver.getRightX());
     }
     public override fun isFinished(): Boolean {
         return false;

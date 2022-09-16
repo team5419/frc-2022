@@ -23,23 +23,54 @@ import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 class Drivetrain() : SubsystemBase() {
-    private val motor1: TalonFX;
-    private val motor2 : TalonFX;
+    private val leftLeader: TalonFX;
+    private val leftFollower: TalonFX;
+    private val rightLeader: TalonFX;
+    private val rightFollower: TalonFX;
     // configure the motors and add to shuffleboard
+    
     init {
-        motor1 = TalonFX(0);
-        motor2 = TalonFX(1);
+        leftLeader = TalonFX(0)
+        rightLeader = TalonFX(1)
+        leftFollower = TalonFX(2)
+        rightFollower = TalonFX(3)
+        val motors: Array<TalonFX> = arrayOf(leftLeader, leftFollower, rightLeader, rightFollower);
+        val inverted: Array<Boolean> = arrayOf(false, false, true, true);
+        for(i in 0..3) {
+            motors[i].apply {
+                //configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+
+                setSensorPhase(false)
+                setInverted(inverted[i])
+
+                config_kP( 0, 0.0, 100 )
+                config_kI( 0, 0.0, 100 )
+                config_kD( 0, 0.0, 100 )
+                config_kF( 0, 0.0 , 100 )
+
+                setSelectedSensorPosition(0.0, 0, 100)
+
+                configVoltageCompSaturation(12.0, 100)
+                enableVoltageCompensation(true)
+                setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
+
+                setNeutralMode(NeutralMode.Coast)
+
+                configClosedLoopPeakOutput(0, 1.0, 100)
+            }
+        }
     }
     fun drive(throttle: Double, turn : Double) {
         println(throttle);
-        motor1.set(ControlMode.PercentOutput, throttle - turn);
-        motor2.set(ControlMode.PercentOutput, throttle + turn);
+        leftLeader.set(ControlMode.PercentOutput, throttle - turn);
+        rightLeader.set(ControlMode.PercentOutput, throttle + turn);
+        leftFollower.set(ControlMode.PercentOutput, throttle - turn);
+        rightFollower.set(ControlMode.PercentOutput, throttle + turn);
     }
 
 
 
     override fun periodic() {
-        //motor1.set(ControlMode.PercentOutput, 1.0);
     }
 
     override fun simulationPeriodic() {
