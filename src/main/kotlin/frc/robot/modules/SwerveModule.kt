@@ -36,8 +36,10 @@ public class SwerveModule : ISwerveModule {
     private val turnMotor: CANSparkMax;
     private var lastAngle: Double;
     private val turnEncoder: CANCoder;
-    constructor(drivePort: Int, turnPort: Int, cancoderPort: Int, driveInverted: Boolean = false, turnInverted: Boolean = false) {
-        this.driveMotor = TalonFX(drivePort);
+    private val offset: Double;
+    constructor(drivePort: Int, turnPort: Int, cancoderPort: Int, _offset: Double, driveInverted: Boolean = false, turnInverted: Boolean = false) {
+      this.offset = _offset;
+      this.driveMotor = TalonFX(drivePort);
         this.turnMotor = CANSparkMax(turnPort, MotorType.kBrushless);
         this.turnMotor.apply {
           restoreFactoryDefaults()
@@ -82,7 +84,7 @@ public class SwerveModule : ISwerveModule {
     }
 
   public override fun getTurn(): Rotation2d {
-        return Rotation2d(turnEncoder.getPosition());
+        return Rotation2d(turnEncoder.getPosition() - this.offset);
   }
 
   public override fun getDrive(): Double {
@@ -94,11 +96,12 @@ public class SwerveModule : ISwerveModule {
   }
 
   public override fun setDesiredState(desiredState: SwerveModuleState) {
-    val state: SwerveModuleState = SwerveModuleState.optimize(desiredState, getTurn());
+    val turn: Rotation2d = getTurn();
+    val state: SwerveModuleState = SwerveModuleState.optimize(desiredState, turn);
     val newDriveOutput: Double = DriveConstants.Modules.driveController.calculate(getDrive(), state.speedMetersPerSecond);
 
     var newTurnOutput: Double = /*if ((Math.abs(desiredState.speedMetersPerSecond)) <= (DriveConstants.SwerveRamsete.maxVelocity * 0.01)) this.lastAngle 
-    else*/ DriveConstants.Modules.turnController.calculate(turnEncoder.getPosition(), state.angle.radians);
+    else*/ DriveConstants.Modules.turnController.calculate(turn.radians, state.angle.radians);
     this.lastAngle = newTurnOutput;
 
     driveMotor.set(ControlMode.PercentOutput, newDriveOutput);

@@ -50,6 +50,7 @@ object DriveConstants {
     val turnerPorts: Array<Int> = arrayOf(0, 1, 2, 3)
     val driverPorts: Array<Int> = arrayOf(4, 5, 6, 7)
     val cancoderPorts: Array<Int> = arrayOf(8, 9, 10, 11)
+    val offsets: Array<Double> = arrayOf(0.0, 0.0, 0.0, 0.0)
     val gyroPort: Int = 16;
     //val autoCheckVelocities: Array<Double> = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     //val gearRatio: Double = (10.3333 / 1.0)

@@ -13,11 +13,11 @@ interface ISwerveModule {
     fun setBrakeMode(on: Boolean);
 }
 object Module {
-    public fun create(drivePort: Int, turnPort: Int, encoderPort: Int, isSim: Boolean = false, driveInverted: Boolean = false, turnInverted: Boolean = false): ISwerveModule {
+    public fun create(drivePort: Int, turnPort: Int, encoderPort: Int, offset: Double, isSim: Boolean = false, driveInverted: Boolean = false, turnInverted: Boolean = false): ISwerveModule {
         if(isSim) {
             return SimulatedSwerveModule(drivePort, encoderPort, turnPort, encoderPort + 4);
         } else {
-            return SwerveModule(drivePort, turnPort, encoderPort, driveInverted, turnInverted);
+            return SwerveModule(drivePort, turnPort, encoderPort, offset, driveInverted, turnInverted);
         }
     }
 }
