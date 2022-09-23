@@ -9,7 +9,7 @@ import edu.wpi.first.networktables.EntryNotification
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
-
+import frc.robot.Ports;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -24,7 +24,7 @@ import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val motor = CANSparkMax(FeederConstants.Ports.motor, MotorType.kBrushless)
+    val motor = CANSparkMax(Ports.feeder, MotorType.kBrushless)
     public val encoder = motor.getEncoder() 
     private var previousVel : Double = -2.0
     

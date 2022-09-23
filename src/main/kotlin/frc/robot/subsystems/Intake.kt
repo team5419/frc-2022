@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.EntryNotification
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
+import frc.robot.Ports;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -23,7 +24,7 @@ import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val motor = TalonFX(IntakeConstants.Ports.motor)
+    val motor = TalonFX(Ports.intake)
 
     // configure the motors and add to shuffleboard
     init {

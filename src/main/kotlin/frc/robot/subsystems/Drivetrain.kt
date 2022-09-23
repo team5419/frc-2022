@@ -30,13 +30,14 @@ import frc.robot.modules.ISwerveModule;
 import frc.robot.modules.SimulatedSwerveModule;
 import frc.robot.modules.Module;
 import frc.robot.Util;
+import frc.robot.Ports;
 
 class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     // declare motors and ports
     public val drivers: Array<ISwerveModule> = Array<ISwerveModule>(4, { i: Int -> Module.create(
         DriveConstants.driverPorts[i], DriveConstants.turnerPorts[i], DriveConstants.cancoderPorts[i], DriveConstants.offsets[i], simulated) });
-    public val gyro: PigeonIMU = PigeonIMU(DriveConstants.gyroPort);
+    public val gyro: PigeonIMU = PigeonIMU(Ports.gyro);
     private val gyroSim: BasePigeonSimCollection = BasePigeonSimCollection(gyro, false);
     private var yaw: Double = 0.0;
     public var inverted: Int = 1;

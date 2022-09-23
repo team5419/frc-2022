@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 import frc.robot.ClimberConstants
+import frc.robot.Ports;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
@@ -30,12 +31,12 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // declare motors and ports
     public val pairs: Array<ClimberPair> = arrayOf(
         ClimberPair(
-            ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
-            ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
+            ClimberSingle(TalonFX(Ports.climberLeft1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
+            ClimberSingle(TalonFX(Ports.climberRight1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
         ),
         ClimberPair(
-            ClimberSingle(TalonFX(ClimberConstants.Ports.left2), true, /*AnalogInput(ClimberConstants.Ports.lsensor1), */ ClimberConstants.Pair1.Left.min, ClimberConstants.Pair1.Left.max),
-            ClimberSingle(TalonFX(ClimberConstants.Ports.right2), false, /*AnalogInput(ClimberConstants.Ports.rsensor1), */ ClimberConstants.Pair1.Right.min, ClimberConstants.Pair1.Right.max)
+            ClimberSingle(TalonFX(Ports.climberLeft2), true, /*AnalogInput(ClimberConstants.Ports.lsensor1), */ ClimberConstants.Pair1.Left.min, ClimberConstants.Pair1.Left.max),
+            ClimberSingle(TalonFX(Ports.climberRight2), false, /*AnalogInput(ClimberConstants.Ports.rsensor1), */ ClimberConstants.Pair1.Right.min, ClimberConstants.Pair1.Right.max)
         )
     )
     private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);

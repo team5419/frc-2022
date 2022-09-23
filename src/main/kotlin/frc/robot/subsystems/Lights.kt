@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.EntryNotification
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
+import frc.robot.Ports;
 import kotlin.collections.mutableListOf
 import com.ctre.phoenix.led.CANdle
 import com.ctre.phoenix.led.CANdleConfiguration
@@ -23,14 +24,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import frc.robot.LightsConstants
 import frc.robot.classes.RGB
 
 class Lights(tab: ShuffleboardTab) : SubsystemBase() {
     // private val buffer2 = AddressableLEDBuffer(LightsConstants.len2);
     private var currentRGB: RGB = RGB(0, 0, 0);
         // Example usage of a CANdle
-    private val candle: CANdle = CANdle(LightsConstants.Ports.lights1); // creates a new CANdle with ID 0
+    private val candle: CANdle = CANdle(Ports.lights); // creates a new CANdle with ID 0
     private val config: CANdleConfiguration = CANdleConfiguration();
     public var isRainbow: Boolean = false;
     //private val cached: MutableList<RGB> = mutableListOf<RGB>();

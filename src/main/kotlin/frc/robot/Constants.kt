@@ -9,13 +9,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.PIDController;
 
 object DriveConstants {
-    object Ports {
-        val leftLeader = 2; // 3
-        val leftFollower = 3; //4
-        val rightLeader = 4; //1
-        val rightFollower = 5; // 2
-        val gyroPort = 20;
-    }
 
     val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     val gearRatio: Double = (10.3333 / 1.0)
@@ -47,11 +40,11 @@ object DriveConstants {
 
     // ------------------- Swerve Constants -------------------
     val simUpdateTime: Double = 0.02;
-    val turnerPorts: Array<Int> = arrayOf(0, 1, 2, 3)
-    val driverPorts: Array<Int> = arrayOf(4, 5, 6, 7)
-    val cancoderPorts: Array<Int> = arrayOf(8, 9, 10, 11)
+    val turnerPorts: Array<Int> = arrayOf(0, 1, 6, 7)
+    val driverPorts: Array<Int> = arrayOf(5, 2, 4, 3)
+    val cancoderPorts: Array<Int> = arrayOf(8, 10, 9, 11)
     val offsets: Array<Double> = arrayOf(0.0, 0.0, 0.0, 0.0)
-    val gyroPort: Int = 16;
+    
     //val autoCheckVelocities: Array<Double> = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     //val gearRatio: Double = (10.3333 / 1.0)
     //val ticksPerRotation: Double = (2048.0 * gearRatio)
@@ -126,18 +119,28 @@ object DriveConstants {
 
 }
 
+object Ports {
+    val shooterMain: Int = 19;
+    val shooterKicker: Int = 20;
+    val indexer: Int = 22;
+    val feeder: Int = 18; 
+    val intake: Int = 17;
+    val intakeDeploy: Int = 23;
+    val climberLeft1: Int = 12;
+    val climberLeft2: Int = 14;
+    val climberRight1: Int = 13;
+    val climberRight2: Int = 15;
+    val lights: Int = 21;
+    val gyro: Int = 16;
+}
+
 object ShooterConstants {
-    object Ports {
-        val main = 8;
-        val kicker = 7;
-    }
     val mainVelocity = 15000.0
     val kickerVelocity = 15000.0
 }
 
 object IndexerConstants {
-    object Ports {
-        val motor = 22;
+    object Sensors {
         val sensor1 = 2;
         val sensor2 = 1;
         val sensor3 = 0;
@@ -149,9 +152,6 @@ object IndexerConstants {
 }
 
 object FeederConstants {
-    object Ports {
-        val motor = 16;
-    }
     val idlePercent = 0.2;
     val activePercent = 0.9;
     val reversePercent: Double = -0.9;
@@ -159,19 +159,9 @@ object FeederConstants {
 }
 
 object IntakeConstants {
-    object Ports {
-        val motor = 6;
-        val deployMotor = 15;
-    }
     val outputPercent = 1.0;
     val reversePercent = -outputPercent;
     val autoSpeed: Double = 1000.0;
-}
-
-object PrototypeMotorConstants {
-    object Ports {
-        val motor = 20;
-    }
 }
 
 object VisionConstants {
@@ -199,18 +189,7 @@ object VisionConstants {
 }
 
 object ClimberConstants {
-    object Ports {
-        val left1 = 9
-        val right1 = 10
-        val left2 = 11
-        val right2 = 12
-        val lsensor0 = 0
-        val lsensor1 = 1
-        val rsensor0 = 2
-        val rsensor1 = 3
-        //val left3 = 13
-        //val right3 = 14
-    }
+    
     val autoCheckVelocities = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     object Pair0 {
         object Left {
@@ -244,12 +223,4 @@ object ClimberConstants {
         val D: Double = 0.0
         val F: Double = 0.06
     }
-}
-
-object LightsConstants {
-    object Ports {
-        val lights1 = 25;
-    }
-
-
 }

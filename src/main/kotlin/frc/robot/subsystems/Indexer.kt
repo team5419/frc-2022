@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.EntryNotification
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
+import frc.robot.Ports;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,12 +26,12 @@ import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame
 class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    val motor = CANSparkMax(IndexerConstants.Ports.motor, MotorType.kBrushless)
+    val motor = CANSparkMax(Ports.indexer, MotorType.kBrushless)
     val controller = motor.getPIDController()
     public val encoder = motor.getEncoder()    
-    public val sensor1 = AnalogInput(IndexerConstants.Ports.sensor1)
-    public val sensor2 = AnalogInput(IndexerConstants.Ports.sensor2)
-    public val sensor3 = AnalogInput(IndexerConstants.Ports.sensor3)
+    public val sensor1 = AnalogInput(IndexerConstants.Sensors.sensor1)
+    public val sensor2 = AnalogInput(IndexerConstants.Sensors.sensor2)
+    public val sensor3 = AnalogInput(IndexerConstants.Sensors.sensor3)
 
     private var previousVel: Double = -2.0
 

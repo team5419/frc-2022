@@ -17,12 +17,13 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import frc.robot.classes.RGB;
+import frc.robot.Ports;
 
 class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
-    public val kickerMotor = TalonFX(ShooterConstants.Ports.kicker)
-    public val mainMotor = TalonFX(ShooterConstants.Ports.main)
+    public val kickerMotor = TalonFX(Ports.shooterKicker)
+    public val mainMotor = TalonFX(Ports.shooterMain)
 
     public var mainVelocity: Double = ShooterConstants.mainVelocity
     public var kickerVelocity: Double = ShooterConstants.kickerVelocity
