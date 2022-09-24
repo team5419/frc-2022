@@ -7,7 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.geometry.Rotation2d;
-import com.ctre.phoenix.sensors.PigeonIMU
+import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.BasePigeonSimCollection
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
@@ -36,8 +36,8 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     // declare motors and ports
     public val drivers: Array<ISwerveModule> = Array<ISwerveModule>(4, { i: Int -> Module.create(
-        DriveConstants.driverPorts[i], DriveConstants.turnerPorts[i], DriveConstants.cancoderPorts[i], DriveConstants.offsets[i], simulated) });
-    public val gyro: PigeonIMU = PigeonIMU(Ports.gyro);
+        simulated, DriveConstants.info[i]) });
+    public val gyro: Pigeon2 = Pigeon2(Ports.gyro, "canivore");
     private val gyroSim: BasePigeonSimCollection = BasePigeonSimCollection(gyro, false);
     private var yaw: Double = 0.0;
     public var inverted: Int = 1;
@@ -49,19 +49,19 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     init {
         gyro.apply {
             configFactoryDefault(100)
-            setFusedHeading(0.0, 100)
+            setYaw(0.0, 100)
         }
         SmartDashboard.putData("Field", field);
     }
 
     // get angle from gyro
     val angle: Double
-        get() = -gyro.getFusedHeading()
+        get() = -gyro.getYaw()
 
     var originalAngle : Double = 0.0
 
     // constructs object with angle from gyro (assuming starting position is (0,0))
-    var odometry = SwerveDriveOdometry(DriveConstants.kinematics, Rotation2d(angle))
+    var odometry = SwerveDriveOdometry(DriveConstants.kinematics, Rotation2d.fromDegrees(angle))
 
     // returns the x and y position of the robot
     fun pose(): Pose2d {
@@ -69,7 +69,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     }
 
     fun resetOdometry(pose: Pose2d = Pose2d(0.0, 0.0, Rotation2d(0.0))) {
-        odometry.resetPosition(pose, Rotation2d(angle));
+        odometry.resetPosition(pose, Rotation2d.fromDegrees(angle));
     }
 
     fun stop() {

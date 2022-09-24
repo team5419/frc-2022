@@ -3,6 +3,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.modules.SwerveModule;
 import frc.robot.modules.SimulatedSwerveModule;
+import frc.robot.classes.ModuleInfo;
 interface ISwerveModule {
     fun getDrive(): Double;
     fun getTurn(): Rotation2d;
@@ -11,13 +12,14 @@ interface ISwerveModule {
     fun simulationPeriodic(dt: Double);
     fun resetEncoders();
     fun setBrakeMode(on: Boolean);
+    fun test();
 }
 object Module {
-    public fun create(drivePort: Int, turnPort: Int, encoderPort: Int, offset: Double, isSim: Boolean = false, driveInverted: Boolean = false, turnInverted: Boolean = false): ISwerveModule {
+    public fun create(isSim: Boolean = false, info: ModuleInfo): ISwerveModule {
         if(isSim) {
-            return SimulatedSwerveModule(drivePort, encoderPort, turnPort, encoderPort + 4);
+            return SimulatedSwerveModule(info.driverPort, info.cancoderPort, info.turnerPort, info.cancoderPort + 4);
         } else {
-            return SwerveModule(drivePort, turnPort, encoderPort, offset, driveInverted, turnInverted);
+            return SwerveModule(info.driverPort, info.turnerPort, info.cancoderPort, info.offset, info.driveInverted, info.turnInverted);
         }
     }
 }

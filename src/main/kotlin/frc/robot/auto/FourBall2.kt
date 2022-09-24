@@ -21,43 +21,43 @@ class FourBall2(_subsystems: SubsystemHolder, m_driver: XboxController) : Sequen
         addCommands(
             // run intake and move to first shoot position
             ParallelRaceGroup(
-                RunIntake(subsystems, 0.0),
-                //Feed(feeder),
-                SequentialCommandGroup(
-                    StartFeeding(subsystems),
-                    Util.generateRamsete(subsystems.drivetrain, listOf(
-                        Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-0.3, 0.0, Rotation2d(0.0))
-                    )),
-                    ParallelRaceGroup(
-                        SpinUp(subsystems, 15500.0, 15500.0),
-                        Util.generateRamsete(subsystems.drivetrain, listOf(
-                            Pose2d(-0.3, 0.0, Rotation2d(0.0)),
-                            Pose2d(-1.0, 0.0, Rotation2d(0.0))
-                        ))
-                    ),
-                    // autoalign and index/shoot first 2 balls
-                    AutoAlign(subsystems, 0.75, false),
-                    Shoot(subsystems, driver, 15500.0, 15500.0, 1.5),
-                    // // run intake and move to second shoot position
-                    Util.generateRamsete(subsystems.drivetrain, listOf(
-                        Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0))
-                    )),
-                    Wait(0.25),
-                    // intake 2 balls from the human player station
-                    // moves to new shot location
-                    ParallelRaceGroup(
-                        Util.generateRamsete(subsystems.drivetrain, listOf(
-                            Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0)), 
-                            Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
-                        )),
-                        SpinUp(subsystems)
-                    ),
-                    // shoots 2 balls
-                    AutoAlign(subsystems, 1.0),
-                    Shoot(subsystems, driver, 14300.0, 14300.0, 2.5)
-                )
+            //     RunIntake(subsystems, 0.0),
+            //     //Feed(feeder),
+            //     SequentialCommandGroup(
+            //         StartFeeding(subsystems),
+            //         Util.generateRamsete(subsystems.drivetrain, listOf(
+            //             Pose2d(0.0, 0.0, Rotation2d(0.0)), 
+            //             Pose2d(-0.3, 0.0, Rotation2d(0.0))
+            //         )),
+            //         ParallelRaceGroup(
+            //             SpinUp(subsystems, 15500.0, 15500.0),
+            //             Util.generateRamsete(subsystems.drivetrain, listOf(
+            //                 Pose2d(-0.3, 0.0, Rotation2d(0.0)),
+            //                 Pose2d(-1.0, 0.0, Rotation2d(0.0))
+            //             ))
+            //         ),
+            //         // autoalign and index/shoot first 2 balls
+            //         AutoAlign(subsystems, 0.75, false),
+            //         Shoot(subsystems, driver, 15500.0, 15500.0, 1.5),
+            //         // // run intake and move to second shoot position
+            //         Util.generateRamsete(subsystems.drivetrain, listOf(
+            //             Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
+            //             Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0))
+            //         )),
+            //         Wait(0.25),
+            //         // intake 2 balls from the human player station
+            //         // moves to new shot location
+            //         ParallelRaceGroup(
+            //             Util.generateRamsete(subsystems.drivetrain, listOf(
+            //                 Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0)), 
+            //                 Pose2d(-0.3, 0.0, Rotation2d.fromDegrees(0.0))
+            //             )),
+            //             SpinUp(subsystems)
+            //         ),
+            //         // shoots 2 balls
+            //         AutoAlign(subsystems, 1.0),
+            //         Shoot(subsystems, driver, 14300.0, 14300.0, 2.5)
+            //     )
             )
             
         )

@@ -33,49 +33,49 @@ class FiveBallAuto(_subsystems: SubsystemHolder, m_driver: XboxController) : Seq
             // run intake and move to first shoot position
         
             ParallelRaceGroup(
-                RunIntake(subsystems, 0.0),
-                SequentialCommandGroup(
-                    StartFeeding(subsystems, 0.5),
-                    ParallelRaceGroup(
-                        SpinUp(subsystems, 15250.0, 15250.0),
-                        Util.generateRamsete(subsystems.drivetrain, listOf(
-                            Pose2d(0.0, 0.0, Rotation2d(0.0)),
-                            Pose2d(-0.9, 0.0, Rotation2d(0.0))
-                        ))
-                    ),
-                    // autoalign and index/shoot first 2 balls
-                    AutoAlign(subsystems, 0.5, false),
-                    Shoot(subsystems, driver, 15250.0, 15250.0, 1.0),
-                    // run intake and move to second shoot position
-                    Util.generateRamsete(subsystems.drivetrain, listOf(
-                        Pose2d(-0.9, 0.0, Rotation2d(0.0)), 
-                        Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0))
-                    )),
-                    //Wait(0.0),
-                    // intake 2 balls from the human player station
-                    ParallelRaceGroup(
-                        Util.generateRamsete(subsystems.drivetrain, listOf(
-                            Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0)),
-                            Pose2d(x1, y1, Rotation2d.fromDegrees(-angle))
-                        )),
-                        SpinUp(subsystems, 14500.0, 13500.0),
-                        DefaultIndex(subsystems)
-                    ),
-                    // shoots 2 balls
-                    AutoAlign(subsystems, 0.5, false),
-                    Shoot(subsystems, driver, 14500.0, 13500.0, 1.0),
-                    // move backward and pick up last ball
-                    ParallelRaceGroup(
-                        Util.generateRamsete(subsystems.drivetrain, listOf(
-                            Pose2d(x1, y1, Rotation2d.fromDegrees(-angle)),
-                            Pose2d(x2, y2, Rotation2d.fromDegrees(-angle))
-                        )),
-                        SpinUp(subsystems, 15500.0, 15000.0)
-                    ),
-                    // shoots 1 ball 
-                    AutoAlign(subsystems, 0.5, false),
-                    Shoot(subsystems, driver, 15500.0, 15000.0, 1.0)
-                )
+                // RunIntake(subsystems, 0.0),
+                // SequentialCommandGroup(
+                //     StartFeeding(subsystems, 0.5),
+                //     ParallelRaceGroup(
+                //         SpinUp(subsystems, 15250.0, 15250.0),
+                //         Util.generateRamsete(subsystems.drivetrain, listOf(
+                //             Pose2d(0.0, 0.0, Rotation2d(0.0)),
+                //             Pose2d(-0.9, 0.0, Rotation2d(0.0))
+                //         ))
+                //     ),
+                //     // autoalign and index/shoot first 2 balls
+                //     AutoAlign(subsystems, 0.5, false),
+                //     Shoot(subsystems, driver, 15250.0, 15250.0, 1.0),
+                //     // run intake and move to second shoot position
+                //     Util.generateRamsete(subsystems.drivetrain, listOf(
+                //         Pose2d(-0.9, 0.0, Rotation2d(0.0)), 
+                //         Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0))
+                //     )),
+                //     //Wait(0.0),
+                //     // intake 2 balls from the human player station
+                //     ParallelRaceGroup(
+                //         Util.generateRamsete(subsystems.drivetrain, listOf(
+                //             Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(0.0)),
+                //             Pose2d(x1, y1, Rotation2d.fromDegrees(-angle))
+                //         )),
+                //         SpinUp(subsystems, 14500.0, 13500.0),
+                //         DefaultIndex(subsystems)
+                //     ),
+                //     // shoots 2 balls
+                //     AutoAlign(subsystems, 0.5, false),
+                //     Shoot(subsystems, driver, 14500.0, 13500.0, 1.0),
+                //     // move backward and pick up last ball
+                //     ParallelRaceGroup(
+                //         Util.generateRamsete(subsystems.drivetrain, listOf(
+                //             Pose2d(x1, y1, Rotation2d.fromDegrees(-angle)),
+                //             Pose2d(x2, y2, Rotation2d.fromDegrees(-angle))
+                //         )),
+                //         SpinUp(subsystems, 15500.0, 15000.0)
+                //     ),
+                //     // shoots 1 ball 
+                //     AutoAlign(subsystems, 0.5, false),
+                //     Shoot(subsystems, driver, 15500.0, 15000.0, 1.0)
+                // )
             )
         )
     }

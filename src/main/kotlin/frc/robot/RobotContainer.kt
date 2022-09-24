@@ -26,7 +26,7 @@ import frc.robot.ShooterConstants
 class RobotContainer(tab: ShuffleboardTab) {
 
   // subsystems
-  public val m_drivetrain = Drivetrain(true);
+  public val m_drivetrain = Drivetrain(false);
   public val m_subsystems = SubsystemHolder(m_drivetrain, Shooter(tab), Intake(tab), DeploySubsystem(tab), Lights(tab), Vision(tab, m_drivetrain), Climber(tab), Feeder(tab), Indexer(tab))
 
   // creates a tab in shuffleboard to select autonomous routine
@@ -108,9 +108,8 @@ class RobotContainer(tab: ShuffleboardTab) {
 
   fun setDefaults() {
       // set default commands
-      m_subsystems.drivetrain.setDefaultCommand(Drive(m_subsystems, driver, false));
+      m_subsystems.drivetrain.setDefaultCommand(DriveTest(m_subsystems, driver, false));
       m_subsystems.climber.setDefaultCommand(Climb(m_subsystems, codriver));
-      //m_feeder.setDefaultCommand(Feed(m_feeder));
       m_subsystems.indexer.setDefaultCommand(DefaultIndex(m_subsystems));
       //m_deploy.setDefaultCommand(DefaultDeploy(m_deploy));
   }

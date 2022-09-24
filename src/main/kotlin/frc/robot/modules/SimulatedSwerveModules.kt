@@ -116,4 +116,5 @@ public class SimulatedSwerveModule : ISwerveModule {
   }
 
   public override fun setBrakeMode(on: Boolean) {}
+  public override fun test() {}
 }

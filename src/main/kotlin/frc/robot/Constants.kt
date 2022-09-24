@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.PIDController;
+import frc.robot.classes.ModuleInfo;
 
 object DriveConstants {
 
@@ -38,13 +39,15 @@ object DriveConstants {
         const val D: Double = 0.0
     }
 
+    val info: Array<ModuleInfo> = arrayOf(
+        ModuleInfo(5, 24, true, true, 8, 0.0),
+        ModuleInfo(2, 1, false, true, 10, 0.0),
+        ModuleInfo(4, 6, true, true, 9, 0.0),
+        ModuleInfo(3, 7, false, true, 11, 0.0)
+    )
+
     // ------------------- Swerve Constants -------------------
     val simUpdateTime: Double = 0.02;
-    val turnerPorts: Array<Int> = arrayOf(0, 1, 6, 7)
-    val driverPorts: Array<Int> = arrayOf(5, 2, 4, 3)
-    val cancoderPorts: Array<Int> = arrayOf(8, 10, 9, 11)
-    val offsets: Array<Double> = arrayOf(0.0, 0.0, 0.0, 0.0)
-    
     //val autoCheckVelocities: Array<Double> = arrayOf(1000.0, 1000.0, 1000.0, 1000.0)
     //val gearRatio: Double = (10.3333 / 1.0)
     //val ticksPerRotation: Double = (2048.0 * gearRatio)

@@ -39,7 +39,7 @@ public class SwerveModule : ISwerveModule {
     private val offset: Double;
     constructor(drivePort: Int, turnPort: Int, cancoderPort: Int, _offset: Double, driveInverted: Boolean = false, turnInverted: Boolean = false) {
       this.offset = _offset;
-      this.driveMotor = TalonFX(drivePort);
+      this.driveMotor = TalonFX(drivePort, "canivore");
         this.turnMotor = CANSparkMax(turnPort, MotorType.kBrushless);
         this.turnMotor.apply {
           restoreFactoryDefaults()
@@ -51,7 +51,7 @@ public class SwerveModule : ISwerveModule {
           setControlFramePeriodMs(50)
           setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
         }
-        this.turnEncoder = CANCoder(cancoderPort);
+        this.turnEncoder = CANCoder(cancoderPort, "canivore");
         val config: CANCoderConfiguration = CANCoderConfiguration();
         config.sensorCoefficient = Math.PI / 2048.0;
         config.unitString = "rad";
@@ -118,5 +118,10 @@ public class SwerveModule : ISwerveModule {
   public override fun setBrakeMode(on: Boolean) {
     driveMotor.setNeutralMode((if (on) NeutralMode.Brake else NeutralMode.Coast));
     turnMotor.setIdleMode((if (on) IdleMode.kBrake else IdleMode.kCoast)); 
+  }
+
+  public override fun test() {
+    println("0.1")
+    driveMotor.set(ControlMode.PercentOutput, 0.1);
   }
 }
