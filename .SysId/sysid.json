@@ -1,11 +1,7 @@
 {
   "SysId": {
     "Analysis Type": "General Mechanism",
-    "Analyzer": {
-      "window": {
-        "visible": false
-      }
-    },
+    "AnalyzerJSONLocation": "C:\\Users\\Admin\\Desktop\\Code\\frc-2022\\turnsysid\\sysid_data20220925-121953.json",
     "NetworkTables Settings": {
       "serverTeam": "5419"
     },

@@ -147,11 +147,11 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     public override fun periodic() {
         if(isTargetFound()) {
-            val angle: Double = m_drivetrain.angle;
+            val angle: Rotation2d = Rotation2d.fromDegrees(m_drivetrain.angle);
             val dist: Double = getHorizontalDistance();
-            val newY: Double = Math.sin(angle) * dist;
-            val newX: Double = Math.cos(angle) * dist;
-            m_drivetrain.odometry.resetPosition(Pose2d(newX, newY, Rotation2d(angle)), Rotation2d(angle))
+            val newY: Double = Math.sin(angle.getRadians()) * dist;
+            val newX: Double = Math.cos(angle.getRadians()) * dist;
+            m_drivetrain.odometry.resetPosition(Pose2d(newX, newY, angle), angle)
             println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
         }
     }

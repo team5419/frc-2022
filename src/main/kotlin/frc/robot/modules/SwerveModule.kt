@@ -4,6 +4,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.numbers.N1;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.ControlFrame;
@@ -34,11 +42,13 @@ import com.ctre.phoenix.motorcontrol.TalonFXSimCollection;
 public class SwerveModule : ISwerveModule {
     private val driveMotor: TalonFX;
     private val turnMotor: CANSparkMax;
-    private var lastAngle: Double;
     private val turnEncoder: CANCoder;
     private val offset: Double;
+    private val tab: ShuffleboardTab = Shuffleboard.getTab("Drivetrain");
+    private var lastTurnOutput: Double;
     constructor(drivePort: Int, turnPort: Int, cancoderPort: Int, _offset: Double, driveInverted: Boolean = false, turnInverted: Boolean = false) {
       this.offset = _offset;
+      this.lastTurnOutput = 0.0;
       this.driveMotor = TalonFX(drivePort, "canivore");
         this.turnMotor = CANSparkMax(turnPort, MotorType.kBrushless);
         this.turnMotor.apply {
@@ -57,6 +67,7 @@ public class SwerveModule : ISwerveModule {
         config.unitString = "rad";
         config.sensorTimeBase = SensorTimeBase.PerSecond;
         this.turnEncoder.configAllSettings(config, 100);
+        this.turnEncoder.setPositionToAbsolute(100);
         this.driveMotor.apply {
             configFactoryDefault(100)
             configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
@@ -80,7 +91,10 @@ public class SwerveModule : ISwerveModule {
 
             configClosedLoopPeakOutput(0, 0.1, 100)
         }
-        this.lastAngle = getTurn().radians;
+        val layout: ShuffleboardLayout = tab.getLayout("Turn port ${turnPort}", "List Layout");
+        layout.addNumber("angle", { getTurn().radians });
+        layout.addNumber("drive", { getDrive() });
+        layout.addNumber("desired angle output", { this.lastTurnOutput });
     }
 
   public override fun getTurn(): Rotation2d {
@@ -95,17 +109,27 @@ public class SwerveModule : ISwerveModule {
     return SwerveModuleState(Util.nativeUnitsToMetersPerSecond(getDrive()), getTurn());
   }
 
+  private fun optimize(state: SwerveModuleState, turn: Rotation2d): SwerveModuleState {
+    val stateRadians: Double = state.angle.getRadians();
+    val nearest180: Long = Math.round((turn.getRadians() - stateRadians) / Math.PI);
+    val shouldInvertThrottle: Boolean = Math.abs(MathUtil.angleModulus(stateRadians - turn.getRadians())) > Math.PI / 2;
+    return SwerveModuleState(
+        state.speedMetersPerSecond * (if (shouldInvertThrottle) -1.0 else 1.0),
+        Rotation2d(nearest180 * Math.PI + stateRadians)
+    );
+  }
+
   public override fun setDesiredState(desiredState: SwerveModuleState) {
     val turn: Rotation2d = getTurn();
-    val state: SwerveModuleState = SwerveModuleState.optimize(desiredState, turn);
-    val newDriveOutput: Double = DriveConstants.Modules.driveController.calculate(getDrive(), state.speedMetersPerSecond);
+    val state: SwerveModuleState = desiredState//this.optimize(desiredState, turn);
 
-    var newTurnOutput: Double = /*if ((Math.abs(desiredState.speedMetersPerSecond)) <= (DriveConstants.SwerveRamsete.maxVelocity * 0.01)) this.lastAngle 
-    else*/ DriveConstants.Modules.turnController.calculate(turn.radians, state.angle.radians);
-    this.lastAngle = newTurnOutput;
+    val driveFeedForward: Double = DriveConstants.feedForward.calculate(desiredState.speedMetersPerSecond);
+    //val turnFeedForward: Double = DriveConstants.turnFeedForward.calculate(Matrix<N2, N1>(state.speedMetersPerSecond)).get(0, 0);
 
-    driveMotor.set(ControlMode.PercentOutput, newDriveOutput);
-    turnMotor.set(newTurnOutput);
+    var newTurnOutput: Double = DriveConstants.Modules.turnController.calculate(turn.radians, state.angle.radians);
+    this.lastTurnOutput = state.angle.radians;
+    //driveMotor.set(ControlMode.Velocity, Util.metersPerSecondToNativeUnits(state.speedMetersPerSecond), DemandType.ArbitraryFeedForward, driveFeedForward);
+    turnMotor.setVoltage(newTurnOutput);
   }
 
   public override fun simulationPeriodic(dt: Double) {}

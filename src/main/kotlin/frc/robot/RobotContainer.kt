@@ -108,7 +108,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
   fun setDefaults() {
       // set default commands
-      m_subsystems.drivetrain.setDefaultCommand(DriveTest(m_subsystems, driver, false));
+      m_subsystems.drivetrain.setDefaultCommand(Drive(m_subsystems, driver, false));
       m_subsystems.climber.setDefaultCommand(Climb(m_subsystems, codriver));
       m_subsystems.indexer.setDefaultCommand(DefaultIndex(m_subsystems));
       //m_deploy.setDefaultCommand(DefaultDeploy(m_deploy));

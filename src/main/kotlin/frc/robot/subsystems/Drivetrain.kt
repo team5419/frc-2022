@@ -85,7 +85,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     // set the percent output of the drivetrain motors
     fun drive(forward: Double, left: Double, rotation: Double) {
-        val speeds: ChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, rotation, Rotation2d(this.angle));
+        val speeds: ChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, rotation, Rotation2d.fromDegrees(this.angle));
         this.previousMove = speeds;
         val states: Array<SwerveModuleState> = DriveConstants.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.SwerveRamsete.maxVelocity);
@@ -129,7 +129,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     override fun periodic() {
         val res: Array<SwerveModuleState> = getStates();
-        val cangle: Rotation2d = Rotation2d(angle);
+        val cangle: Rotation2d = Rotation2d.fromDegrees(angle);
         val cpose: Pose2d = pose();
         odometry.update(cangle, res[0], res[1], res[2], res[3]);
 
@@ -143,7 +143,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
           }
           field.setRobotPose(cpose);
 
-        SmartDashboard.putNumber("angle (rad)", angle);
+        SmartDashboard.putNumber("angle (deg)", angle);
         SmartDashboard.putNumber("x m", pose().getX());
         SmartDashboard.putNumber("y m", pose().getY());
         SmartDashboard.putBoolean("brake", brakeMode);
