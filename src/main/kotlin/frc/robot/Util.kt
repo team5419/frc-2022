@@ -20,19 +20,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 object Util {
     public fun radiansToNativeUnits(units: Double): Double {
-        return (units / (2 * Math.PI)) * (DriveConstants.ticksPerRotation / 10)
+        return (units / (2 * Math.PI)) * (DriveConstants.ticksPerRotation)
     }
     public fun nativeUnitsToRadians(units: Double): Double {
-        return (20 * Math.PI * units) / DriveConstants.ticksPerRotation;
-    }
-    public fun nativeUnitsToMeters(units: Double): Double {
-        return (DriveConstants.wheelCircumference * units / DriveConstants.ticksPerRotation)
+        return (2 * Math.PI * units) / DriveConstants.ticksPerRotation;
     }
     public fun nativeUnitsToMetersPerSecond(units: Double): Double {
-        return units * 10.0 / DriveConstants.ticksPerRotation * DriveConstants.wheelCircumference
+        return (units / DriveConstants.ticksPerRotation) * DriveConstants.wheelCircumference
     }
     public fun metersPerSecondToNativeUnits(units: Double): Double {
-        return (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
+        return (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation)
     }
     public fun withDeadband(input: Double): Double {
         return if (Math.abs(input) <= DriveConstants.controllerDeadband) 0.0 else input; 

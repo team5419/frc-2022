@@ -22,7 +22,8 @@ class Drive(_subsystems: SubsystemHolder, _driver: XboxController, _isSlow: Bool
     val rightx: Double = Util.withDeadband(driver.getRightX().toDouble());
     val lefty: Double = Util.withDeadband(driver.getLeftY().toDouble())
     val leftx: Double = Util.withDeadband(driver.getLeftX().toDouble())
-    subsystems.drivetrain.drive(lefty * DriveConstants.speedMultiplier, -leftx * DriveConstants.speedMultiplier, rightx * -0.1);
+    
+    subsystems.drivetrain.drive(lefty * DriveConstants.speedMultiplier, leftx * DriveConstants.speedMultiplier, rightx * -0.1);
   }
 
   override fun end(interrupted: Boolean) {}

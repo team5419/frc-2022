@@ -111,24 +111,20 @@ public class SwerveModule : ISwerveModule {
 
   private fun optimize(state: SwerveModuleState, turn: Rotation2d): SwerveModuleState {
     val stateRadians: Double = state.angle.getRadians();
-    val nearest180: Long = Math.round((turn.getRadians() - stateRadians) / Math.PI);
-    val shouldInvertThrottle: Boolean = Math.abs(MathUtil.angleModulus(stateRadians - turn.getRadians())) > Math.PI / 2;
+    val a: Long = Math.round((turn.getRadians() - stateRadians) / Math.PI);
     return SwerveModuleState(
-        state.speedMetersPerSecond * (if (shouldInvertThrottle) -1.0 else 1.0),
-        Rotation2d(nearest180 * Math.PI + stateRadians)
+        state.speedMetersPerSecond * (if (a % 2 == 0L) 1.0 else -1.0),
+        Rotation2d(a * Math.PI + stateRadians)
     );
   }
 
   public override fun setDesiredState(desiredState: SwerveModuleState) {
     val turn: Rotation2d = getTurn();
-    val state: SwerveModuleState = desiredState//this.optimize(desiredState, turn);
-
-    val driveFeedForward: Double = DriveConstants.feedForward.calculate(desiredState.speedMetersPerSecond);
-    //val turnFeedForward: Double = DriveConstants.turnFeedForward.calculate(Matrix<N2, N1>(state.speedMetersPerSecond)).get(0, 0);
-
+    val state: SwerveModuleState = this.optimize(desiredState, turn);
+    val driveFeedForward: Double = DriveConstants.feedForward.calculate(state.speedMetersPerSecond);
     var newTurnOutput: Double = DriveConstants.Modules.turnController.calculate(turn.radians, state.angle.radians);
     this.lastTurnOutput = state.angle.radians;
-    //driveMotor.set(ControlMode.Velocity, Util.metersPerSecondToNativeUnits(state.speedMetersPerSecond), DemandType.ArbitraryFeedForward, driveFeedForward);
+    driveMotor.set(ControlMode.Velocity, Util.metersPerSecondToNativeUnits(state.speedMetersPerSecond), DemandType.ArbitraryFeedForward, driveFeedForward);
     turnMotor.setVoltage(newTurnOutput);
   }
 
@@ -145,7 +141,6 @@ public class SwerveModule : ISwerveModule {
   }
 
   public override fun test() {
-    println("0.1")
     driveMotor.set(ControlMode.PercentOutput, 0.1);
   }
 }
