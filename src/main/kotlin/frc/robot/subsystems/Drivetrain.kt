@@ -14,7 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
 import frc.robot.subsystems.Vision;
-
+import frc.robot.commands.ResetGyro;
 import frc.robot.DriveConstants
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
@@ -52,6 +52,8 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
             setYaw(0.0, 100)
         }
         SmartDashboard.putData("Field", field);
+        tab.addNumber("gyro", { angle })
+        tab.add("reset gyro", ResetGyro(this));
     }
 
     // get angle from gyro
@@ -77,10 +79,10 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     }
 
     fun brake() {
-        drivers[0].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)))
-        drivers[1].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(315.0)))
-        drivers[2].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(135.0)))
-        drivers[3].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(225.0)))
+        drivers[0].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)), false)
+        drivers[1].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(315.0)), false)
+        drivers[2].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(135.0)), false)
+        drivers[3].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(225.0)), false)
     }
 
     // set the percent output of the drivetrain motors
@@ -89,12 +91,12 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
         this.previousMove = speeds;
         val states: Array<SwerveModuleState> = DriveConstants.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.SwerveRamsete.maxVelocity);
-        updateMotors(states);
+        updateMotors(states, forward == 0.0 && left == 0.0 && rotation == 0.0);
     }
-    fun updateMotors(myStates: Array<SwerveModuleState>): Int {
+    fun updateMotors(myStates: Array<SwerveModuleState>, preventTurn: Boolean = false): Int {
         for(i in 0..drivers.size - 1) {
            // println("Module ${i}: speed: ${myStates[i].speedMetersPerSecond}, angle: ${myStates[i].angle}");
-            drivers[i].setDesiredState(myStates[i]);
+            drivers[i].setDesiredState(myStates[i], preventTurn);
         }
         return 0;
     }

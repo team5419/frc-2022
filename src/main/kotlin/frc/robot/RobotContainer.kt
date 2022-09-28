@@ -55,7 +55,8 @@ class RobotContainer(tab: ShuffleboardTab) {
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {
 
     // DRIVER CONTROLS ---------------------------------------------------------------->
-
+val bButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
+    bButtonDriver.whenHeld(Brake(m_subsystems.drivetrain))
     // auto-align (hold A)
     val aButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
     aButtonDriver.whenHeld(AlignSpin(m_subsystems))

@@ -36,7 +36,7 @@ object DriveConstants {
 
     // ------------------- Swerve Constants -------------------
     val simUpdateTime: Double = 0.02;
-    const val controllerDeadband: Double = 0.05;
+    const val controllerDeadband: Double = 0.1;
 
     // Locations for the swerve drive modules relative to the robot center
     val frontLeftLocation: Translation2d = Translation2d(0.381, 0.381);
@@ -70,7 +70,7 @@ object DriveConstants {
         const val maxVelocity: Double = 3.0 // all in m/?
         const val maxAcceleration: Double = 5.0
     }
-    const val speedMultiplier: Double = 3.0;
+    const val speedMultiplier: Double = 0.5;
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(SwerveRamsete.ks, SwerveRamsete.kv, SwerveRamsete.ka);
     //val turnSystem: LinearSystem<N2, N1, N1> = LinearSystemId.identifyPositionSystem(kvRadians, kaRadians);
     //val turnFeedForward: LinearPlantInversionFeedforward<N2, N1, N1> = LinearPlantInversionFeedforward<N2, N1, N1>(turnSystem, simUpdateTime);
