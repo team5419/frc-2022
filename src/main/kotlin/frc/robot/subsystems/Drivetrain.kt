@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -22,11 +21,21 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Translation2d
 import edu.wpi.first.wpilibj.smartdashboard.Field2d
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+
+
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+
+import frc.robot.DriveConstants
+
+
 class Drivetrain() : SubsystemBase() {
     private val leftLeader: TalonFX;
     private val leftFollower: TalonFX;
     private val rightLeader: TalonFX;
     private val rightFollower: TalonFX;
+
+    
+    public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
     // configure the motors and add to shuffleboard
     
     init {
@@ -68,6 +77,36 @@ class Drivetrain() : SubsystemBase() {
         rightFollower.set(ControlMode.PercentOutput, throttle + turn);
     }
 
+
+
+        // unit conversion functions
+    fun nativeUnitsToMeters(units: Double): Double =
+        (DriveConstants.wheelCircumference * units.toDouble() / DriveConstants.ticksPerRotation)
+    fun nativeUnitsToMetersPerSecond(units: Double) =
+        units * 10.0 / DriveConstants.ticksPerRotation * DriveConstants.wheelCircumference
+    fun metersPerSecondToNativeUnits(units: Double)
+        = (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation / 10)
+
+        // get angle from gyro
+    val angle: Double
+        get() = -gyro.getFusedHeading()
+     // constructs object with angle from gyro (assuming starting position is (0,0))
+    var odometry = DifferentialDriveOdometry(Rotation2d(angle))
+    // returns the x and y position of the robot
+    val pose: Pose2d
+        get() = odometry.getPoseMeters()
+
+    // set the velocity of the drivetrain motors
+    fun setVelocity(leftVelocity: Double, rightVelocity: Double, leftFF: Double, rightFF: Double) {
+        leftLeader.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity),
+            DemandType.ArbitraryFeedForward, leftFF / 12.0
+        )
+        rightLeader.set(
+            ControlMode.Velocity, metersPerSecondToNativeUnits(rightVelocity),
+            DemandType.ArbitraryFeedForward, rightFF / 12.0
+        )
+    }
 
 
     override fun periodic() {

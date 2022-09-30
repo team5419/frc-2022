@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.*;
 
 import frc.robot.subsystems.*;
+import frc.robot.auto.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -29,8 +30,22 @@ class RobotContainer(tab: ShuffleboardTab) {
   val codriver = XboxController(1);
   public val drivetrain_ : Drivetrain = Drivetrain();
 
+
+
   init {
+
+       // creates a tab in shuffleboard to select autonomous routine
+      val autoSelector = SendableChooser<SequentialCommandGroup>()
+
+      // create and add autonomous routines to selector in shuffleboard
+      //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
+      tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
+      autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver))
+      autoSelector.setDefaultOption("sLAY2", AutoSlay2(drivetrain_, driver))
+
+
     setDefaults();
+    
   }
 
   fun setDefaults(){
