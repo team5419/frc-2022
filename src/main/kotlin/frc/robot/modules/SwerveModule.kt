@@ -53,7 +53,7 @@ public class SwerveModule : ISwerveModule {
         this.turnMotor = CANSparkMax(turnPort, MotorType.kBrushless);
         this.turnMotor.apply {
           restoreFactoryDefaults()
-          setIdleMode(IdleMode.kBrake)
+          setIdleMode(IdleMode.kCoast)
           setInverted(turnInverted)
           //setSensorPhase(false)
           setSmartCurrentLimit(4)
@@ -116,6 +116,11 @@ public class SwerveModule : ISwerveModule {
         state.speedMetersPerSecond * (if (a % 2 == 0L) 1.0 else -1.0),
         Rotation2d(a * Math.PI + stateRadians)
     );
+    // val a: Long = Math.round((turn.getRadians() - stateRadians) / (2 * Math.PI));
+    // return SwerveModuleState(
+    //     state.speedMetersPerSecond,
+    //     Rotation2d(a * 2 * Math.PI + stateRadians)
+    // );
   }
 
   public override fun setDesiredState(desiredState: SwerveModuleState, preventTurn: Boolean) {

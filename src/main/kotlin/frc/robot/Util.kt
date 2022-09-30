@@ -11,6 +11,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.DriveConstants;
@@ -44,12 +45,14 @@ object Util {
 
     public fun generateRamsete(drivetrain: Drivetrain, poses: List<Pose2d>): Command {
         // Create config for trajectory
+        val constraint: SwerveDriveKinematicsConstraint = SwerveDriveKinematicsConstraint(DriveConstants.kinematics, DriveConstants.SwerveRamsete.maxVelocity);
         val config: TrajectoryConfig =
             TrajectoryConfig(
                     DriveConstants.SwerveRamsete.maxVelocity,
                     DriveConstants.SwerveRamsete.maxAcceleration)
                 // Add kinematics to ensure max speed is actually obeyed
-                .setKinematics(DriveConstants.kinematics);
+                .setKinematics(DriveConstants.kinematics)
+                .addConstraint(constraint);
     
         // An example trajectory to follow.  All units in meters.
         val exampleTrajectory: Trajectory =
@@ -72,7 +75,7 @@ object Util {
                 arrayOf(drivetrain));
     
         // Reset odometry to the starting pose of the trajectory.
-        drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
+        //drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
         return swerveControllerCommand.andThen(StopDrivetrain(drivetrain));
       }
 }

@@ -151,7 +151,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
             val dist: Double = getHorizontalDistance();
             val newY: Double = Math.sin(angle.getRadians()) * dist;
             val newX: Double = Math.cos(angle.getRadians()) * dist;
-            m_drivetrain.odometry.resetPosition(Pose2d(newX, newY, angle), angle)
+            //m_drivetrain.odometry.resetPosition(Pose2d(newX, newY, angle), angle)
             println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
         }
     }

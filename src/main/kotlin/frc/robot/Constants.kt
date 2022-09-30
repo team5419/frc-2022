@@ -39,10 +39,10 @@ object DriveConstants {
     const val controllerDeadband: Double = 0.1;
 
     // Locations for the swerve drive modules relative to the robot center
-    val frontLeftLocation: Translation2d = Translation2d(0.381, 0.381);
-    val frontRightLocation: Translation2d = Translation2d(0.381, -0.381);
-    val backLeftLocation: Translation2d = Translation2d(-0.381, 0.381);
-    val backRightLocation: Translation2d = Translation2d(-0.381, -0.381);
+    val frontLeftLocation: Translation2d = Translation2d(0.2794, 0.2794);
+    val frontRightLocation: Translation2d = Translation2d(0.2794, -0.2794);
+    val backLeftLocation: Translation2d = Translation2d(-0.2794, 0.2794);
+    val backRightLocation: Translation2d = Translation2d(-0.2794, -0.2794);
 
     val modulePositions: Array<Translation2d> = arrayOf(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
 

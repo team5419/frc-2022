@@ -58,7 +58,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     // get angle from gyro
     val angle: Double
-        get() = -gyro.getYaw()
+        get() = gyro.getYaw()
 
     var originalAngle : Double = 0.0
 

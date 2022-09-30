@@ -27,10 +27,10 @@ class TwoBallAuto(_subsystems: SubsystemHolder, _driver: XboxController) : Seque
                     // SequentialCommandGroup(
                     //     StartFeeding(subsystems),
                     //     ParallelRaceGroup(
-                    //         Util.generateRamsete(subsystems.drivetrain, listOf(
-                    //             Pose2d(0.0, 0.0, Rotation2d(0.0)), 
-                    //             Pose2d(-0.3, 0.0, Rotation2d(0.0))
-                    //         ))
+                            // Util.generateRamsete(subsystems.drivetrain, listOf(
+                            //     //Pose2d(0.0, 0.0, Rotation2d(0.0)), 
+                            //     Pose2d(-1.0, 0.0, Rotation2d(0.0))
+                            // ))
                     //     ),
                     //     ParallelRaceGroup(
                     //         SpinUp(subsystems, 15500.0, 15500.0),
