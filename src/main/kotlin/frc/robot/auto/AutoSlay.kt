@@ -30,10 +30,10 @@ class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController) : SequentialCo
             SequentialCommandGroup(
                 RamseteAction(drivetrain, listOf(
                     Pose2d(0.0, 0.0, Rotation2d(0.0)),
-                    Pose2d(-1.0, 0.0, Rotation2d(0.0))
+                    Pose2d(-0.7, 0.0, Rotation2d(0.0))
                 ), false),
                 RamseteAction(drivetrain, listOf(
-                    Pose2d(-1.0, 0.0, Rotation2d(0.0)), 
+                    Pose2d(-0.7, 0.0, Rotation2d(0.0)), 
                     Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(90.0))
                 ), false)
                 /*RamseteAction(subsystems, listOf(
