@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.networktables.NetworkTableInstance
 
-val tab: ShuffleboardTab = Shuffleboard.getTab("Master")
+val tab: ShuffleboardTab = Shuffleboard.getTab("auto")
 
 class Robot : TimedRobot() {
   private val m_robotContainer = RobotContainer(tab);
