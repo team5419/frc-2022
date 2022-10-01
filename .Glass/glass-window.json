@@ -2,18 +2,18 @@
   "MainWindow": {
     "GLOBAL": {
       "height": "960",
-      "maximized": "0",
+      "maximized": "1",
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "-1",
-      "ypos": "-1"
+      "xpos": "0",
+      "ypos": "29"
     }
   },
   "Window": {
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "371,25",
+      "Pos": "721,-10",
       "Size": "937,231"
     },
     "###NetworkTables Settings": {
@@ -23,8 +23,23 @@
     },
     "###Plot <0>": {
       "Collapsed": "0",
-      "Pos": "173,337",
+      "Pos": "10,217",
+      "Size": "714,798"
+    },
+    "###Plot <1>": {
+      "Collapsed": "0",
+      "Pos": "208,58",
       "Size": "700,400"
+    },
+    "###Plot <2>": {
+      "Collapsed": "0",
+      "Pos": "36,462",
+      "Size": "700,400"
+    },
+    "###Plot <3>": {
+      "Collapsed": "0",
+      "Pos": "14,254",
+      "Size": "1749,574"
     },
     "Debug##Default": {
       "Collapsed": "0",

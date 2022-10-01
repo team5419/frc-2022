@@ -25,7 +25,6 @@ object DriveConstants {
     const val wheelDiameter = wheelRadius * 2.0; // m
     const val wheelCircumference = wheelDiameter * PI; // m
     const val driverPort: Int = 0
-    const val slowMultiplier: Double = 0.25
 
     val info: Array<ModuleInfo> = arrayOf(
         ModuleInfo(5, 24, false, true, 8, 3.46219),
@@ -70,15 +69,17 @@ object DriveConstants {
         const val maxVelocity: Double = 3.0 // all in m/?
         const val maxAcceleration: Double = 5.0
     }
-    const val speedMultiplier: Double = 0.5;
+    const val speedMultiplier: Double = 3.0;
+    const val turnMultiplier: Double = 3.0;
+    const val slowMultiplier: Double = 0.3;
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(SwerveRamsete.ks, SwerveRamsete.kv, SwerveRamsete.ka);
     //val turnSystem: LinearSystem<N2, N1, N1> = LinearSystemId.identifyPositionSystem(kvRadians, kaRadians);
     //val turnFeedForward: LinearPlantInversionFeedforward<N2, N1, N1> = LinearPlantInversionFeedforward<N2, N1, N1>(turnSystem, simUpdateTime);
     object Modules {
         object DrivePID {
-            const val P: Double = 0.0
+            const val P: Double = 5.0
             const val I: Double = 0.0
-            const val D: Double = 0.0
+            const val D: Double = 0.01
         }
         object TurnPID {
             const val P: Double = 1.5

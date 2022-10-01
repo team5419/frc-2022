@@ -46,9 +46,11 @@ public class SwerveModule : ISwerveModule {
     private val offset: Double;
     private val tab: ShuffleboardTab = Shuffleboard.getTab("Drivetrain");
     private var lastTurnOutput: Double;
+    private var lastPercentOutput: Double;
     constructor(drivePort: Int, turnPort: Int, cancoderPort: Int, _offset: Double, driveInverted: Boolean = false, turnInverted: Boolean = false) {
       this.offset = _offset;
       this.lastTurnOutput = 0.0;
+      this.lastPercentOutput = 0.0;
       this.driveMotor = TalonFX(drivePort, "canivore");
         this.turnMotor = CANSparkMax(turnPort, MotorType.kBrushless);
         this.turnMotor.apply {
@@ -56,7 +58,7 @@ public class SwerveModule : ISwerveModule {
           setIdleMode(IdleMode.kCoast)
           setInverted(turnInverted)
           //setSensorPhase(false)
-          setSmartCurrentLimit(4)
+          setSmartCurrentLimit(40)
           setClosedLoopRampRate(1.0)
           setControlFramePeriodMs(50)
           setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
@@ -70,7 +72,7 @@ public class SwerveModule : ISwerveModule {
         this.turnEncoder.setPositionToAbsolute(100);
         this.driveMotor.apply {
             configFactoryDefault(100)
-            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 4.0, 0.0, 0.0), 100)
+            configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
             setSensorPhase(false)
             setInverted(driveInverted)
@@ -87,7 +89,7 @@ public class SwerveModule : ISwerveModule {
             setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, 100)
             setControlFramePeriod(ControlFrame.Control_3_General, 10)
 
-            setNeutralMode(NeutralMode.Brake)
+            setNeutralMode(NeutralMode.Coast)
 
             configClosedLoopPeakOutput(0, 0.1, 100)
         }
@@ -95,6 +97,7 @@ public class SwerveModule : ISwerveModule {
         layout.addNumber("angle", { getTurn().radians });
         layout.addNumber("drive", { getDrive() });
         layout.addNumber("desired angle output", { this.lastTurnOutput });
+        layout.addNumber("desired percent output", { this.lastPercentOutput });
     }
 
   public override fun getTurn(): Rotation2d {
@@ -109,11 +112,11 @@ public class SwerveModule : ISwerveModule {
     return SwerveModuleState(Util.nativeUnitsToMetersPerSecond(getDrive()), getTurn());
   }
 
-  private fun optimize(state: SwerveModuleState, turn: Rotation2d): SwerveModuleState {
+  private fun optimize(state: SwerveModuleState, turn: Rotation2d, slow: Boolean): SwerveModuleState {
     val stateRadians: Double = state.angle.getRadians();
     val a: Long = Math.round((turn.getRadians() - stateRadians) / Math.PI);
     return SwerveModuleState(
-        state.speedMetersPerSecond * (if (a % 2 == 0L) 1.0 else -1.0),
+        state.speedMetersPerSecond * (if (a % 2 == 0L) 1.0 else -1.0) * (if (slow) DriveConstants.slowMultiplier else 1.0),
         Rotation2d(a * Math.PI + stateRadians)
     );
     // val a: Long = Math.round((turn.getRadians() - stateRadians) / (2 * Math.PI));
@@ -123,11 +126,17 @@ public class SwerveModule : ISwerveModule {
     // );
   }
 
-  public override fun setDesiredState(desiredState: SwerveModuleState, preventTurn: Boolean) {
+  public override fun setDesiredState(desiredState: SwerveModuleState, preventTurn: Boolean, slow: Boolean) {
     val turn: Rotation2d = getTurn();
-    val state: SwerveModuleState = this.optimize(desiredState, turn);
+    val state: SwerveModuleState = this.optimize(desiredState, turn, slow);
     val driveFeedForward: Double = DriveConstants.feedForward.calculate(state.speedMetersPerSecond);
-    driveMotor.set(ControlMode.Velocity, Util.metersPerSecondToNativeUnits(state.speedMetersPerSecond), DemandType.ArbitraryFeedForward, driveFeedForward);
+    if(state.speedMetersPerSecond != 0.0) {
+      println(state.speedMetersPerSecond)
+    }
+    this.lastPercentOutput = state.speedMetersPerSecond / DriveConstants.SwerveRamsete.maxVelocity;
+    driveMotor.set(ControlMode.PercentOutput, this.lastPercentOutput);
+    //driveMotor.set(ControlMode.Velocity, Util.metersPerSecondToNativeUnits(state.speedMetersPerSecond));
+    // driveMotor.set(ControlMode.Velocity, Util.metersPerSecondToNativeUnits(state.speedMetersPerSecond), DemandType.ArbitraryFeedForward, driveFeedForward);
     if(preventTurn) {
       turnMotor.setVoltage(0.0);
       return;

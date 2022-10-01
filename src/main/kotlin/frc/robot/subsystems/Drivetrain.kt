@@ -44,6 +44,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     private val tab: ShuffleboardTab = Shuffleboard.getTab("Drivetrain");
     private val field: Field2d = Field2d();
     private var previousMove: ChassisSpeeds = ChassisSpeeds();
+    public var slowMode: Boolean = false;
 
     // configure the motors and add to shuffleboard
     init {
@@ -54,6 +55,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
         SmartDashboard.putData("Field", field);
         tab.addNumber("gyro", { angle })
         tab.add("reset gyro", ResetGyro(this));
+        tab.addBoolean("slow mode", {this.slowMode});
     }
 
     // get angle from gyro
@@ -79,10 +81,10 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     }
 
     fun brake() {
-        drivers[0].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)), false)
-        drivers[1].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(315.0)), false)
-        drivers[2].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(135.0)), false)
-        drivers[3].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(225.0)), false)
+        drivers[0].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)), false, false)
+        drivers[1].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(315.0)), false, false)
+        drivers[2].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(135.0)), false, false)
+        drivers[3].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(225.0)), false, false)
     }
 
     // set the percent output of the drivetrain motors
@@ -96,7 +98,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     fun updateMotors(myStates: Array<SwerveModuleState>, preventTurn: Boolean = false): Int {
         for(i in 0..drivers.size - 1) {
            // println("Module ${i}: speed: ${myStates[i].speedMetersPerSecond}, angle: ${myStates[i].angle}");
-            drivers[i].setDesiredState(myStates[i], preventTurn);
+            drivers[i].setDesiredState(myStates[i], preventTurn, this.slowMode);
         }
         return 0;
     }

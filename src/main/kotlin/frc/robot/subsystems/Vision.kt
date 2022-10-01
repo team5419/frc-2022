@@ -102,7 +102,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     public fun autoAlignTurn() : Double {
         // get the pid loop output
-        var output = turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
+        var output = /*turnController.calculate*/(getHorizontalOffset() + VisionConstants.targetOffset)
 
         // do we need to align / can we align?
         if(!turnAligned() && isTargetFound()) {
@@ -113,7 +113,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public fun autoAlignThrottle(distance : Double) : Double {
-        var output = throttleController.calculate(getHorizontalDistance() - distance)
+        var output = /*throttleController.calculate*/(getHorizontalDistance() - distance)
 
         if(!throttleAligned(distance) && isTargetFound())
         {
@@ -152,7 +152,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
             val newY: Double = Math.sin(angle.getRadians()) * dist;
             val newX: Double = Math.cos(angle.getRadians()) * dist;
             //m_drivetrain.odometry.resetPosition(Pose2d(newX, newY, angle), angle)
-            println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
+            //println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
         }
     }
 }

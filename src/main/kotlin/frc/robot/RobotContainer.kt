@@ -42,6 +42,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     // create and add autonomous routines to selector in shuffleboard
     //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
+    tab.addNumber("left y", { driver.getLeftY().toDouble() });
+    tab.addNumber("left x", { driver.getLeftX().toDouble() });
+    tab.addNumber("right x", { driver.getRightX().toDouble() });
     autoSelector.setDefaultOption("Baseline", Baseline())
     autoSelector.addOption("Baseline", Baseline())
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_subsystems, driver))
@@ -71,7 +74,7 @@ val bButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button
 
     // drivetrain slow mode (hold left bumper)
     val lBumperDriver : JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-    lBumperDriver.whenHeld(Drive(m_subsystems, driver, true))
+    lBumperDriver.whenHeld(SlowMode(m_subsystems.drivetrain))
 
     // safe zone shot (hold Y)
     val yButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kY.value)

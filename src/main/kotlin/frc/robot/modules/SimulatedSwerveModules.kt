@@ -81,7 +81,7 @@ public class SimulatedSwerveModule : ISwerveModule {
     return returning;
   }
 
-  public override fun setDesiredState(desiredState: SwerveModuleState, preventTurn: Boolean) {
+  public override fun setDesiredState(desiredState: SwerveModuleState, preventTurn: Boolean, slow: Boolean) {
     val state: SwerveModuleState = SwerveModuleState.optimize(desiredState, getTurn());
     val newDriveOutput: Double = DriveConstants.Modules.driveController.calculate(driveBaseEncoder.getRate(), state.speedMetersPerSecond);
   
