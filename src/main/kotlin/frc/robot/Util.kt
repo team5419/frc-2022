@@ -27,10 +27,10 @@ object Util {
         return (2 * Math.PI * units) / DriveConstants.ticksPerRotation;
     }
     public fun nativeUnitsToMetersPerSecond(units: Double): Double {
-        return (units / DriveConstants.ticksPerRotation) * DriveConstants.wheelCircumference
+        return (units / DriveConstants.ticksPerRotation) * DriveConstants.wheelCircumference * 10
     }
     public fun metersPerSecondToNativeUnits(units: Double): Double {
-        return (units / DriveConstants.wheelCircumference * DriveConstants.ticksPerRotation)
+        return ((units / DriveConstants.wheelCircumference) * DriveConstants.ticksPerRotation) / 10
     }
     public fun withDeadband(input: Double): Double {
         return if (Math.abs(input) <= DriveConstants.controllerDeadband) 0.0 else input; 

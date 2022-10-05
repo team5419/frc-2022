@@ -66,10 +66,10 @@ object DriveConstants {
         const val kv: Double = 2.1737
         const val ka: Double = 0.29281
         const val ks: Double = 0.63566
-        const val maxVelocity: Double = 3.0 // all in m/?
+        const val maxVelocity: Double = 8.0 // all in m/?
         const val maxAcceleration: Double = 5.0
     }
-    const val speedMultiplier: Double = 3.0;
+    const val speedMultiplier: Double = 8.0;
     const val turnMultiplier: Double = 3.0;
     const val slowMultiplier: Double = 0.3;
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(SwerveRamsete.ks, SwerveRamsete.kv, SwerveRamsete.ka);
@@ -77,14 +77,14 @@ object DriveConstants {
     //val turnFeedForward: LinearPlantInversionFeedforward<N2, N1, N1> = LinearPlantInversionFeedforward<N2, N1, N1>(turnSystem, simUpdateTime);
     object Modules {
         object DrivePID {
-            const val P: Double = 5.0
+            const val P: Double = 0.1
             const val I: Double = 0.0
-            const val D: Double = 0.01
+            const val D: Double = 0.0
         }
         object TurnPID {
-            const val P: Double = 1.5
+            const val P: Double = 5.0
             const val I: Double = 0.0
-            const val D: Double = 0.01
+            const val D: Double = 0.0
         }
         public val kMaxModuleAngularSpeedRadiansPerSecond: Double = 2 * Math.PI;
         public val kDriveEncoderDistancePerPulse: Double =
