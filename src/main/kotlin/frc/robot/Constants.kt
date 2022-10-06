@@ -63,15 +63,15 @@ object DriveConstants {
         val kMaxAngularSpeedRadiansPerSecondSquared: Double = 10.0 * Math.PI;
         public val kThetaControllerConstraints: TrapezoidProfile.Constraints =
                 TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-        const val kv: Double = 2.1737
-        const val ka: Double = 0.29281
-        const val ks: Double = 0.63566
-        const val maxVelocity: Double = 8.0 // all in m/?
-        const val maxAcceleration: Double = 5.0
+        const val kv: Double = (2.1737 / 12)
+        const val ka: Double = (0.29281 / 12)
+        const val ks: Double = (0.63566 / 12)
+        const val maxVelocity: Double = 4.0 //8.0 all in m/?
+        const val maxAcceleration: Double = 1.5 // 5.0
     }
-    const val speedMultiplier: Double = 8.0;
-    const val turnMultiplier: Double = 3.0;
-    const val slowMultiplier: Double = 0.3;
+    const val speedMultiplier: Double = 4.0//8.0;
+    const val turnMultiplier: Double =4.0// 8.0;
+    const val slowMultiplier: Double = 0.2;
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(SwerveRamsete.ks, SwerveRamsete.kv, SwerveRamsete.ka);
     //val turnSystem: LinearSystem<N2, N1, N1> = LinearSystemId.identifyPositionSystem(kvRadians, kaRadians);
     //val turnFeedForward: LinearPlantInversionFeedforward<N2, N1, N1> = LinearPlantInversionFeedforward<N2, N1, N1>(turnSystem, simUpdateTime);
@@ -105,8 +105,8 @@ object Ports {
     val intakeDeploy: Int = 23;
     val climberLeft1: Int = 12;
     val climberLeft2: Int = 14;
-    val climberRight1: Int = 13;
-    val climberRight2: Int = 15;
+    // val climberRight1: Int = 13;
+    // val climberRight2: Int = 15;
     val lights: Int = 21;
     val gyro: Int = 16;
 }

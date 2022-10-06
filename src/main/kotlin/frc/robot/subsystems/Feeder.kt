@@ -64,7 +64,7 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
     //     motor.set(currentVel)
     // }
 
-    public var currentVel: Double = FeederConstants.idlePercent
+    public var currentVel: Double = 0.0
     set(value: Double) {
             println("trying to set")
             if(value == previousVel) {

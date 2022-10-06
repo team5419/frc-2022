@@ -81,24 +81,27 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     }
 
     fun brake() {
-        drivers[0].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)), false, false)
-        drivers[1].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(315.0)), false, false)
-        drivers[2].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(135.0)), false, false)
-        drivers[3].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(225.0)), false, false)
+        drivers[0].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(45.0)), false, false, true)
+        drivers[1].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(315.0)), false, false, true)
+        drivers[2].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(135.0)), false, false, true)
+        drivers[3].setDesiredState(SwerveModuleState(0.0, Rotation2d.fromDegrees(225.0)), false, false, true)
     }
 
     // set the percent output of the drivetrain motors
-    fun drive(forward: Double, left: Double, rotation: Double) {
-        val speeds: ChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, rotation, Rotation2d.fromDegrees(this.angle));
+    fun drive(forward: Double, left: Double, rotation: Double, fieldCentric: Boolean = true, pid: Boolean = false) {
+        val speeds: ChassisSpeeds = if (fieldCentric)
+            ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, rotation, Rotation2d.fromDegrees(this.angle));
+        else
+            ChassisSpeeds(forward, left, rotation);
         this.previousMove = speeds;
         val states: Array<SwerveModuleState> = DriveConstants.kinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.SwerveRamsete.maxVelocity);
-        updateMotors(states, forward == 0.0 && left == 0.0 && rotation == 0.0);
+        updateMotors(states, pid, forward == 0.0 && left == 0.0 && rotation == 0.0);
     }
-    fun updateMotors(myStates: Array<SwerveModuleState>, preventTurn: Boolean = false): Int {
+    fun updateMotors(myStates: Array<SwerveModuleState>, pid: Boolean, preventTurn: Boolean = false): Int {
         for(i in 0..drivers.size - 1) {
            // println("Module ${i}: speed: ${myStates[i].speedMetersPerSecond}, angle: ${myStates[i].angle}");
-            drivers[i].setDesiredState(myStates[i], preventTurn, this.slowMode);
+            drivers[i].setDesiredState(myStates[i], preventTurn, this.slowMode, pid);
         }
         return 0;
     }

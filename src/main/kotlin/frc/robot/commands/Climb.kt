@@ -25,11 +25,9 @@ class Climb(_subsystems: SubsystemHolder, _codriver: XboxController) : CommandBa
 
   override fun execute() {
     val righty: Double = codriver.getRightY();
-   val rightx: Double = codriver.getRightX();
    val lefty: Double = codriver.getLeftY();
-   val leftx: Double = codriver.getLeftX();
     if(!hasUpdated) {
-      if(Math.abs(righty) > 0.1 || Math.abs(rightx) > 0.1 || Math.abs(lefty) > 0.1 || Math.abs(leftx) > 0.1) {
+      if(Math.abs(righty) > 0.1 || Math.abs(lefty) > 0.1) {
         subsystems.lights.setColor(RGB(0, 255, 255));
         timer.start();
         hasUpdated = true;
@@ -57,8 +55,8 @@ class Climb(_subsystems: SubsystemHolder, _codriver: XboxController) : CommandBa
    // but that's okay because programming team is awesome and there are instructions for you to follow
    // (i'll mention them in future steps)
    // anyway continue to step 2
-   subsystems.climber.setPairVelocity(0, righty, rightx * 0.2)
-   subsystems.climber.setPairVelocity(1, lefty, leftx * 0.2)
+   subsystems.climber.setPairVelocity(0, righty)
+   subsystems.climber.setPairVelocity(1, lefty)
 
    // step 2: normal control with minimum and maximum hard stops. before you begin, follow these steps:
    // - go back and uncomment step 1 (normal control)

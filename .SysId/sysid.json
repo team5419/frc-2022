@@ -2,6 +2,11 @@
   "SysId": {
     "Analysis Type": "General Mechanism",
     "AnalyzerJSONLocation": "C:\\Users\\Admin\\Desktop\\Code\\frc-2022\\sysid-data\\sysid_data20220924-140240.json",
+    "Generator": {
+      "window": {
+        "visible": false
+      }
+    },
     "NetworkTables Settings": {
       "serverTeam": "5419"
     },

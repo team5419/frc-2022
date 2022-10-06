@@ -46,7 +46,7 @@ class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: 
       throttleOutput = subsystems.vision.autoAlignThrottle(setpoint.distance)
     }
     var turnOutput: Double = subsystems.vision.autoAlignTurn();
-    subsystems.drivetrain.drive(throttleOutput, 0.0, turnOutput)
+    subsystems.drivetrain.drive(throttleOutput, 0.0, turnOutput, false, true)
   }
 
   override fun isFinished() : Boolean {

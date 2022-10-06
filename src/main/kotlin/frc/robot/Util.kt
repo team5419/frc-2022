@@ -71,7 +71,7 @@ object Util {
                 kxcontroller,
                 kycontroller,
                 thetacontroller,
-                { input: Array<SwerveModuleState> -> drivetrain.updateMotors(input) },
+                { input: Array<SwerveModuleState> -> drivetrain.updateMotors(input, true) },
                 arrayOf(drivetrain));
     
         // Reset odometry to the starting pose of the trajectory.

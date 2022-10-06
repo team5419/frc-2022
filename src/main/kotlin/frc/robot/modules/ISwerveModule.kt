@@ -8,7 +8,7 @@ interface ISwerveModule {
     fun getDrive(): Double;
     fun getTurn(): Rotation2d;
     fun getState(): SwerveModuleState;
-    fun setDesiredState(desiredState: SwerveModuleState, preventTurn: Boolean, slow: Boolean);
+    fun setDesiredState(desiredState: SwerveModuleState, preventTurn: Boolean, slow: Boolean, pid: Boolean);
     fun simulationPeriodic(dt: Double);
     fun resetEncoders();
     fun setBrakeMode(on: Boolean);
