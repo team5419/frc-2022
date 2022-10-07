@@ -29,7 +29,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     public val motors: Array<ClimberSingle> = arrayOf(
-            ClimberSingle(TalonFX(Ports.climberLeft1), true, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
+            ClimberSingle(TalonFX(Ports.climberLeft1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
             ClimberSingle(TalonFX(Ports.climberLeft2), false, /*AnalogInput(ClimberConstants.Ports.lsensor1), */ ClimberConstants.Pair1.Left.min, ClimberConstants.Pair1.Left.max)
         )
     private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);

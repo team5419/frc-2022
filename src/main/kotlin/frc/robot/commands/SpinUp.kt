@@ -21,7 +21,6 @@ class SpinUp(_subsystems: SubsystemHolder, _main: Double = 13500.0, _kicker: Dou
 
   override fun initialize() {
     subsystems.shooter.shoot(main, kicker)
-    println("spinning up")
   }
 
   override fun execute() {

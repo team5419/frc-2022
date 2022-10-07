@@ -27,6 +27,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     private val mCameraHeight: Double = VisionConstants.cameraHeight
     private val mCameraAngle: Double = VisionConstants.cameraAngle
     public val maxSpeed = VisionConstants.maxAutoAlignSpeed
+    public var adjustPosition: Boolean = false;
 
     fun getHorizontalOffset(): Double {
         return mLimelight.getEntry("tx").getDouble(0.0)
@@ -70,21 +71,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         layout.addNumber("Offset", { getHorizontalOffset() })
         layout.addBoolean("Aligned", { turnAligned() })
         layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
-        // layout.add("TURN P", VisionConstants.TurnPID.P)
-        //     .withWidget(BuiltInWidgets.kNumberSlider)
-        //     .withProperties(mapOf("min" to 0.0, "max" to 5.0))
-        //     .getEntry()
-        //     .addListener({ value: EntryNotification -> this.turnController.setP(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
-        // layout.add("TURN I", VisionConstants.TurnPID.I)
-        //     .withWidget(BuiltInWidgets.kNumberSlider)
-        //     .withProperties(mapOf("min" to 0.0, "max" to 0.5))
-        //     .getEntry()
-        //     .addListener({ value: EntryNotification -> this.turnController.setI(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
-        // layout.add("TURN D", VisionConstants.TurnPID.D)
-        //     .withWidget(BuiltInWidgets.kNumberSlider)
-        //     .withProperties(mapOf("min" to 0.0, "max" to 0.5))
-        //     .getEntry()
-        //     .addListener({ value: EntryNotification -> this.turnController.setD(value.value.getDouble()) }, EntryListenerFlags.kUpdate)
+        layout.addBoolean("Sees target", { isTargetFound() })
     }
 
     // check if the limelight is picking up on the target
@@ -145,12 +132,12 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public override fun periodic() {
-        if(isTargetFound()) {
+        if(adjustPosition && isTargetFound()) {
             val angle: Rotation2d = Rotation2d.fromDegrees(m_drivetrain.angle);
             val dist: Double = getHorizontalDistance();
             val newY: Double = Math.sin(angle.getRadians()) * dist;
             val newX: Double = Math.cos(angle.getRadians()) * dist;
-            //m_drivetrain.odometry.resetPosition(Pose2d(newX, newY, angle), angle)
+            //m_drivetrain.resetOdometry(Pose2d(newX, newY, angle), angle)
             //println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
         }
     }

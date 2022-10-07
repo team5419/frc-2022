@@ -23,7 +23,6 @@ class DriveTest(_subsystems: SubsystemHolder, _driver: XboxController, _isSlow: 
   }
 
   override fun execute() {
-    println("execute")
      for(i in 0..3) {
         subsystems.drivetrain.drivers[i].test();
     }

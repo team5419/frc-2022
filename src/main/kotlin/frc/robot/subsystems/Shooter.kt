@@ -153,7 +153,6 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         if(kicker != setpointKicker) {
             setpointKicker = if (kicker == -1.0) this.kickerVelocity else kicker
         }
-        println("Setting Velocity: ${setpointMain}")
         // spin flywheel at selected velocity
         mainMotor.set(ControlMode.Velocity, setpointMain * shooterMultiplier)
         kickerMotor.set(ControlMode.Velocity, setpointKicker * shooterMultiplier)

@@ -27,7 +27,8 @@ class RobotContainer(tab: ShuffleboardTab) {
 
   // subsystems
   public val m_drivetrain = Drivetrain(false);
-  public val m_subsystems = SubsystemHolder(m_drivetrain, Shooter(tab), Intake(tab), DeploySubsystem(tab), Lights(tab), Vision(tab, m_drivetrain), Climber(tab), Feeder(tab), Indexer(tab))
+  public val m_feeder = Feeder(tab);
+  public val m_subsystems = SubsystemHolder(m_drivetrain, Shooter(tab), Intake(tab), DeploySubsystem(tab), Lights(tab), Vision(tab, m_drivetrain), Climber(tab), m_feeder, Indexer(tab))
 
   // creates a tab in shuffleboard to select autonomous routine
   val autoSelector = SendableChooser<SequentialCommandGroup>()
@@ -42,9 +43,6 @@ class RobotContainer(tab: ShuffleboardTab) {
     // create and add autonomous routines to selector in shuffleboard
     //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
-    tab.addNumber("left y", { driver.getLeftY().toDouble() });
-    tab.addNumber("left x", { driver.getLeftX().toDouble() });
-    tab.addNumber("right x", { driver.getRightX().toDouble() });
     autoSelector.setDefaultOption("Baseline", Baseline())
     autoSelector.addOption("Baseline", Baseline())
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_subsystems, driver))

@@ -90,7 +90,6 @@ class Indexer(tab: ShuffleboardTab) : SubsystemBase() {
             return;
         }
         previousVel = percent;
-        println("indexing ${percent}");
         motor.set(IndexerConstants.outputPercent * percent)
     }
 

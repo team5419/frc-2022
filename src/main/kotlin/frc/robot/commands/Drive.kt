@@ -18,8 +18,6 @@ class Drive(_subsystems: SubsystemHolder, _driver: XboxController, _isSlow: Bool
   }
 
   override fun initialize() {
-    println("feeding");
-    subsystems.feeder.currentVel = FeederConstants.idlePercent;
   }
 
   override fun execute() {

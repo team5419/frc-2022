@@ -36,12 +36,12 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
 
     // declare motors and ports
     public val drivers: Array<ISwerveModule> = Array<ISwerveModule>(4, { i: Int -> Module.create(
-        simulated, DriveConstants.info[i]) });
+        simulated, DriveConstants.info[i], i) });
     public val gyro: Pigeon2 = Pigeon2(Ports.gyro, "canivore");
     private val gyroSim: BasePigeonSimCollection = BasePigeonSimCollection(gyro, false);
     private var yaw: Double = 0.0;
     public var inverted: Int = 1;
-    private val tab: ShuffleboardTab = Shuffleboard.getTab("Drivetrain");
+    
     private val field: Field2d = Field2d();
     private var previousMove: ChassisSpeeds = ChassisSpeeds();
     public var slowMode: Boolean = false;
@@ -52,10 +52,14 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
             configFactoryDefault(100)
             setYaw(0.0, 100)
         }
+        val tab: ShuffleboardTab = Shuffleboard.getTab("Drivetrain");
+        val layout: ShuffleboardLayout = tab.getLayout("Main", BuiltInLayouts.kList).withPosition(0, 0).withSize(1, 5);
         SmartDashboard.putData("Field", field);
-        tab.addNumber("gyro", { angle })
-        tab.add("reset gyro", ResetGyro(this));
-        tab.addBoolean("slow mode", {this.slowMode});
+        layout.addNumber("gyro", { angle })
+        layout.add("reset gyro", ResetGyro(this));
+        layout.addBoolean("slow mode", {this.slowMode});
+        layout.addNumber("x position", {pose().getX()});
+        layout.addNumber("y position", {pose().getY()});
     }
 
     // get angle from gyro

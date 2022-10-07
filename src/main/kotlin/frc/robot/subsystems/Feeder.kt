@@ -60,17 +60,15 @@ class Feeder(tab: ShuffleboardTab) : SubsystemBase() {
         motor.set(0.0)
     }
 
-    // public fun feed() {
-    //     motor.set(currentVel)
-    // }
+    public fun initialize() {
+        this.currentVel = FeederConstants.idlePercent;
+    }
 
     public var currentVel: Double = 0.0
     set(value: Double) {
-            println("trying to set")
             if(value == previousVel) {
                 return;
             }
-            println("setting to ${value}");
             previousVel = value;
             motor.set(value);
     }

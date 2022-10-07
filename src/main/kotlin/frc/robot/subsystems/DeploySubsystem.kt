@@ -67,9 +67,7 @@ class DeploySubsystem(tab: ShuffleboardTab) : SubsystemBase() {
 
 
     public fun positionDeploy(position: Double) {
-        println("setting intake pos ${position}");
         controller.setReference(position, CANSparkMax.ControlType.kPosition);
-        println("deploying intake !!!")
 
     }
 

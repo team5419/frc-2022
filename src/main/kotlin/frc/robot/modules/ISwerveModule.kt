@@ -15,11 +15,11 @@ interface ISwerveModule {
     fun test();
 }
 object Module {
-    public fun create(isSim: Boolean = false, info: ModuleInfo): ISwerveModule {
+    public fun create(isSim: Boolean = false, info: ModuleInfo, num: Int): ISwerveModule {
         if(isSim) {
             return SimulatedSwerveModule(info.driverPort, info.cancoderPort, info.turnerPort, info.cancoderPort + 4);
         } else {
-            return SwerveModule(info.driverPort, info.turnerPort, info.cancoderPort, info.offset, info.driveInverted, info.turnInverted);
+            return SwerveModule(info.driverPort, info.turnerPort, info.cancoderPort, info.offset, info.driveInverted, info.turnInverted, num);
         }
     }
 }

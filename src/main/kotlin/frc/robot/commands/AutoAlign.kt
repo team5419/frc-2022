@@ -28,7 +28,6 @@ class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: 
   override fun initialize() {
     subsystems.vision.on();
     subsystems.drivetrain.brakeMode = true;
-    //println("started aligning")
     setpoint = subsystems.vision.getShotSetpoint();
     subsystems.shooter.mainVelocity = setpoint.mainVelocity;
     subsystems.shooter.kickerVelocity = setpoint.kickerVelocity;
@@ -40,12 +39,12 @@ class AutoAlign(_subsystems: SubsystemHolder, _time: Double = 0.0, _throttling: 
 
   override fun execute() {
     println("setpoint distance = ${setpoint.distance}");
-    //println("actual distance = ${vision.getHorizontalDistance()}");
     var throttleOutput: Double = 0.0;
     if(throttling) {
       throttleOutput = subsystems.vision.autoAlignThrottle(setpoint.distance)
     }
     var turnOutput: Double = subsystems.vision.autoAlignTurn();
+    println("align throttle: ${throttleOutput}, turn: ${turnOutput}");
     subsystems.drivetrain.drive(throttleOutput, 0.0, turnOutput, false, true)
   }
 

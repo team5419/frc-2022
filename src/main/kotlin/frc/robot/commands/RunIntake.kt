@@ -37,7 +37,6 @@ class RunIntake(_subsystems: SubsystemHolder, _time: Double = 0.0, _velocity: Do
     timer.stop()
     subsystems.feeder.currentVel = previousVel;
     //deploy.changeSetpoint(0.0)
-    println("ended")
   }
 
   // end command if time has elapsed

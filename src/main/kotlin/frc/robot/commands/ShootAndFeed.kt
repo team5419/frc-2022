@@ -32,7 +32,6 @@ class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main:
     subsystems.feeder.currentVel = FeederConstants.activePercent
     subsystems.lights.setColor(subsystems.shooter.currentColor);
     subsystems.shooter.shoot(main, kicker)
-    println("shooting")
 
     // driver.setRumble(RumbleType.kLeftRumble, 1.0);
     // driver.setRumble(RumbleType.kRightRumble, 1.0);
