@@ -66,6 +66,7 @@ class RamseteAction(_drivetrain: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
     }
 
     override fun execute() {
+        println("running ramsete")
         val time = timer.get()
         // find the speed that the robot should be at at a specific time in the path
         val chassisSpeed = controller.calculate(drivetrain.pose, trajectory.sample(time))

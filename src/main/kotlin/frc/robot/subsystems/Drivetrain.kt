@@ -39,8 +39,8 @@ class Drivetrain() : SubsystemBase() {
     // configure the motors and add to shuffleboard
     
     init {
-        leftLeader = TalonFX(0)
-        rightLeader = TalonFX(1)
+        leftLeader = TalonFX(4)
+        rightLeader = TalonFX(5)
         leftFollower = TalonFX(2)
         rightFollower = TalonFX(3)
         val motors: Array<TalonFX> = arrayOf(leftLeader, leftFollower, rightLeader, rightFollower);
@@ -98,6 +98,7 @@ class Drivetrain() : SubsystemBase() {
 
     // set the velocity of the drivetrain motors
     fun setVelocity(leftVelocity: Double, rightVelocity: Double, leftFF: Double, rightFF: Double) {
+        println("setting left velocity ${leftVelocity}, ff ${leftFF}");
         leftLeader.set(
             ControlMode.Velocity, metersPerSecondToNativeUnits(leftVelocity),
             DemandType.ArbitraryFeedForward, leftFF / 12.0
