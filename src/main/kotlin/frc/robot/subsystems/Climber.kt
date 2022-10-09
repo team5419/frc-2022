@@ -57,7 +57,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                 setNeutralMode(NeutralMode.Brake)
                 setSensorPhase(false)
 
-                configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
+                configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 65.0, 0.0, 0.0), 100)
 
                 // bang bang PID
                 config_kP(0, 10000.0, 100)
@@ -87,8 +87,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
             }
         }
             
-        leftArm.setInverted(true);
-        rightArm.setInverted(false);
+        leftArm.setInverted(false);
+        rightArm.setInverted(true);
     }
 
 

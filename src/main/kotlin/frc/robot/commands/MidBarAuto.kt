@@ -18,18 +18,23 @@ class MidBarAuto(_climber: Climber, m_codriver: XboxController) : SequentialComm
     val climber: Climber = _climber
     val codriver: XboxController = m_codriver
 
-    val wantedHighestPosMid: Double = 0.0;
-    val finalPosMid: Double = 0.0;
+    val highestPosMidRight: Double;
+    val finalPosMidRight: Double;
+    val highestPosMidLeft: Double;
+    val finalPosMidLeft: Double;
     
     init {
-        //get encoder values at all the way down and high enough to reach mid
-        //and automate
-        //MotionMagic for talons / velocity position control
+        highestPosMidRight = 0.0;
+        finalPosMidRight = 0.0;
+        highestPosMidLeft = 0.0;
+        finalPosMidLeft = 0.0;
 
         addCommands(
             SequentialCommandGroup(
-                MoveArm(climber, codriver, "left", wantedHighestPosMid),
-                MoveArm(climber, codriver, "right", finalPosMid)
+                MoveArm(climber, codriver, "right", false, highestPosMidRight),
+                MoveArm(climber, codriver, "right", true, finalPosMidRight),
+                MoveArm(climber, codriver, "left", false, highestPosMidLeft),
+                MoveArm(climber, codriver, "left", true, finalPosMidLeft)
             )
         )
     }

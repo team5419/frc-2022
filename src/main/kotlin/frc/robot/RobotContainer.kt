@@ -41,14 +41,15 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver))
     autoSelector.addOption("Mid Bar Auto", MidBarAuto(climber_, codriver))
 
-
     setDefaults();
-    
   }
 
   fun setDefaults(){
     drivetrain_.setDefaultCommand(Drive(driver, drivetrain_))
     climber_.setDefaultCommand(Climb(climber_, codriver))
+
+    val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
+    yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))
   }
 
 
