@@ -33,14 +33,13 @@ class RobotContainer(tab: ShuffleboardTab) {
 
   init {
 
-       // creates a tab in shuffleboard to select autonomous routine
-      val autoSelector = SendableChooser<SequentialCommandGroup>()
+      // creates a tab in shuffleboard to select autonomous routine
 
-      // create and add autonomous routines to selector in shuffleboard
-      //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
-      tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
-      autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver))
-      //autoSelector.add("sLAY2", AutoSlay2(drivetrain_, driver))
+    // create and add autonomous routines to selector in shuffleboard
+    //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
+    tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
+    autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver))
+    autoSelector.addOption("Mid Bar Auto", MidBarAuto(climber_, codriver))
 
 
     setDefaults();
@@ -55,8 +54,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
   // select autonomous command
   fun getAutonomousCommand(): Command {
-    val gotten: Command? =  autoSelector.getSelected();
-    println(gotten);
-    return if (gotten == null) Baseline() else gotten
+    println(autoSelector.getSelected())
+    return autoSelector.getSelected()?: Baseline();
   }
 }

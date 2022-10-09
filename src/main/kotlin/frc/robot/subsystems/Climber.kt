@@ -25,8 +25,8 @@ import edu.wpi.first.wpilibj.AnalogInput
 
 class Climber(tab: ShuffleboardTab) : SubsystemBase() {
 
-    private val leftArm: TalonFX;
-    private val rightArm: TalonFX;
+    public val leftArm: TalonFX;
+    public val rightArm: TalonFX;
 
     // ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
     // ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
@@ -87,8 +87,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
             }
         }
             
-        leftArm.setInverted(leftArm.inverted);
-        rightArm.setInverted(rightArm.inverted);
+        leftArm.setInverted(true);
+        rightArm.setInverted(false);
     }
 
 
