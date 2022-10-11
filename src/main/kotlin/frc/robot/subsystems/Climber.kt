@@ -86,6 +86,9 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                 setControlFramePeriod(ControlFrame.Control_3_General, 50)
             }
         }
+
+        tab.addNumber("left arm encoder:", {leftArm.getSelectedSensorPosition(0)})
+        tab.addNumber("right arm encoder:", {rightArm.getSelectedSensorPosition(0)})
             
         leftArm.setInverted(false);
         rightArm.setInverted(true);
