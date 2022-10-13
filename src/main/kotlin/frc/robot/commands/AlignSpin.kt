@@ -19,8 +19,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 import frc.robot.classes.SubsystemHolder;
 
-class AlignSpin(_subsystems: SubsystemHolder, _main: Double = -1.0, _kicker: Double = -1.0, _throttling: Boolean = true) : SequentialCommandGroup() {
+class AlignSpin(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _throttling: Boolean = true) : SequentialCommandGroup() {
   private val subsystems: SubsystemHolder = _subsystems
+  private val driver: XboxController = _driver;
   private val main: Double = _main;
   private val kicker: Double = _kicker;
   private val throttling : Boolean = _throttling;
@@ -29,7 +30,7 @@ class AlignSpin(_subsystems: SubsystemHolder, _main: Double = -1.0, _kicker: Dou
     addCommands(
       ParallelRaceGroup(
         SpinUp(subsystems),
-        AutoAlign(subsystems, 0.0, throttling)
+        AutoAlign(subsystems, driver, 0.0, throttling)
       )
     )
   }

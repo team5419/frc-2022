@@ -89,6 +89,10 @@ public class SimulatedSwerveModule : ISwerveModule {
     else */ DriveConstants.Modules.turnController.calculate(turnBaseEncoder.getDistance(), state.angle.radians);
 
     this.driveOutput = newDriveOutput;
+    if(preventTurn) {
+      this.turnOutput = 0.0;
+      return;
+    }
     this.turnOutput = newTurnOutput;
   }
 

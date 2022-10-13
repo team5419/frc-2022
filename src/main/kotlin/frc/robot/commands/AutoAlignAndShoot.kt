@@ -32,7 +32,7 @@ class AutoAlignAndShoot(_subsystems: SubsystemHolder, _main: Double = -1.0, _kic
         SequentialCommandGroup(
             ParallelRaceGroup(
                 SpinUp(subsystems),
-                AutoAlign(subsystems, 1.5, throttling)
+                AutoAlign(subsystems, driver, 1.5, throttling)
             ),
             Shoot(subsystems, driver, main, kicker)
         )

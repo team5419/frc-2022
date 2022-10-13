@@ -14,21 +14,28 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
-class TwoBallAuto(_subsystems: SubsystemHolder, _driver: XboxController) : SequentialCommandGroup() {
+class FourBallSwerve(_subsystems: SubsystemHolder, _driver: XboxController) : SequentialCommandGroup() {
     val subsystems: SubsystemHolder = _subsystems
     val driver: XboxController = _driver
     init {
 
             addCommands(
+                ResetGyro(subsystems.drivetrain, 23.6), // angle on right
                 ParallelRaceGroup(
                     RunIntake(subsystems, 0.0),
                     SequentialCommandGroup(
-                        DriveRobotRelative(subsystems, 0.5, 0.0, 0.1),
-                        Wait(2.0),
-                        DriveRobotRelative(subsystems, 1.5, 0.0, 0.95),
+                        DriveRobotRelative(subsystems, 2.5, 0.0, 0.5),
+                        Wait(0.3),
+                        DriveRobotRelative(subsystems, 1.5, 0.0, 0.3),
                         AutoAlign(subsystems, driver, 0.75, false),
-                        Shoot(subsystems, driver, 15500.0, 15500.0, 5.0))
-            )
-        )
+                        Shoot(subsystems, driver, 15500.0, 15500.0, 4.0),
+                        DriveRobotRelative(subsystems, 3.0, -0.6, 3.059), // 0.3, 3.06
+                        Wait(2.0),
+                        DriveRobotRelative(subsystems, -3.0, 0.6, 3.059), // 0.3, 3.06
+                        AutoAlign(subsystems, driver, 0.75, false),
+                        Shoot(subsystems, driver, 15500.0, 15500.0, 4.0)
+
+                )
+            ))
     }
 }

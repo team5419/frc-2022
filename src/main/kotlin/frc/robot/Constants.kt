@@ -14,6 +14,8 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.controller.LinearPlantInversionFeedforward;
 
+// 169.254.207.121:5801
+
 object DriveConstants {
     val driveMotorGearRatio: Double = 6.75;
     val turnMotorGearRatio: Double = 12.8;
@@ -27,8 +29,8 @@ object DriveConstants {
     const val driverPort: Int = 0
 
     val info: Array<ModuleInfo> = arrayOf(
-        ModuleInfo(5, 24, false, true, 8, 3.46219),
-        ModuleInfo(2, 1, true, true, 10, 1.28547),
+        ModuleInfo(2, 24, false, true, 8, 3.46219),
+        ModuleInfo(5, 1, true, true, 10, 1.28547),
         ModuleInfo(4, 6, false, true, 9, 5.67418),
         ModuleInfo(3, 7, true, true, 11, 1.98190)
     )
@@ -70,7 +72,7 @@ object DriveConstants {
         const val maxAcceleration: Double = 1.5 // 5.0
     }
     const val speedMultiplier: Double = 4.0//8.0;
-    const val turnMultiplier: Double =4.0// 8.0;
+    const val turnMultiplier: Double =2.5// 8.0;
     const val slowMultiplier: Double = 0.2;
     val feedForward: SimpleMotorFeedforward = SimpleMotorFeedforward(SwerveRamsete.ks, SwerveRamsete.kv, SwerveRamsete.ka);
     //val turnSystem: LinearSystem<N2, N1, N1> = LinearSystemId.identifyPositionSystem(kvRadians, kaRadians);
@@ -153,13 +155,13 @@ object VisionConstants {
     public const val maxOffsetFor2XZoom = 10.0
 
     object TurnPID {
-        public const val P = 0.02 // .01
+        public const val P = 0.1 // .01
         public const val I = 0.006 // .006
         public const val D = 0.0005 // .0005
     }
 
     object ThrottlePID {
-        public const val P = 0.5
+        public const val P = 0.1 // 0.5
         public const val I = 0.006
         public const val D = 0.0010
     }

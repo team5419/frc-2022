@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.classes.SubsystemHolder
 class Outtake(_subsystems: SubsystemHolder)  : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
-  private val previousVel: Double = subsystems.feeder.currentVel
   private var startingPosition: Double = 0.0
 
   init {
@@ -39,7 +38,7 @@ class Outtake(_subsystems: SubsystemHolder)  : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-      subsystems.feeder.currentVel = previousVel
+      subsystems.feeder.currentVel = FeederConstants.idlePercent
       subsystems.intake.stop()
       subsystems.indexer.stop()
   }

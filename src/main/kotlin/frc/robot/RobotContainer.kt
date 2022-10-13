@@ -46,6 +46,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.setDefaultOption("Baseline", Baseline())
     autoSelector.addOption("Baseline", Baseline())
     autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_subsystems, driver))
+    autoSelector.addOption("Four Ball Swerve", FourBallSwerve(m_subsystems, driver))
     autoSelector.addOption("Four Ball Auto", FourBallAuto(m_subsystems, driver))
     autoSelector.addOption("Four Ball Auto 2", FourBall2(m_subsystems, driver))
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_subsystems, driver))
@@ -60,7 +61,7 @@ val bButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button
     bButtonDriver.whenHeld(Brake(m_subsystems.drivetrain))
     // auto-align (hold A)
     val aButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButtonDriver.whenHeld(AlignSpin(m_subsystems))
+    aButtonDriver.whenHeld(AlignSpin(m_subsystems, driver, -1.0, -1.0, false))
 
     // shoot (hold right bumper)
     val rBumperDriver: JoystickButton = JoystickButton(driver, XboxController.Button.kRightBumper.value)
@@ -92,6 +93,9 @@ val bButtonDriver: JoystickButton = JoystickButton(driver, XboxController.Button
     val bButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
     bButtonCodriver.toggleWhenPressed(Rainbow(m_subsystems))
     //bButtonCodriver.whenPressed(ToggleBrakeMode(m_subsystems))
+
+    val xButtonCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
+    xButtonCodriver.whenPressed(ResetGyro(m_subsystems.drivetrain))
 
     // raise intake (hold right bumper)
     val rBumperCodriver: JoystickButton = JoystickButton(codriver, XboxController.Button.kRightBumper.value)

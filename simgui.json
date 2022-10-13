@@ -77,6 +77,7 @@
       "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Vision": "Subsystem",
+      "/Shuffleboard/Drivetrain/Main/reset gyro": "Command",
       "/Shuffleboard/Master/Auto Selector": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
     },
@@ -90,11 +91,28 @@
     }
   },
   "NetworkTables": {
+    "Shuffleboard": {
+      "Drivetrain": {
+        "Main": {
+          "open": true
+        },
+        "open": true
+      },
+      "Master": {
+        "Auto Selector": {
+          "open": true
+        }
+      },
+      "open": true
+    },
     "SmartDashboard": {
       "Field": {
         "open": true
       },
       "open": true
     }
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

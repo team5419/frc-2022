@@ -80,7 +80,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public fun turnAligned(): Boolean {
-        return isTargetFound() && turnController.atSetpoint() && m_drivetrain.getAverageSpeed() < 0.1
+        return isTargetFound() && turnController.atSetpoint()/* Math.abs(getHorizontalOffset()) < 0.3*/ && m_drivetrain.getAverageSpeed() < 0.1
     }
 
     public fun throttleAligned(distance : Double): Boolean {
@@ -89,11 +89,11 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
 
     public fun autoAlignTurn() : Double {
         // get the pid loop output
-        var output = turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
-
+        var output =/*  if (getHorizontalOffset() > 0.0) 0.5 else -0.5; */turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
+        println("turn aligned: ${turnAligned()}, target found: ${isTargetFound()}")
         // do we need to align / can we align?
         if(!turnAligned() && isTargetFound()) {
-            return output
+            return -output
         }
 
         return 0.0

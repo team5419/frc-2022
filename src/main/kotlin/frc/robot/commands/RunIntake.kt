@@ -35,7 +35,7 @@ class RunIntake(_subsystems: SubsystemHolder, _time: Double = 0.0, _velocity: Do
   override fun end(interrupted: Boolean) {
     subsystems.intake.stop()
     timer.stop()
-    subsystems.feeder.currentVel = previousVel;
+    subsystems.feeder.currentVel = FeederConstants.idlePercent;
     //deploy.changeSetpoint(0.0)
   }
 

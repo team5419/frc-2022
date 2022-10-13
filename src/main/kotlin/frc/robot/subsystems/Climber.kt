@@ -29,8 +29,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     public val motors: Array<ClimberSingle> = arrayOf(
-            ClimberSingle(TalonFX(Ports.climberLeft1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
-            ClimberSingle(TalonFX(Ports.climberLeft2), false, /*AnalogInput(ClimberConstants.Ports.lsensor1), */ ClimberConstants.Pair1.Left.min, ClimberConstants.Pair1.Left.max)
+            ClimberSingle(TalonFX(Ports.climberLeft1), false, ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
+            ClimberSingle(TalonFX(Ports.climberLeft2), false, ClimberConstants.Pair1.Left.min, ClimberConstants.Pair1.Left.max)
         )
     private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
@@ -53,7 +53,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                     setNeutralMode(NeutralMode.Brake)
                     setSensorPhase(false)
 
-                    configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 80.0, 0.0, 0.0), 100)
+                    configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 58.0, 0.0, 0.0), 100)
 
                     // bang bang PID
                     config_kP(0, 10000.0, 100)
