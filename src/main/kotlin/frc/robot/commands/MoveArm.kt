@@ -51,14 +51,14 @@ class MoveArm(_climber: Climber, _codriver: XboxController, _arm: String, _movin
         climber.rightArm.setInverted(true)
     }
 
-    if (difference >= 50) {
-        if (arm.equals("left")) {
-            climber.leftArm.set(ControlMode.PercentOutput, -throttle * f);
-        }
-        if (arm.equals("right")) {
-            climber.rightArm.set(ControlMode.PercentOutput, -throttle * f);
-        } 
-    }
+    // if (difference >= 50) {
+    //     if (arm.equals("left")) {
+    //         climber.leftArm.set(ControlMode.PercentOutput, -throttle * f);
+    //     }
+    //     if (arm.equals("right")) {
+    //         climber.rightArm.set(ControlMode.PercentOutput, -throttle * f);
+    //     } 
+    // }
   }
 
   override fun end(interrupted: Boolean) {}

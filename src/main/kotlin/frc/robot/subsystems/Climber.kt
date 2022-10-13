@@ -57,7 +57,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                 setNeutralMode(NeutralMode.Brake)
                 setSensorPhase(false)
 
-                configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 65.0, 0.0, 0.0), 100)
+                configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
 
                 // bang bang PID
                 config_kP(0, 10000.0, 100)
@@ -86,20 +86,26 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
                 setControlFramePeriod(ControlFrame.Control_3_General, 50)
             }
         }
+
+        // while(true) {
+        //     layout.addNumber("left arm encoder: ", {climber.leftArm.getSelectedSensorPosition(0)})
+        //     layout.addNumber("left arm encoder: ", {climber.leftArm.getSelectedSensorPosition(0)})
+        // }
             
-        leftArm.setInverted(false);
+        leftArm.setInverted(true);
         rightArm.setInverted(true);
     }
 
 
+
     public fun setLeftArm(left: Int, throttle: Double) {
         val f: Double = 0.5;
-        leftArm.set(ControlMode.PercentOutput, -throttle * f);
+        leftArm.set(ControlMode.PercentOutput, 1.5 * (-throttle * f));
     }
 
     public fun setRightArm(right: Int, throttle: Double) {
         val f: Double = 0.5;
-        rightArm.set(ControlMode.PercentOutput, -throttle * f);
+        rightArm.set(ControlMode.PercentOutput, 1.5 * (-throttle * f));
     }
 
     override fun periodic() {
