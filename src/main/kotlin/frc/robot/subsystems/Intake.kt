@@ -1,79 +1,80 @@
-package frc.robot.subsystems;
+// package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.can.TalonFX
-import com.ctre.phoenix.motorcontrol.can.VictorSPX
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import edu.wpi.first.networktables.NetworkTableEntry
-import edu.wpi.first.networktables.EntryListenerFlags
-import edu.wpi.first.networktables.EntryNotification
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
-import com.ctre.phoenix.motorcontrol.*
-import kotlin.math.*
+// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// import com.ctre.phoenix.motorcontrol.can.TalonFX
+// import com.ctre.phoenix.motorcontrol.can.VictorSPX
+// import com.ctre.phoenix.motorcontrol.can.TalonSRX
+// import edu.wpi.first.networktables.NetworkTableEntry
+// import edu.wpi.first.networktables.EntryListenerFlags
+// import edu.wpi.first.networktables.EntryNotification
+// import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
+// import com.ctre.phoenix.motorcontrol.*
+// import kotlin.math.*
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+// import edu.wpi.first.math.controller.ProfiledPIDController;
+// import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-import frc.robot.ClimberConstants
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
+// import frc.robot.ClimberConstants
+// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
+// import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
-import edu.wpi.first.wpilibj.AnalogInput
+// import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
+// import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 
-import edu.wpi.first.wpilibj.Compressor
+// import edu.wpi.first.wpilibj.Compressor
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
+// import edu.wpi.first.wpilibj.AnalogInput;
+// import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
 
-class Intake(tab: ShuffleboardTab) : SubsystemBase() {
+// class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
-    public val pcmCompressor: Compressor;
-    public val phCompressor: Compressor;
+//     public val pcmCompressor: Compressor;
+//     public val phCompressor: Compressor;
 
-    // ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
-    // ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
+//     //momomomotteres
 
-    private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
+//     // ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
+//     // ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
 
-    //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
-    //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
+//     private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
-    init {
+//     //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
+//     //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
 
-        pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM)
-        phCompressor = new Compressor(1, PneumaticsModuleType.REVPH)
+//     init {
 
-        pcmCompressor.enableDigital();
-        pcmCompressor.disable();
+//         pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM)
+//         phCompressor = Compressor(1, PneumaticsModuleType.REVPH)
 
-        val enabled: Boolean = pcmCompressor.enabled();
-        val pressureSwitch: Boolean = pcmCompressor.getPressureSwitchValue();
-        val current: Double = pcmCompressor.getCompressorCurrent();
+//         pcmCompressor.enableDigital();
+//         pcmCompressor.disable();
 
-        // tab.addNumber("left arm encoder:", {leftArm.getSelectedSensorPosition(0)})
-        // tab.addNumber("right arm encoder:", {rightArm.getSelectedSensorPosition(0)})
+//         val enabled: Boolean = pcmCompressor.enabled();
+//         val pressureSwitch: Boolean = pcmCompressor.getPressureSwitchValue();
+//         val current: Double = pcmCompressor.getCompressorCurrent();
+
+//         // tab.addNumber("left arm encoder:", {leftArm.getSelectedSensorPosition(0)})
+//         // tab.addNumber("right arm encoder:", {rightArm.getSelectedSensorPosition(0)})
             
-        // leftArm.setInverted(false);
-        // rightArm.setInverted(true);
-    }
+//         // leftArm.setInverted(false);
+//         // rightArm.setInverted(true);
+//     }
 
 
-    public fun feedForward(feed: Int, throttle: Double) {
-        val f: Double = 0.5;
-        pcmCompressor.set(ControlMode.PercentOutput, -throttle * f);
-    }
+//     public fun feedForward(feed: Int, throttle: Double) {
+//         val f: Double = 0.5;
+//         .set(ControlMode.PercentOutput, -throttle * f);
+//     }
 
-    public fun feedReverse(feed: Int, throttle: Double) {
-        val f: Double = 0.5;
-        pcmCompressor.set(ControlMode.PercentOutput, -throttle * f);
-    }
+//     public fun feedReverse(feed: Int, throttle: Double) {
+//         val f: Double = 0.5;
+//         pcmCompressor.set(ControlMode.PercentOutput, -throttle * f);
+//     }
 
-    override fun periodic() {
-    }
-d
-    override fun simulationPeriodic() {
-    }
-}
+//     override fun periodic() {
+//     }
+
+//     override fun simulationPeriodic() {
+//     }
+// }

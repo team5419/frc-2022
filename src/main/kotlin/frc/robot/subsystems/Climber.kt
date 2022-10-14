@@ -87,8 +87,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
             }
         }
 
-        tab.addNumber("left arm encoder:", {leftArm.getSelectedSensorPosition(0)})
-        tab.addNumber("right arm encoder:", {rightArm.getSelectedSensorPosition(0)})
+        layout.addNumber("left arm encoder", {leftArm.getSelectedSensorPosition(0)})
+        layout.addNumber("right arm encoder", {rightArm.getSelectedSensorPosition(0)})
             
         leftArm.setInverted(true);
         rightArm.setInverted(true);
