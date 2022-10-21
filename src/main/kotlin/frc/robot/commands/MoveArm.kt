@@ -14,12 +14,9 @@ class MoveArm(_climber: Climber, _codriver: XboxController, _arm: String, _movin
   private var wantedPos: Double = _wantedPos;
 
 
-  val throttle: Double = 1.0; //???
+  var throttle: Double = 1.0; //???
 
   val f: Double = 0.5;
-
-  val highPosMid: Double;
-  val finalPosMid: Double;
 
   init {
 
@@ -49,14 +46,11 @@ class MoveArm(_climber: Climber, _codriver: XboxController, _arm: String, _movin
 
   override fun isFinished(): Boolean {
 
-    var actualPos: Double;
-
-    if (arm.equals("left")) {
-        actualPos = climber.leftArm.getSelectedSensorPosition(0)
-    }
-    if (arm.equals("right")) {
-        actualPos = climber.rightArm.getSelectedSensorPosition(0)
-    }
+    var actualPos: Double = if (arm.equals("left"))
+      climber.leftArm.getSelectedSensorPosition(0)
+    else
+      climber.rightArm.getSelectedSensorPosition(0)
+    
     
     return movingDown == (actualPos < wantedPos);
 
