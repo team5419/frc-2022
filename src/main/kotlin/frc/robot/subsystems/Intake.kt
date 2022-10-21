@@ -50,7 +50,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         solenoid = DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
         solenoid.set(DoubleSolenoid.Value.kOff);
         //phCompressor = Compressor(1, PneumaticsModuleType.REVPH)
-        pcmCompressor.enableAnalog(115.0, 125.0);
+        pcmCompressor.enableDigital();
         // pcmCompressor.enableDigital();
         // pcmCompressor.disable();
 
@@ -67,10 +67,14 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
 
     public fun feedForward() {
-        pcmCompressor.enableDigital()
-        //pcmCompressor.enableAnalog(115.0, 125.0)
         solenoid.set(DoubleSolenoid.Value.kForward);
     }
+
+    public fun feedReverse() {
+        solenoid.set(DoubleSolenoid.Value.kReverse)
+    }
+
+
 
     public fun stop() {
         solenoid.set(DoubleSolenoid.Value.kOff);
