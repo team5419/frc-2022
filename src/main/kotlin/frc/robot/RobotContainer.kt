@@ -50,6 +50,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     autoSelector.addOption("Four Ball Auto", FourBallAuto(m_subsystems, driver))
     autoSelector.addOption("Four Ball Auto 2", FourBall2(m_subsystems, driver))
     autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_subsystems, driver))
+    autoSelector.addOption("Sample Auto Drive", SampleAutoDrive(m_subsystems, driver))
     //autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter))
 
   }

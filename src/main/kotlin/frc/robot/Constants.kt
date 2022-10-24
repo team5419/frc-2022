@@ -96,6 +96,11 @@ object DriveConstants {
         public val driveController: PIDController = PIDController(DrivePID.P, DrivePID.I, DrivePID.D);
         public val turnController: PIDController = PIDController(TurnPID.P, TurnPID.I, TurnPID.D);
     }
+
+    val epsilonXY: Double = 0.1;
+    val epsilonTheta: Double = 1.0;
+    val pXY: Double = 1.0;
+    val pTheta: Double = 1.0;
 }
 
 object Ports {
