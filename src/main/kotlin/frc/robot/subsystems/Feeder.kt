@@ -28,11 +28,13 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
 
-class Intake(tab: ShuffleboardTab) : SubsystemBase() {
+class Feeder(tab: ShuffleboardTab, reverse: Boolean) : SubsystemBase() {
 
     public val pcmCompressor: Compressor;
     public val solenoid: DoubleSolenoid;
 
+    public val feeder: TalonFX;
+    public val reverse: Boolean;
     //public val phCompressor: Compressor;
 
     //momomomotteres
@@ -47,13 +49,8 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     init {
 
-        pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM);
-        solenoid = DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
-        solenoid.set(DoubleSolenoid.Value.kOff);
-        //phCompressor = Compressor(1, PneumaticsModuleType.REVPH)
-        pcmCompressor.enableAnalog(115.0, 125.0);
-        // pcmCompressor.enableDigital();
-        // pcmCompressor.disable();
+        feeder = TalonFX(13);
+        reverse = false;
 
         // val enabled: Boolean = pcmCompressor.enabled();
         // val pressureSwitch: Boolean = pcmCompressor.getPressureSwitchValue();
@@ -64,22 +61,19 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
             
         // leftArm.setInverted(false);
         // rightArm.setInverted(true);
+    }
 
-    public fun raiseIntake(Boolean: reverse) {
+    public fun feedForward(Boolean: reverse) {
         if(reverse) {
-            pcmCompressor.enableDigital()
-            //pcmCompressor.enableAnalog(115.0, 125.0)
-            solenoid.set(-DoubleSolenoid.Value.kForward);
-        } if (!reverse) {
-            pcmCompressor.enableDigital()
-            //pcmCompressor.enableAnalog(115.0, 125.0)
-            solenoid.set(DoubleSolenoid.Value.kForward);
+            feeder.set(-100)
+        }  else {
+            feeder.set(100)
         }
         
     }
 
     public fun stop() {
-        solenoid.set(DoubleSolenoid.Value.kOff);
+        
     }
 
     override fun periodic() {

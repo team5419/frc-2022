@@ -4,23 +4,24 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 
-class Feed(_intake: Intake, _driver: XboxController) : CommandBase() {
+class Feed(_intake: Intake, _driver: XboxController, _reverse: Boolean) : CommandBase() {
   private val intake: Intake = _intake;
   private val codriver: XboxController = _driver;
+  private val reverse: Boolean = _reverse;
 
   init {
-    addRequirements(_feeder);
+    addRequirements(_intake);
   }
 
   override fun initialize() {}
 
   override fun execute() {
-    intake.feedForward()
+    intake.feedForward(reverse)
     //println("trying to climb")
   }
 
   override fun end(interrupted: Boolean) {
-    feeder.stop();
+    intake.stop();
   }
 
   override fun isFinished(): Boolean {

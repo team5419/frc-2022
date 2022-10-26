@@ -51,8 +51,15 @@ class RobotContainer(tab: ShuffleboardTab) {
     climber_.setDefaultCommand(Climb(climber_, codriver))
     //intake_.setDefaultCommand(Feed(intake_, driver))
 
-    // val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
-    // xButton.toggleWhenPressed(Feed(intake_, driver))
+    val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
+    xButton.toggleWhenPressed(Feed(feeder_, codriver, false))
+
+    val bButton: JoystickButton = JoystickButton(cocodriver, XboxController.Button.kX.value)
+    xButton.toggleWhenPressed(Feed(feeder_, codriver, true))
+
+    //needs up and dwon arrows
+    val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
+    xButton.toggleWhenPressed(RunIntake(intake_, codriver))
 
     val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))
