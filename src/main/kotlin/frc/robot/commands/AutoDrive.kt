@@ -26,8 +26,9 @@ class AutoDrive(_subsystems: SubsystemHolder, _x: Double, _y: Double, _rotation:
   override fun execute() {
     val pose: Pose2d = subsystems.drivetrain.pose();
     val theta: Double = subsystems.drivetrain.angle;
-    subsystems.drivetrain.drive(DriveConstants.pXY * (y - pose.getY()), 
-                                DriveConstants.pXY * (x - pose.getX()), 
+
+    subsystems.drivetrain.drive(Math.min(DriveConstants.pXY * Util.withDeadband((y - pose.getY()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity), 
+                                Math.min(DriveConstants.pXY * Util.withDeadband((x - pose.getX()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity), 
                                 DriveConstants.pTheta * (Math.PI / 180) * (rotation - theta), 
     true, true);
   }

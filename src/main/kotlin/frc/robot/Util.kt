@@ -32,8 +32,8 @@ object Util {
     public fun metersPerSecondToNativeUnits(units: Double): Double {
         return ((units / DriveConstants.wheelCircumference) * DriveConstants.ticksPerRotation) / 10
     }
-    public fun withDeadband(input: Double): Double {
-        return if (Math.abs(input) <= DriveConstants.controllerDeadband) 0.0 else input; 
+    public fun withDeadband(input: Double, deadband: Double = DriveConstants.controllerDeadband): Double {
+        return if (Math.abs(input) <= deadband) 0.0 else input; 
     }
     public fun degreesToRadians(input: Double): Double {
         return input * Math.PI / 180.0;

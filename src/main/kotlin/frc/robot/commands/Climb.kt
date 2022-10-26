@@ -55,8 +55,8 @@ class Climb(_subsystems: SubsystemHolder, _codriver: XboxController) : CommandBa
    // but that's okay because programming team is awesome and there are instructions for you to follow
    // (i'll mention them in future steps)
    // anyway continue to step 2
-   subsystems.climber.setPairVelocity(0, righty)
-   subsystems.climber.setPairVelocity(1, lefty)
+   subsystems.climber.setPairVelocity(1, righty)
+   subsystems.climber.setPairVelocity(0, lefty)
 
    // step 2: normal control with minimum and maximum hard stops. before you begin, follow these steps:
    // - go back and uncomment step 1 (normal control)
