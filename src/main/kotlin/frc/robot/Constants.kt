@@ -100,7 +100,7 @@ object DriveConstants {
     val epsilonXY: Double = 0.1;
     val epsilonTheta: Double = 1.0;
     val pXY: Double = 1.0;
-    val pTheta: Double = 1.0;
+    val pTheta: Double = 3.0;
 }
 
 object Ports {

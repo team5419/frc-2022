@@ -37,7 +37,7 @@ class Drivetrain(simulated: Boolean = false) : SubsystemBase() {
     // declare motors and ports
     public val drivers: Array<ISwerveModule> = Array<ISwerveModule>(4, { i: Int -> Module.create(
         simulated, DriveConstants.info[i], i) });
-    public val gyro: Pigeon2 = Pigeon2(Ports.gyro, "canivore");
+    public val gyro: Pigeon2 = Pigeon2(Ports.gyro);
     private val gyroSim: BasePigeonSimCollection = BasePigeonSimCollection(gyro, false);
     private var yaw: Double = 0.0;
     public var inverted: Int = 1;

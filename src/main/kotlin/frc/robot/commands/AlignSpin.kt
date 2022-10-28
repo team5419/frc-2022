@@ -30,7 +30,7 @@ class AlignSpin(_subsystems: SubsystemHolder, _driver: XboxController, _main: Do
     addCommands(
       ParallelRaceGroup(
         SpinUp(subsystems),
-        AutoAlign(subsystems, driver, 0.0, throttling)
+        NewAutoAlign(subsystems, driver, 0.0)
       )
     )
   }

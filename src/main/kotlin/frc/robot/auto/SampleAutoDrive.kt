@@ -19,12 +19,16 @@ class SampleAutoDrive(_subsystems: SubsystemHolder, _driver: XboxController) : S
     val driver: XboxController = _driver
     init {
         addCommands(
+            // x = forward/back, y = sideways
+            // +x = back
+            // +y = right
+            // +theta = counterclockwise
             ResetGyro(subsystems.drivetrain, 0.0), // zero gyro
-            AutoDrive(subsystems, 0.0, 1.0, 0.0), // move y only (should be forward-backward)
-            AutoDrive(subsystems, 1.0, 1.0, 0.0), // move x only (should be left-right)
-            AutoDrive(subsystems, 0.0, 0.0, 0.0), // move both x and y 
-            AutoDrive(subsystems, 0.0, 0.0, 90.0), // turn only
-            AutoDrive(subsystems, 1.0, 1.0, 45.0) // turn and move at the same time
+            AutoDrive(subsystems, -1.0, 0.0, 0.0)//, // move y only (should be forward-backward)
+            // AutoDrive(subsystems, 1.0, 1.0, 0.0), // move x only (should be left-right)
+            // AutoDrive(subsystems, 0.0, 0.0, 0.0), // move both x and y 
+            // AutoDrive(subsystems, 0.0, 0.0, 90.0), // turn only
+            // AutoDrive(subsystems, 1.0, 1.0, 45.0) // turn and move at the same time
         )
     }
 }

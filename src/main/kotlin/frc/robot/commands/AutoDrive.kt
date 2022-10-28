@@ -24,22 +24,26 @@ class AutoDrive(_subsystems: SubsystemHolder, _x: Double, _y: Double, _rotation:
   }
 
   override fun execute() {
-    val pose: Pose2d = subsystems.drivetrain.pose();
     val theta: Double = subsystems.drivetrain.angle;
+    val target: Double = Math.round((theta - rotation) / 360) * 360 + rotation;
+    val pose: Pose2d = subsystems.drivetrain.pose();
 
-    subsystems.drivetrain.drive(Math.min(DriveConstants.pXY * Util.withDeadband((y - pose.getY()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity), 
-                                Math.min(DriveConstants.pXY * Util.withDeadband((x - pose.getX()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity), 
-                                DriveConstants.pTheta * (Math.PI / 180) * (rotation - theta), 
+    println("theta: ${DriveConstants.pTheta * (Math.PI / 180) * (target - theta)}");
+    subsystems.drivetrain.drive(Math.min(DriveConstants.pXY * Util.withDeadband((x - pose.getX()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity),
+    Math.min(DriveConstants.pXY * Util.withDeadband((y - pose.getY()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity), 
+    -1 * DriveConstants.pTheta * (Math.PI / 180) * Util.withDeadband((target - theta), DriveConstants.epsilonTheta), 
     true, true);
   }
 
   override fun end(interrupted: Boolean) {
+    println("finished");
     subsystems.drivetrain.stop();
   }
 
   override fun isFinished(): Boolean {
     val pose: Pose2d = subsystems.drivetrain.pose();
     val theta: Double = subsystems.drivetrain.angle;
-    return Math.abs(pose.getX() - x) < DriveConstants.epsilonXY && Math.abs(pose.getY() - y) < DriveConstants.epsilonXY && Math.abs(theta - rotation) < DriveConstants.epsilonTheta;
+    val target: Double = Math.round((theta - rotation) / 360) * 360 + rotation;
+    return Math.abs(pose.getX() - x) < DriveConstants.epsilonXY && Math.abs(pose.getY() - y) < DriveConstants.epsilonXY && Math.abs(target - theta) < DriveConstants.epsilonTheta;
   }
 }
