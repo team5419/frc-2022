@@ -26,7 +26,7 @@ class FourBallSwerve(_subsystems: SubsystemHolder, _driver: XboxController) : Se
                     SequentialCommandGroup(
                         DriveRobotRelative(subsystems, 2.5, 0.0, 0.5),
                         Wait(0.3),
-                        DriveRobotRelative(subsystems, 1.5, 0.0, 0.3),
+                        DriveRobotRelative(subsystems, 1.5, 0.0, 0.3), // (x, __, y)
                         AutoAlign(subsystems, driver, 0.75, false),
                         Shoot(subsystems, driver, 15500.0, 15500.0, 4.0),
                         DriveRobotRelative(subsystems, 3.0, -0.6, 3.059), // 0.3, 3.06
