@@ -17,7 +17,7 @@ class AutoDrive(_subsystems: SubsystemHolder, _x: Double, _y: Double, _rotation:
   private var rotation: Double = _rotation;
 
   init {
-    addRequirements(subsystems.drivetrain);
+      addRequirements(subsystems.drivetrain);
   }
 
   override fun initialize() {
@@ -44,6 +44,6 @@ class AutoDrive(_subsystems: SubsystemHolder, _x: Double, _y: Double, _rotation:
     val pose: Pose2d = subsystems.drivetrain.pose();
     val theta: Double = subsystems.drivetrain.angle;
     val target: Double = Math.round((theta - rotation) / 360) * 360 + rotation;
-    return Math.abs(pose.getX() - x) < DriveConstants.epsilonXY && Math.abs(pose.getY() - y) < DriveConstants.epsilonXY && Math.abs(target - theta) < DriveConstants.epsilonTheta;
+    return subsystems.drivetrain.getAverageSpeed() < 0.1 && Math.abs(pose.getX() - x) < DriveConstants.epsilonXY && Math.abs(pose.getY() - y) < DriveConstants.epsilonXY && Math.abs(target - theta) < DriveConstants.epsilonTheta;
   }
 }

@@ -40,19 +40,11 @@ class RobotContainer(tab: ShuffleboardTab) {
     configureButtonBindings(driver, codriver);
     setDefaults();
     
-    // create and add autonomous routines to selector in shuffleboard
-    //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
     autoSelector.setDefaultOption("Baseline", Baseline())
     autoSelector.addOption("Baseline", Baseline())
-    autoSelector.addOption("Two Ball Auto", TwoBallAuto(m_subsystems, driver))
-    autoSelector.addOption("Four Ball Swerve", FourBallSwerve(m_subsystems, driver))
-    autoSelector.addOption("Four Ball Auto", FourBallAuto(m_subsystems, driver))
-    autoSelector.addOption("Four Ball Auto 2", FourBall2(m_subsystems, driver))
-    autoSelector.addOption("Five Ball Auto", FiveBallAuto(m_subsystems, driver))
-    autoSelector.addOption("Sample Auto Drive", SampleAutoDrive(m_subsystems, driver))
-    //autoSelector.addOption("Pre-Match Check", PreMatchCheck(m_climber, m_drivetrain, m_feeder, m_indexer, m_intake, m_shooter))
-
+    autoSelector.addOption("Five Ball", FiveBall(m_subsystems, driver))
+    autoSelector.addOption("Go To Zero", GoToZero(m_subsystems, driver, 24.3))
   }
   
   fun configureButtonBindings(driver: XboxController, codriver: XboxController) {

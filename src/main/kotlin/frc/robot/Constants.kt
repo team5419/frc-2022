@@ -84,7 +84,7 @@ object DriveConstants {
             const val D: Double = 0.0
         }
         object TurnPID {
-            const val P: Double = 5.0
+            const val P: Double = 8.0
             const val I: Double = 0.0
             const val D: Double = 0.0
         }
@@ -98,9 +98,9 @@ object DriveConstants {
     }
 
     val epsilonXY: Double = 0.1;
-    val epsilonTheta: Double = 1.0;
-    val pXY: Double = 1.0;
-    val pTheta: Double = 3.0;
+    val epsilonTheta: Double = 2.5;
+    val pXY: Double = 2.7;
+    val pTheta: Double = 5.0;
 }
 
 object Ports {
@@ -160,9 +160,9 @@ object VisionConstants {
     public const val maxOffsetFor2XZoom = 10.0
 
     object TurnPID {
-        public const val P = 0.1 // .01
-        public const val I = 0.006 // .006
-        public const val D = 0.0005 // .0005
+        public const val P = 0.05 // .01
+        public const val I = 0.0//0.006 // .006
+        public const val D = 0.0//0.005//0.0005 // .0005
     }
 
     object ThrottlePID {

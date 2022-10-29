@@ -62,6 +62,7 @@ class DeploySubsystem(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun deployStop() {
+        deploySetpoint = 0.0;
         deployMotor.set(0.0)
     }
 

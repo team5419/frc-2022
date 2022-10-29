@@ -11,14 +11,13 @@ import frc.robot.DriveConstants;
 import frc.robot.classes.SubsystemHolder
 import frc.robot.FeederConstants;
 import kotlin.math.pow;
+import kotlin.math.sign;
 import edu.wpi.first.math.geometry.Pose2d;
 
 class NewAutoAlign(_subsystems: SubsystemHolder, _driver: XboxController, _time: Double = 0.0) : CommandBase() { // meters, meters, degrees
   private val subsystems: SubsystemHolder = _subsystems
   private val time: Double = _time
   private val timer: Timer = Timer()
-  private var rotation: Double = 0.0;
-  private var sawTarget: Boolean = false;
   private val driver: XboxController = _driver;
 
   init {
@@ -34,29 +33,17 @@ class NewAutoAlign(_subsystems: SubsystemHolder, _driver: XboxController, _time:
     subsystems.lights.setColor(setpoint.color);
     timer.reset()
     timer.start()
-    sawTarget = false;
-    val pose: Pose2d = subsystems.drivetrain.pose();
-    rotation = Math.atan(pose.getY() / pose.getX()) * 180 / Math.PI;
-    if(pose.getX() > 0) {
-      //rotation += 180;
-    }
-    println("theta ${rotation}");
   }
 
   override fun execute() {
-    val theta: Double = subsystems.drivetrain.angle;
-    val target: Double = Math.round((theta - rotation) / 360) * 360 + rotation;
 
-    if(subsystems.vision.isTargetFound() && !sawTarget) {
-      sawTarget = true;
-    }
 
     var lefty: Double = Util.withDeadband(driver.getLeftY().toDouble())
     var leftx: Double = Util.withDeadband(driver.getLeftX().toDouble());
-    subsystems.drivetrain.drive(lefty * DriveConstants.speedMultiplier, leftx * DriveConstants.speedMultiplier, if (sawTarget)
+    subsystems.drivetrain.drive(lefty * DriveConstants.speedMultiplier, leftx * DriveConstants.speedMultiplier, if (subsystems.vision.isTargetFound())
       subsystems.vision.autoAlignTurn()
-      else -1 * DriveConstants.pTheta * (Math.PI / 180) * Util.withDeadband((target - theta), DriveConstants.epsilonTheta)
-    , true, true);
+      else DriveConstants.pTheta,
+    true, true);
 
     // println("theta: ${DriveConstants.pTheta * (Math.PI / 180) * (target - theta)}");
     // println("already saw target: ${sawTarget}");
