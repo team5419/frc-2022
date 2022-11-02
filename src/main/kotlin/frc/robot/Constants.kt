@@ -100,7 +100,7 @@ object DriveConstants {
     val epsilonXY: Double = 0.1;
     val epsilonTheta: Double = 2.5;
     val pXY: Double = 2.7;
-    val pTheta: Double = 5.0;
+    val pTheta: Double = 4.0;
 }
 
 object Ports {
@@ -158,9 +158,10 @@ object VisionConstants {
     public val maxAutoAlignSpeed = 0.15
     public val targetOffset = 0.0
     public const val maxOffsetFor2XZoom = 10.0
+    public val limelightsPerMeter: Double = 0.874;
 
     object TurnPID {
-        public const val P = 0.05 // .01
+        public const val P = 0.04 // .01
         public const val I = 0.0//0.006 // .006
         public const val D = 0.0//0.005//0.0005 // .0005
     }

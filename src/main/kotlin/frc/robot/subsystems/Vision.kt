@@ -28,6 +28,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     private val mCameraAngle: Double = VisionConstants.cameraAngle
     public val maxSpeed = VisionConstants.maxAutoAlignSpeed
     public var adjustPosition: Boolean = false;
+    private var lastAdjustedAngle: Double = 0.0;
 
     fun getHorizontalOffset(): Double {
         return mLimelight.getEntry("tx").getDouble(0.0)
@@ -72,6 +73,7 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
         layout.addBoolean("Aligned", { turnAligned() })
         layout.addNumber("Horizontal Distance", { getHorizontalDistance() })
         layout.addBoolean("Sees target", { isTargetFound() })
+        layout.addNumber("Last angle", { lastAdjustedAngle })
     }
 
     // check if the limelight is picking up on the target
@@ -132,14 +134,20 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     }
 
     public override fun periodic() {
-        // if(adjustPosition && isTargetFound()) {
-        //     val angle: Rotation2d = Rotation2d.fromDegrees(m_drivetrain.angle);
-        //     val dist: Double = getHorizontalDistance();
-        //     val newY: Double = Math.sin(angle.getRadians()) * dist;
-        //     val newX: Double = Math.cos(angle.getRadians()) * dist;
-        //     m_drivetrain.resetOdometry(Pose2d(newX, newY, angle))
-        //     println("${dist}");
-        //     println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
-        // }
+        if(adjustPosition && isTargetFound()) {
+            val offset: Double = getHorizontalOffset();
+            if(Math.abs(offset) > 3.0) { // otherwise it gets inaccurate
+                return;
+            }
+            println("adjusting pose")
+            val angle: Rotation2d = Rotation2d.fromDegrees(m_drivetrain.angle - getHorizontalOffset());
+            lastAdjustedAngle = angle.getDegrees();
+            val dist: Double = getHorizontalDistance() / VisionConstants.limelightsPerMeter;
+            val newY: Double = Math.sin(angle.getRadians()) * dist;
+            val newX: Double = Math.cos(angle.getRadians()) * dist;
+            m_drivetrain.resetOdometry(Pose2d(newX, newY, angle))
+            // println("${dist}");
+            // println("x: ${newX}, y: ${newY}, dist: ${dist}, angle: ${angle}")
+        }
     }
 }

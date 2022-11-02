@@ -35,6 +35,7 @@ class Robot : TimedRobot() {
   override fun autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.setDefaults();
+    m_robotContainer.m_subsystems.vision.adjustPosition = false;
     m_robotContainer.m_feeder.initialize();
     m_autonomousCommand.schedule();
     

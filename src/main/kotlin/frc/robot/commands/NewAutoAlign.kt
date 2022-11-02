@@ -19,6 +19,7 @@ class NewAutoAlign(_subsystems: SubsystemHolder, _driver: XboxController, _time:
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val driver: XboxController = _driver;
+  private var inverted: Int = 1;
 
   init {
     addRequirements(subsystems.drivetrain);
@@ -33,29 +34,27 @@ class NewAutoAlign(_subsystems: SubsystemHolder, _driver: XboxController, _time:
     subsystems.lights.setColor(setpoint.color);
     timer.reset()
     timer.start()
+    val pose: Pose2d = subsystems.drivetrain.pose();
+    val angle: Double = subsystems.drivetrain.angle;
+    var rotation: Double = Math.atan(pose.getY() / pose.getX()) * 180 / Math.PI;
+    if(pose.getX() < 0) {
+      rotation += 180;
+    }
+    val a: Long = Math.round((angle - rotation) / 360.0);
+    rotation = a * 360 + rotation;
+    inverted = if (rotation > angle) -1 else 1;
   }
 
   override fun execute() {
-
-
     var lefty: Double = Util.withDeadband(driver.getLeftY().toDouble())
     var leftx: Double = Util.withDeadband(driver.getLeftX().toDouble());
     subsystems.drivetrain.drive(lefty * DriveConstants.speedMultiplier, leftx * DriveConstants.speedMultiplier, if (subsystems.vision.isTargetFound())
       subsystems.vision.autoAlignTurn()
-      else DriveConstants.pTheta,
+      else DriveConstants.pTheta * inverted,
     true, true);
-
-    // println("theta: ${DriveConstants.pTheta * (Math.PI / 180) * (target - theta)}");
-    // println("already saw target: ${sawTarget}");
-    // subsystems.drivetrain.drive(Math.min(DriveConstants.pXY * Util.withDeadband((x - pose.getX()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity),
-    // Math.min(DriveConstants.pXY * Util.withDeadband((y - pose.getY()), DriveConstants.epsilonXY), DriveConstants.SwerveRamsete.maxVelocity), 
-    // if(sawTarget) subsystems.vision.autoAlignTurn() 
-    // else -1 * DriveConstants.pTheta * (Math.PI / 180) * Util.withDeadband((target - theta), DriveConstants.epsilonTheta), 
-    // true, true);
   }
 
   override fun end(interrupted: Boolean) {
-      println("done aligning")
       subsystems.vision.off();
       timer.stop()
       subsystems.lights.setColor(RGB(0, 0, 0));
