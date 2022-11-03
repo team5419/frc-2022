@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.hal.simulation.CTREPCMDataJNI;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -31,15 +32,10 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
 class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     public val pcmCompressor: Compressor;
-    public val solenoid: DoubleSolenoid;
-    //public val phCompressor: Compressor;
+    public val solenoid: Solenoid;
+    public val cataSolenoid: Solenoid;
 
-    //momomomotteres
-
-    // ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
-    // ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
-
-    private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
+    private val layout: ShuffleboardLayout = tab.getLayout("Intake/Catapult", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
     //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
     //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
@@ -47,35 +43,28 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     init {
 
         pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM);
-        solenoid = DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
-        solenoid.set(DoubleSolenoid.Value.kOff);
-        //phCompressor = Compressor(1, PneumaticsModuleType.REVPH)
-        pcmCompressor.enableDigital();
-        // pcmCompressor.enableDigital();
-        // pcmCompressor.disable();
+        solenoid = Solenoid(PneumaticsModuleType.CTREPCM, 0);
+        solenoid.set(false);
+        cataSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, 1);
+        cataSolenoid.set(false);
 
-        // val enabled: Boolean = pcmCompressor.enabled();
-        // val pressureSwitch: Boolean = pcmCompressor.getPressureSwitchValue();
-        // val current: Double = pcmCompressor.getCompressorCurrent();
+        pcmCompressor.enableDigital();
 
         layout.addBoolean("pressure switch:", {pcmCompressor.getPressureSwitchValue()})
-        // tab.addNumber("right arm encoder:", {rightArm.getSelectedSensorPosition(0)})
-            
-        // leftArm.setInverted(false);
-        // rightArm.setInverted(true);
     }
 
 
     public fun feedForward() {
-        solenoid.set(DoubleSolenoid.Value.kForward);
+        solenoid.set(true);
     }
 
-    public fun feedReverse() {
-        solenoid.set(DoubleSolenoid.Value.kReverse)
+    public fun shoot(on: Boolean) {
+        cataSolenoid.set(true);
+        print("shot")
     }
 
     public fun stop() {
-        solenoid.set(DoubleSolenoid.Value.kOff);
+        solenoid.set(false);
     }
 
     override fun periodic() {

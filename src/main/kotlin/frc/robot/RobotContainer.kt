@@ -29,7 +29,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   val autoSelector2 = SendableChooser<SequentialCommandGroup>()
   val driver = XboxController(0);
   val codriver = XboxController(1);
-  public val drivetrain_ : Drivetrain = Drivetrain();
+  public val drivetrain_: Drivetrain = Drivetrain();
   public val climber_: Climber = Climber(tab);
   public val intake_: Intake = Intake(tab);
 
@@ -42,6 +42,8 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     tab.add("Climb Selector", autoSelector2).withPosition(8, 3).withSize(2, 1);
     autoSelector2.addOption("Mid Bar Auto", MidBarAuto(climber_, codriver))
+
+
 
     setDefaults();
   }
@@ -61,6 +63,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     xButton.whenHeld(Feed(intake_))
     val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
     bButton.whenHeld(Feed(intake_, true))
+
+    val aButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
+    aButton.whenPressed(Shoot(intake_))
   }
 
 
