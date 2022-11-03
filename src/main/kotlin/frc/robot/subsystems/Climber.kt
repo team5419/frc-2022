@@ -96,12 +96,12 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
 
 
 
-    public fun setLeftArm(left: Int, throttle: Double) {
+    public fun setLeftArm(throttle: Double) {
         val f: Double = 0.5;
         leftArm.set(ControlMode.PercentOutput, 1.5 * (-throttle * f));
     }
 
-    public fun setRightArm(right: Int, throttle: Double) {
+    public fun setRightArm(throttle: Double) {
         val f: Double = 0.5;
         rightArm.set(ControlMode.PercentOutput, 1.5 * (-throttle * f));
     }
