@@ -161,7 +161,7 @@ object VisionConstants {
     public val limelightsPerMeter: Double = 0.874;
 
     object TurnPID {
-        public const val P = 0.04 // .01
+        public const val P = 0.06 // .01
         public const val I = 0.0//0.006 // .006
         public const val D = 0.0//0.005//0.0005 // .0005
     }

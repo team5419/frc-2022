@@ -32,7 +32,7 @@ class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
     if(!hasUpdated) {
       //println("not updated")
       if(subsystems.indexer.atPositionOne() && subsystems.indexer.atPositionTwo() && subsystems.indexer.atPositionThree()) {
-        subsystems.lights.setColor(RGB(255, 0, 0));
+        subsystems.lights.setColor(RGB(0, 0, 255));
         timer.start();
         hasUpdated = true;
       } else if(subsystems.indexer.atPositionThree()) {
@@ -40,7 +40,7 @@ class DefaultIndex(_subsystems: SubsystemHolder) : CommandBase() {
         subsystems.lights.setColor(RGB(0, 255, 0));
         timer.start();
         hasUpdated = true;
-      } else if(subsystems.lights.isEqualTo(0, 255, 0) || subsystems.lights.isEqualTo(255, 0, 0)) {
+      } else if(subsystems.lights.isEqualTo(0, 255, 0) || subsystems.lights.isEqualTo(0, 0, 255)) {
           //println("turning off")
           subsystems.lights.setColor(RGB(0, 0, 0));
           timer.start();

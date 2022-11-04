@@ -92,7 +92,6 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
     public fun autoAlignTurn() : Double {
         // get the pid loop output
         var output =/*  if (getHorizontalOffset() > 0.0) 0.5 else -0.5; */turnController.calculate(getHorizontalOffset() + VisionConstants.targetOffset)
-        println("turn aligned: ${turnAligned()}, target found: ${isTargetFound()}")
         // do we need to align / can we align?
         if(!turnAligned() && isTargetFound()) {
             return -output
@@ -139,7 +138,6 @@ class Vision(tab: ShuffleboardTab, drivetrain: Drivetrain) : SubsystemBase() {
             if(Math.abs(offset) > 3.0) { // otherwise it gets inaccurate
                 return;
             }
-            println("adjusting pose")
             val angle: Rotation2d = Rotation2d.fromDegrees(m_drivetrain.angle - getHorizontalOffset());
             lastAdjustedAngle = angle.getDegrees();
             val dist: Double = getHorizontalDistance() / VisionConstants.limelightsPerMeter;
