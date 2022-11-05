@@ -29,21 +29,26 @@ class FiveBall(_subsystems: SubsystemHolder, _driver: XboxController) : Sequenti
             ParallelRaceGroup(
                 RunIntake(subsystems, 0.0),
                 SequentialCommandGroup(
+                    // DRIVE BACK AND PICK UP CLOSEST BALL
                     AutoDrive(subsystems, firstDist * 0.5 * Math.cos(Util.degreesToRadians(initialTheta)), firstDist * 0.5 * Math.sin(Util.degreesToRadians(initialTheta)), initialTheta),
                     ParallelRaceGroup(
                         SpinUp(subsystems, 14500.0, 14500.0),
                         AutoDriveAndAlign(subsystems, driver, firstDist * Math.cos(Util.degreesToRadians(initialTheta)), firstDist * Math.sin(Util.degreesToRadians(initialTheta)) - 0.2)
                     ),
                     ParallelCommandGroup(
-                        Shoot(subsystems, driver, 14500.0, 14500.0, 2.0),
-                        Deploy(subsystems, 0.27, 0.75)
+                        Shoot(subsystems, driver, 15000.0, 15000.0, 2.0),
+                        Deploy(subsystems, 0.27, 0.75) // RETRACT INTAKE TO MAKE SURE SECOND BALL GETS GRABBED
                     ),
+
+                    // DRIVE BACK TO GET BALLS FROM HUMAN LOADER
                     ParallelCommandGroup(
-                        AutoDrive(subsystems, 5.8, 1.5, 0.0),
-                        Deploy(subsystems, -0.15, 0.75)
+                        AutoDrive(subsystems, 6.5, 1.4, 40.0),
+                        Deploy(subsystems, -0.15, 0.75) // PUT OUT INTAKE
                     ),
                     // AutoDrive(subsystems, 5.8, 2.0, 0.0),
                     // Wait(1.0),
+
+                    // DRIVE BACK TO START POSITION & SHOOT 
                     ParallelRaceGroup(
                         SpinUp(subsystems, 14500.0, 14500.0),
                         AutoDriveAndAlign(subsystems, driver, firstDist * Math.cos(Util.degreesToRadians(initialTheta)), firstDist * Math.sin(Util.degreesToRadians(initialTheta)))
@@ -52,8 +57,11 @@ class FiveBall(_subsystems: SubsystemHolder, _driver: XboxController) : Sequenti
                         Deploy(subsystems, 0.3, 0.75),
                         Shoot(subsystems, driver, 14500.0, 14500.0, 2.0)
                     ),
+
+                    // GRAB BALL NEXT TO WALL
                     ParallelCommandGroup(
-                        AutoDrive(subsystems, -1.3, 1.25, 90.0),
+                                            //-0.7
+                        AutoDrive(subsystems, -1.1, 1.25, 90.0),
                         Deploy(subsystems, -0.2, 0.75)
                     ),
                     ParallelRaceGroup(
