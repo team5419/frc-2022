@@ -31,7 +31,7 @@ class RobotContainer(tab: ShuffleboardTab) {
   val codriver = XboxController(1);
   public val drivetrain_: Drivetrain = Drivetrain();
   public val climber_: Climber = Climber(tab);
-  public val intake_: Intake = Intake(tab);
+  public val intake_: IntakeSub = IntakeSub(tab);
 
   init {
     // creates a tab in shuffleboard to select autonomous routine
@@ -59,13 +59,13 @@ class RobotContainer(tab: ShuffleboardTab) {
     val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))
 
-    val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
-    xButton.whenHeld(Feed(intake_))
-    val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
-    bButton.whenHeld(Feed(intake_, true))
+    // val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
+    // xButton.whenHeld(Feed(intake_))
+    // val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
+    // bButton.whenHeld(Feed(intake_, true))
 
     val aButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton.whenPressed(Shoot(intake_))
+    aButton.toggleWhenPressed(Intake(intake_))
   }
 
 

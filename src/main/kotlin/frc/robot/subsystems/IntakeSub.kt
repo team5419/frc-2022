@@ -28,12 +28,20 @@ import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
-class Intake(tab: ShuffleboardTab) : SubsystemBase() {
+import frc.robot.IntakeConstants;
 
+class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
+
+    public val motor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless);
     public val pcmCompressor: Compressor;
     public val solenoid: Solenoid;
     public val cataSolenoid: Solenoid;
+    private var deployState: Boolean;
 
     private val layout: ShuffleboardLayout = tab.getLayout("Intake/Catapult", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
@@ -41,7 +49,19 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
 
     init {
+        
+        motor.apply {
+            restoreFactoryDefaults()
+            setIdleMode(IdleMode.kCoast)
+            setInverted(true)
+            //setSensorPhase(false)
+            setSmartCurrentLimit(40)
+            setClosedLoopRampRate(1.0)
+            setControlFramePeriodMs(50)
+            setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
+        }
 
+        deployState = false;
         pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM);
         solenoid = Solenoid(PneumaticsModuleType.CTREPCM, 0);
         solenoid.set(false);
@@ -53,18 +73,16 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         layout.addBoolean("pressure switch:", {pcmCompressor.getPressureSwitchValue()})
     }
 
-
-    public fun feedForward() {
+    public fun start() {
+        motor.set(IntakeConstants.outputPercent);
         solenoid.set(true);
-    }
-
-    public fun shoot(on: Boolean) {
         cataSolenoid.set(true);
-        print("shot")
     }
 
     public fun stop() {
+        motor.set(0.0);
         solenoid.set(false);
+        cataSolenoid.set(false);
     }
 
     override fun periodic() {
