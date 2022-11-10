@@ -31,9 +31,9 @@ class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double
 
   init {
     addCommands(
-      SequentialCommandGroup(
-        AlignSpin(subsystems, driver)
-      ),
+      // SequentialCommandGroup(
+      //   AlignSpin(subsystems, driver)
+      // ),
         ParallelRaceGroup(
             Brake(subsystems.drivetrain),
             ShootAndFeed(subsystems, driver, main, kicker, time),
