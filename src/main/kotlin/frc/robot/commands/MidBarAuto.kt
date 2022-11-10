@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX
 
+import edu.wpi.first.wpilibj2.command.WaitCommand
+
 class MidBarAuto(_climber: Climber, m_codriver: XboxController) : SequentialCommandGroup() {
     val climber: Climber = _climber
     val codriver: XboxController = m_codriver
@@ -33,7 +35,9 @@ class MidBarAuto(_climber: Climber, m_codriver: XboxController) : SequentialComm
             SequentialCommandGroup(
                 //MoveArm(climber, codriver, "right", false, highestPosMidRight),
                 MoveArm(climber, codriver, "right", true, finalPosMidRight),
+                WaitCommand​(2),
                 MoveArm(climber, codriver, "left", false, highestPosMidLeft),
+                WaitCommand​(2),
                 MoveArm(climber, codriver, "left", true, finalPosMidLeft)
             )
         )
