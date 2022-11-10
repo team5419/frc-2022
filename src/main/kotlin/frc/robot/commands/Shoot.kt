@@ -25,12 +25,15 @@ class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double
   private val main: Double = _main;
   private val kicker: Double = _kicker;
   private val time : Double = _time;
+  val setpoint: LookupEntry = subsystems.vision.getShotSetpoint();
+  val calculatedMainVelocity = setpoint.mainVelocity;
+  val calculatedKickerVelocity = setpoint.kickerVelocity;
 
   init {
     addCommands(
         ParallelRaceGroup(
             Brake(subsystems.drivetrain),
-            ShootAndFeed(subsystems, driver, main, kicker, time),
+            ShootAndFeed(subsystems, driver, if (main == -1.0) calculatedMainVelocity else main, if (kicker == -1.0) calculatedKickerVelocity else kicker, time),
             Index(subsystems)
         )
     )
