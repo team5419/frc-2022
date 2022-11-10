@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer
 import frc.robot.FeederConstants
 import frc.robot.classes.SubsystemHolder
 
-class RunIntake(_subsystems: SubsystemHolder, _time: Double = 0.0, _velocity: Double = 1.0) : CommandBase() {
+class RunIntake(_subsystems: SubsystemHolder, _time: Double = 0.0, _velocity: Double = .50) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private val time: Double = _time
   private val timer: Timer = Timer()

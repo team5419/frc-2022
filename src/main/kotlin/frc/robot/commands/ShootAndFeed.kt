@@ -13,6 +13,9 @@ import frc.robot.classes.RGB;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType
 import frc.robot.classes.SubsystemHolder
 
+import frc.robot.Lookup
+import frc.robot.LookupEntry
+
 class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private val main: Double = _main;
@@ -27,11 +30,17 @@ class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main:
   }
 
   override fun initialize() {
+    val setpoint: LookupEntry = subsystems.vision.getShotSetpoint();
+    val calculatedMainVelocity = setpoint.mainVelocity;
+    val calculatedKickerVelocity = setpoint.kickerVelocity;
     timer.reset()
     timer.start()
     subsystems.feeder.currentVel = FeederConstants.activePercent
     subsystems.lights.setColor(subsystems.shooter.currentColor);
-    subsystems.shooter.shoot(main, kicker)
+    if (main == -1.0 && kicker == -1.0)
+      subsystems.shooter.shoot(calculatedMainVelocity, calculatedKickerVelocity)
+    else
+      subsystems.shooter.shoot(main, kicker)
 
     // driver.setRumble(RumbleType.kLeftRumble, 1.0);
     // driver.setRumble(RumbleType.kRightRumble, 1.0);

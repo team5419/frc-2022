@@ -21,8 +21,8 @@ object Lookup {
         table.add(LookupEntry(2.4, 15406.0, 15406.0, RGB(255, 50, 0)))
         table.add(LookupEntry(2.51, 17805.0, 18338.0, RGB(255, 0, 0)))
         table.add(LookupEntry(2.63, 17174.0, 17427.0, RGB(255, 0, 0)))
-        table.add(LookupEntry(2.7, 100.0, 500.0, RGB(0, 255, 100)))
-        table.add(LookupEntry(3.6, 1000.0, 500.0, RGB(0, 255, 100)))
+        table.add(LookupEntry(3.4, 18600.0, 18300.0, RGB(0, 255, 100)))
+        table.add(LookupEntry(3.6, 18600.0, 18300.0, RGB(0, 255, 100)))
     }
 
     fun add(distance: Double, mainVelocity: Double, kickerVelocity: Double, color: RGB) {

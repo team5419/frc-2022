@@ -27,7 +27,7 @@ class SpinUp(_subsystems: SubsystemHolder, _main: Double = 13500.0, _kicker: Dou
   }
 
   override fun isFinished(): Boolean {
-    return false;
+    return subsystems.vision.turnAligned();
   }
 
   override fun end(interrupted: Boolean) {
