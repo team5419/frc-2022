@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.hal.simulation.CTREPCMDataJNI;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -27,55 +28,61 @@ import edu.wpi.first.wpilibj.Compressor
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
-class Intake(tab: ShuffleboardTab) : SubsystemBase() {
+import frc.robot.IntakeConstants;
 
+class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
+
+    public val motor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless);
     public val pcmCompressor: Compressor;
-    public val solenoid: DoubleSolenoid;
-    //public val phCompressor: Compressor;
+    public val solenoid: Solenoid;
+    public val cataSolenoid: Solenoid;
+    private var deployState: Boolean;
 
-    //momomomotteres
-
-    // ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
-    // ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
-
-    private val layout: ShuffleboardLayout = tab.getLayout("Intake", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
+    private val layout: ShuffleboardLayout = tab.getLayout("Intake/Catapult", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
     //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
     //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
 
     init {
+        
+        motor.apply {
+            restoreFactoryDefaults()
+            setIdleMode(IdleMode.kCoast)
+            setInverted(true)
+            //setSensorPhase(false)
+            setSmartCurrentLimit(40)
+            setClosedLoopRampRate(1.0)
+            setControlFramePeriodMs(50)
+            setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
+        }
 
+        deployState = false;
         pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM);
-        solenoid = DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
-        solenoid.set(DoubleSolenoid.Value.kOff);
-        //phCompressor = Compressor(1, PneumaticsModuleType.REVPH)
-        pcmCompressor.enableDigital();
-        // pcmCompressor.enableDigital();
-        // pcmCompressor.disable();
+        solenoid = Solenoid(PneumaticsModuleType.CTREPCM, 0);
+        solenoid.set(false);
+        cataSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, 1);
+        cataSolenoid.set(false);
 
-        // val enabled: Boolean = pcmCompressor.enabled();
-        // val pressureSwitch: Boolean = pcmCompressor.getPressureSwitchValue();
-        // val current: Double = pcmCompressor.getCompressorCurrent();
+        pcmCompressor.enableDigital();
 
         layout.addBoolean("pressure switch:", {pcmCompressor.getPressureSwitchValue()})
-        // tab.addNumber("right arm encoder:", {rightArm.getSelectedSensorPosition(0)})
-            
-        // leftArm.setInverted(false);
-        // rightArm.setInverted(true);
     }
 
-
-    public fun feedForward() {
-        solenoid.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public fun feedReverse() {
-        solenoid.set(DoubleSolenoid.Value.kReverse)
+    public fun start() {
+        motor.set(IntakeConstants.outputPercent);
+        solenoid.set(true);
+        cataSolenoid.set(true);
     }
 
     public fun stop() {
-        solenoid.set(DoubleSolenoid.Value.kOff);
+        motor.set(0.0);
+        solenoid.set(false);
+        cataSolenoid.set(false);
     }
 
     override fun periodic() {

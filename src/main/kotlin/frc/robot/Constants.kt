@@ -75,7 +75,6 @@ object FeederConstants {
 object IntakeConstants {
     object Ports {
         val motor = 6;
-        val deployMotor = 15;
     }
     val outputPercent = 1.0;
     val reversePercent = -outputPercent;
