@@ -31,8 +31,8 @@ class NewAutoAlign(_subsystems: SubsystemHolder, _driver: XboxController, _time:
   override fun initialize() {
     subsystems.vision.on();
     val setpoint: LookupEntry = subsystems.vision.getShotSetpoint();
-    subsystems.shooter.mainVelocity = setpoint.mainVelocity;
-    subsystems.shooter.kickerVelocity = setpoint.kickerVelocity;
+    //subsystems.shooter.mainVelocity = setpoint.mainVelocity;
+    //subsystems.shooter.kickerVelocity = setpoint.kickerVelocity;
     subsystems.shooter.currentColor = setpoint.color;
     subsystems.drivetrain.brakeMode = true;
     setpointRGB = setpoint.color;

@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout
 import frc.robot.classes.RGB;
 import frc.robot.Ports;
 
+
+
 class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
@@ -134,9 +136,9 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     //check if flywheel velocity is at target
-    public fun isSpedUp(): Boolean {
-        val fastEnough = flyWheelVelocity(mainMotor) / shooterMultiplier >= setpointMain - 600.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= setpointKicker - 600.0
-        val slowEnough = flyWheelVelocity(mainMotor) / shooterMultiplier <= setpointMain + 500.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier <= setpointKicker + 500.0
+    public fun isSpedUp(targetMain : Double, targetKicker : Double): Boolean {
+        val fastEnough = flyWheelVelocity(mainMotor) / shooterMultiplier >= targetMain - 600.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= targetKicker - 600.0
+        val slowEnough = flyWheelVelocity(mainMotor) / shooterMultiplier <= targetMain + 500.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier <= targetKicker + 500.0
         return  fastEnough && slowEnough && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 

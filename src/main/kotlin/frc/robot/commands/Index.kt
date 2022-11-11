@@ -8,10 +8,16 @@ import frc.robot.IndexerConstants
 import frc.robot.subsystems.Shooter;
 import frc.robot.classes.SubsystemHolder
 
+import frc.robot.Lookup
+import frc.robot.LookupEntry
+
 
 class Index(_subsystems: SubsystemHolder) : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
   private var startingPosition: Double = 0.0
+  /*private var setpoint : LookupEntry
+  private var targetMain : Double
+  private var targetKicker : Double*/
   init {
     addRequirements(_subsystems.indexer);
   }
@@ -21,8 +27,10 @@ class Index(_subsystems: SubsystemHolder) : CommandBase() {
   }
 
   override fun execute() {
-    //println("setting indexer !!!");
-    if(subsystems.shooter.isSpedUp()) {
+    val setpoint : LookupEntry = subsystems.vision.getShotSetpoint();
+    val targetMain : Double = setpoint.mainVelocity;
+    val targetKicker : Double = setpoint.kickerVelocity;
+    if(subsystems.shooter.isSpedUp(targetMain, targetKicker)) {
       subsystems.indexer.index(0.4);
     } else {
       subsystems.indexer.index(0.0);

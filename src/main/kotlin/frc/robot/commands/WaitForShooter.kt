@@ -1,4 +1,4 @@
-package frc.robot.commands; 
+/*package frc.robot.commands; 
 
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Indexer;
@@ -33,4 +33,4 @@ class WaitForShooter(_subsystems: SubsystemHolder, _time: Double) : CommandBase(
   override fun end(interrupted: Boolean) {
     timer.stop()
   }
-}
+}*/
