@@ -55,7 +55,6 @@ object Lookup {
                 return if (Math.abs(entry.distance - distance) > Math.abs(prevEntry.distance - distance)) prevEntry else entry
             }
         }
-
         return table.get(table.size - 1)
     }
 }

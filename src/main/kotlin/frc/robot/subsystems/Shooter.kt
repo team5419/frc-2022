@@ -135,7 +135,9 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
 
     //check if flywheel velocity is at target
     public fun isSpedUp(): Boolean {
-        return flyWheelVelocity(mainMotor) / shooterMultiplier >= setpointMain -600.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= setpointKicker -600.0 && (setpointMain != 0.0 || setpointKicker != 0.0)
+        val fastEnough = flyWheelVelocity(mainMotor) / shooterMultiplier >= setpointMain - 600.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= setpointKicker - 600.0
+        val slowEnough = flyWheelVelocity(mainMotor) / shooterMultiplier <= setpointMain + 500.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier <= setpointKicker + 500.0
+        return  fastEnough && slowEnough && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 
     public fun stop() {
