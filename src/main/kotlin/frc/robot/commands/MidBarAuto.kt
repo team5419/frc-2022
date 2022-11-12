@@ -14,29 +14,30 @@
 
 // import com.ctre.phoenix.motorcontrol.can.TalonFX
 
-// class MidBarAuto(_climber: Climber, m_codriver: XboxController) : SequentialCommandGroup() {
-//     val climber: Climber = _climber
-//     val codriver: XboxController = m_codriver
+class MidBarAuto(_climber: Climber, m_codriver: XboxController) : SequentialCommandGroup() {
+    val climber: Climber = _climber
+    val codriver: XboxController = m_codriver
 
 //     //val highestPosMidRight: Double;
 //     val finalPosMidRight: Double;
 //     val highestPosMidLeft: Double;
 //     val finalPosMidLeft: Double;
     
-//     init {
-//         highestPosMidLeft = 200555.0;
-//         finalPosMidLeft = 6104.0;
-//         highestPosMidRight = 0.0;
-//         finalPosMidRight = 0.0;
-//         println("its working!!!")
-//         addCommands(
-//             SequenAtialCommandGroup(
-//                 MoveArm(climber, codriver, "right", false, highestPosMidRight),
-//                 MoveArm(climber, codriver, "left", true, finalPosMidLeft),
-//                 MoveArm(climber, codriver, "right", false, highestPosMidRight),
-//                 MoveArm(climber, codriver, "right", true, finalPosMidRight),
-
-//             )
-//         )
-//     }
-// }
+    init {
+        //highestPosMidRight = 200555.0;
+        finalPosMidRight = 6104.0;
+        highestPosMidLeft = 0.0;
+        finalPosMidLeft = 0.0;
+        println("its working!!!")
+        addCommands(
+            SequentialCommandGroup(
+                //MoveArm(climber, codriver, "right", false, highestPosMidRight),
+                MoveArm(climber, codriver, "right", true, finalPosMidRight),
+                WaitCommand​(2),
+                MoveArm(climber, codriver, "left", false, highestPosMidLeft),
+                WaitCommand​(2),
+                MoveArm(climber, codriver, "left", true, finalPosMidLeft)
+            )
+        )
+    }
+}
