@@ -75,9 +75,9 @@ class Drivetrain() : SubsystemBase() {
     fun drive(throttle: Double, turn : Double) {
         //println(throttle);
         leftLeader.set(ControlMode.PercentOutput, (throttle - (turn * 0.5)) * mod);
-        rightLeader.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)));
-        leftFollower.set(ControlMode.PercentOutput, (throttle - (turn * 0.5)));
-        rightFollower.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)));
+        rightLeader.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)) * mod);
+        leftFollower.set(ControlMode.PercentOutput, (throttle - (turn * 0.5)) * mod);
+        rightFollower.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)) * mod);
     }
 
 

@@ -14,7 +14,7 @@ class Slowmode(_drivetrain: Drivetrain) : CommandBase() {
     }
 
     public override fun execute() {
-        
+        drivetrain.mod = 0.5;
     }
 
     public override fun end(interrupted: Boolean) {

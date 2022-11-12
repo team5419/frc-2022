@@ -1,29 +1,36 @@
 package frc.robot.commands; 
 
-import frc.robot.subsystems.IntakeSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 
+import frc.robot.subsystems.IntakeSub;
+
+import edu.wpi.first.wpilibj.Timer
+
 class Deploy(_intake: IntakeSub) : CommandBase() {
   private val intake: IntakeSub = _intake;
+  private val timer: Timer = Timer()
 
   init {
     addRequirements(_intake);
   }
 
   override fun initialize() {
-    intake.deployStart();
+    timer.reset();
+    timer.start();
+    intake.deployState = ! intake.deployState;
+    intake.deploy();
   }
- 
+
   override fun execute() {
-    println("executing")
+    
   }
 
   override fun end(interrupted: Boolean) {
-    intake.deployStop();
+    timer.stop()
   }
 
   override fun isFinished(): Boolean {
-    return false
+    return (timer.get() >= 1.0);
   }
 }

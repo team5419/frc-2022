@@ -39,7 +39,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     // create and add autonomous routines to selector in shuffleboard
     //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
-    autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver, catapult_))
+    autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver, catapult_, intake_))
 
     tab.add("Climb Selector", autoSelector2).withPosition(8, 3).withSize(2, 1);
     // autoSelector2.addOption("Mid Bar Auto", MidBarAuto(climber_, codriver))
@@ -61,7 +61,7 @@ class RobotContainer(tab: ShuffleboardTab) {
     lBumper.whenHeld(Slowmode(drivetrain_))
 
     val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
-    xButton.whenPressed(Shoot(catapult_))
+    xButton.toggleWhenPressed(Shoot(catapult_))
 
     val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
     // yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))

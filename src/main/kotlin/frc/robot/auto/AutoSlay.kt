@@ -12,10 +12,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
-class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController, _catapult: Catapult) : SequentialCommandGroup() {
+class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController, _catapult: Catapult, _intake: IntakeSub) : SequentialCommandGroup() {
     private val drivetrain: Drivetrain = _drivetrain
     private val driver: XboxController = m_driver
     private val catapult: Catapult =  _catapult
+    private val intake: IntakeSub = _intake
     
     init {
         val backwards1: Double = -0.7; // -0.7;
@@ -30,12 +31,19 @@ class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController, _catapult: Cat
 
         addCommands(
             SequentialCommandGroup (
-                Shoot(_catapult),
-                Shoot(_catapult),
+                Shoot(catapult),
                 RamseteAction(drivetrain, listOf(
                     Pose2d(0.0, 0.0, Rotation2d(0.0)),
-                    Pose2d(0.0, 5.0, Rotation2d(-90.0))
+                    Pose2d(5.0, 0.0, Rotation2d(0.0))
                 ), false)
+                // ParallelCommandGroup (
+                //     Deploy(intake),
+                //     Intake(intake)
+                // ),
+                // ParallelCommandGroup (
+                //     Deploy(intake),
+                //     Intake(intake)
+                // )
             )
                 // RamseteAction(drivetrain, listOf(
                 //     Pose2d(-0.7, 0.0, Rotation2d(0.0)), 

@@ -18,24 +18,19 @@ class Shoot(_catapult: Catapult) : CommandBase() {
   override fun initialize() {
     timer.reset();
     timer.start();
+    catapult.state = !catapult.state;
     catapult.start();
   }
 
   override fun execute() {
-    timer.reset();
-    timer.start();
-    catapult.state = !catapult.state;
-    catapult.start();
-    // catapult.start();
+    
   }
 
   override fun end(interrupted: Boolean) {
     timer.stop()
-    // catapult.stop();
   }
 
   override fun isFinished(): Boolean {
-    return (timer.get() >= 2.0);
-    // return false;
+    return (timer.get() >= 1.0);
   }
 }

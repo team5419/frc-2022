@@ -40,8 +40,8 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
     public val motor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless);
     private val pcmCompressor: Compressor;
     private val solenoid: Solenoid;
-    //public var intakeState: Boolean;
-    //public var deployState: Boolean;
+    public var intakeState: Boolean;
+    public var deployState: Boolean;
 
     private val layout: ShuffleboardLayout = tab.getLayout("Intake/Catapult", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
@@ -68,37 +68,18 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
         pcmCompressor.enableDigital();
 
         layout.addBoolean("pressure switch:", {pcmCompressor.getPressureSwitchValue()})
+        layout.addBoolean("deploy", {solenoid.get()})
 
-        //intakeState = false;
-        //deployState = false;
+        intakeState = false;
+        deployState = false;
     }
 
-    // public fun intake() {
-    //     if (intakeState == true) {
-    //         motor.set(IntakeConstants.outputPercent);
-    //     } else {
-    //         motor.set(0.0);
-    //     }
-    // }
-
-    // public fun deploy() {
-    //     solenoid.set(deployState);
-    // }
-
-    public fun deployStart() {
-        solenoid.set(true);
+    public fun deploy() {
+        solenoid.set(deployState)
     }
 
-    public fun deployStop() {
-        solenoid.set(false);
-    }
-
-    public fun intakeStart() {
-        motor.set(IntakeConstants.reversePercent);
-    }
-
-    public fun intakeStop() {
-        motor.set(0.0);
+    public fun intake() {
+        motor.set(if (intakeState) 1.0 else 0.0)
     }
 
     override fun periodic() {

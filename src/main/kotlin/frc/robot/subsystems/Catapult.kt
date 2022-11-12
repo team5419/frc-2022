@@ -41,29 +41,29 @@ class Catapult(tab: ShuffleboardTab) : SubsystemBase() {
 
     private val layout: ShuffleboardLayout = tab.getLayout("Intake/Catapult", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
-    //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
-    //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
-
     init {
 
         cataSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, 1);
         cataSolenoid.set(false);
         state = false;
 
+        layout.addBoolean("catapult", {cataSolenoid.get()})
+
     }
 
     public fun start() {
         cataSolenoid.set(state);
-        // cataSolenoid.set(true);
     }
 
     public fun stop() {
-        // cataSolenoid.set(false);
+        
     }
 
     override fun periodic() {
+
     }
 
     override fun simulationPeriodic() {
+
     }
 }
