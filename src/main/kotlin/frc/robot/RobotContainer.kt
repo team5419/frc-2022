@@ -57,13 +57,13 @@ class RobotContainer(tab: ShuffleboardTab) {
     // val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     // xButton.toggleWhenPressed(Feed(intake_, driver))
 
-    val lBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-    lBumper.whenHeld(Slowmode(drivetrain_))
+    // val lBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+    // lBumper.whenHeld(Slowmode(drivetrain_))
 
-    val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
-    xButton.toggleWhenPressed(Shoot(catapult_))
+    // val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
+    // xButton.toggleWhenPressed(Shoot(catapult_))
 
-    val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
+    // val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
     // yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))
 
     // val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)

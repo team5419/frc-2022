@@ -32,10 +32,13 @@ class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController, _catapult: Cat
         addCommands(
             SequentialCommandGroup (
                 Shoot(catapult),
-                RamseteAction(drivetrain, listOf(
-                    Pose2d(0.0, 0.0, Rotation2d(0.0)),
-                    Pose2d(5.0, 0.0, Rotation2d(0.0))
-                ), false)
+                Shoot(catapult)
+                // ValueDrive(drivetrain, 0.0, 0.2, 0.5),
+                // ValueDrive(drivetrain, 0.2, 0.0, 0.5)
+                // RamseteAction(drivetrain, listOf(
+                //     Pose2d(0.0, 0.0, Rotation2d(0.0)),
+                //     Pose2d(0.0, 0.5, Rotation2d(0.005))
+                // ), false)
                 // ParallelCommandGroup (
                 //     Deploy(intake),
                 //     Intake(intake)

@@ -32,7 +32,7 @@ class Intake(_intake: IntakeSub) : CommandBase() {
   }
 
   override fun isFinished(): Boolean {
-    return (timer.get() >= 1.0);
+    return (timer.get() >= 0.25);
     
   }
 }
