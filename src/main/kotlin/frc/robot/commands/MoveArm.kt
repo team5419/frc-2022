@@ -23,7 +23,7 @@ class MoveArm(_climber: Climber, _codriver: XboxController, _arm: String, _movin
     addRequirements(_climber);
 
     if (movingDown) {
-      throttle = -1.0;
+      throttle = -throttle;
     }
   }
 

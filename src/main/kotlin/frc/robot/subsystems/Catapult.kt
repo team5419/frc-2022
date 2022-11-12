@@ -33,15 +33,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
-import frc.robot.IntakeConstants;
+class Catapult(tab: ShuffleboardTab) : SubsystemBase() {
 
-class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
+    private val cataSolenoid: Solenoid;
 
-    public val motor: CANSparkMax = CANSparkMax(IntakeConstants.Ports.motor, MotorType.kBrushless);
-    private val pcmCompressor: Compressor;
-    private val solenoid: Solenoid;
-    //public var intakeState: Boolean;
-    //public var deployState: Boolean;
+    public var state: Boolean;
 
     private val layout: ShuffleboardLayout = tab.getLayout("Intake/Catapult", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
@@ -49,56 +45,20 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
     //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
 
     init {
-        
-        motor.apply {
-            restoreFactoryDefaults()
-            setIdleMode(IdleMode.kCoast)
-            setInverted(true)
-            //setSensorPhase(false)
-            setSmartCurrentLimit(40)
-            setClosedLoopRampRate(1.0)
-            setControlFramePeriodMs(50)
-            setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
-        }
 
-        pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM);
-        solenoid = Solenoid(PneumaticsModuleType.CTREPCM, 0);
-        solenoid.set(false);
+        cataSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, 1);
+        cataSolenoid.set(false);
+        state = false;
 
-        pcmCompressor.enableDigital();
-
-        layout.addBoolean("pressure switch:", {pcmCompressor.getPressureSwitchValue()})
-
-        //intakeState = false;
-        //deployState = false;
     }
 
-    // public fun intake() {
-    //     if (intakeState == true) {
-    //         motor.set(IntakeConstants.outputPercent);
-    //     } else {
-    //         motor.set(0.0);
-    //     }
-    // }
-
-    // public fun deploy() {
-    //     solenoid.set(deployState);
-    // }
-
-    public fun deployStart() {
-        solenoid.set(true);
+    public fun start() {
+        cataSolenoid.set(state);
+        // cataSolenoid.set(true);
     }
 
-    public fun deployStop() {
-        solenoid.set(false);
-    }
-
-    public fun intakeStart() {
-        motor.set(IntakeConstants.reversePercent);
-    }
-
-    public fun intakeStop() {
-        motor.set(0.0);
+    public fun stop() {
+        // cataSolenoid.set(false);
     }
 
     override fun periodic() {

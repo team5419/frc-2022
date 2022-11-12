@@ -4,7 +4,7 @@ import frc.robot.subsystems.IntakeSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 
-class Intake(_intake: IntakeSub) : CommandBase() {
+class Deploy(_intake: IntakeSub) : CommandBase() {
   private val intake: IntakeSub = _intake;
 
   init {
@@ -12,7 +12,7 @@ class Intake(_intake: IntakeSub) : CommandBase() {
   }
 
   override fun initialize() {
-    intake.intakeStart();
+    intake.deployStart();
   }
  
   override fun execute() {
@@ -20,7 +20,7 @@ class Intake(_intake: IntakeSub) : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    intake.intakeStop();
+    intake.deployStop();
   }
 
   override fun isFinished(): Boolean {

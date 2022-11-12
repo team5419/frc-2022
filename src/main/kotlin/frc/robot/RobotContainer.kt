@@ -32,16 +32,17 @@ class RobotContainer(tab: ShuffleboardTab) {
   public val drivetrain_: Drivetrain = Drivetrain();
   public val climber_: Climber = Climber(tab);
   public val intake_: IntakeSub = IntakeSub(tab);
+  public val catapult_: Catapult = Catapult(tab);
 
   init {
     // creates a tab in shuffleboard to select autonomous routine
     // create and add autonomous routines to selector in shuffleboard
     //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
-    autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver))
+    autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver, catapult_))
 
     tab.add("Climb Selector", autoSelector2).withPosition(8, 3).withSize(2, 1);
-    autoSelector2.addOption("Mid Bar Auto", MidBarAuto(climber_, codriver))
+    // autoSelector2.addOption("Mid Bar Auto", MidBarAuto(climber_, codriver))
 
 
 
@@ -56,16 +57,26 @@ class RobotContainer(tab: ShuffleboardTab) {
     // val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     // xButton.toggleWhenPressed(Feed(intake_, driver))
 
+    val lBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+    lBumper.whenHeld(Slowmode(drivetrain_))
+
+    val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
+    xButton.whenPressed(Shoot(catapult_))
+
     val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
-    yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))
+    // yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))
 
     // val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
     // xButton.whenHeld(Feed(intake_))
     // val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
     // bButton.whenHeld(Feed(intake_, true))
 
-    val aButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
+    val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
     aButton.toggleWhenPressed(Intake(intake_))
+
+    val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
+    bButton.toggleWhenPressed(Deploy(intake_))
+
   }
 
 
