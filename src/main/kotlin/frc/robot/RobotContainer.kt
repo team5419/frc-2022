@@ -40,6 +40,9 @@ class RobotContainer(tab: ShuffleboardTab) {
     //Shuffleboard.getTab("Limelight").add("Limelight link", "10.54.19.88:5801/");
     tab.add("Auto Selector", autoSelector).withPosition(8, 3).withSize(2, 1);
     autoSelector.setDefaultOption("sLAY", AutoSlay(drivetrain_, driver, catapult_, intake_))
+    autoSelector.addOption("System Check", SystemCheck(drivetrain_, catapult_, intake_, climber_, codriver))
+    autoSelector.addOption("One Ball Auto", OneBall(drivetrain_, catapult_, intake_))
+    autoSelector.addOption("Taxi", Taxi(drivetrain_, catapult_, intake_))
 
     tab.add("Climb Selector", autoSelector2).withPosition(8, 3).withSize(2, 1);
     // autoSelector2.addOption("Mid Bar Auto", MidBarAuto(climber_, codriver))

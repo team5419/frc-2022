@@ -31,7 +31,7 @@ object DriveConstants {
     }
 
     const val driverPort: Int = 0
-    const val slowMultiplier: Double = 0.25
+    const val slowMultiplier: Double = 0.5
 
     object PID {
         const val P: Double = 0.0

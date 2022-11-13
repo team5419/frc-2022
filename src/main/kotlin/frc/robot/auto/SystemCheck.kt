@@ -1,49 +1,46 @@
-// package frc.robot.auto
+package frc.robot.auto
 
-// import edu.wpi.first.math.geometry.Pose2d
-// import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
 
-// import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController;
 
-// import frc.robot.subsystems.*
-// import frc.robot.commands.*
+import frc.robot.subsystems.*
+import frc.robot.commands.*
 
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-// import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-// import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 
-// class SystemCheck(_drivetrain: Drivetrain,  _catapult: Catapult, _intake: IntakeSub, _climber: Climber) : SequentialCommandGroup() {
-//     private val drivetrain: Drivetrain = _drivetrain
-//     private val catapult: Catapult =  _catapult
-//     private val intake: IntakeSub = _intake
-//     private val climer: Climer = _climber
+class SystemCheck(_drivetrain: Drivetrain,  _catapult: Catapult, _intake: IntakeSub, _climber: Climber, _codriver: XboxController) : SequentialCommandGroup() {
+    private val drivetrain: Drivetrain = _drivetrain
+    private val catapult: Catapult =  _catapult
+    private val intake: IntakeSub = _intake
+    private val climber: Climber = _climber
+    private val codriver: XboxController = _codriver
     
-//     init {
-//         // val backwards1: Double = -0.7; // -0.7;
-//         // val backwards2: Double = 0.9;
-//         // val angle: Double = 60.0
-//         // val x1: Double = 0.3 - backwards1 * Math.cos(Math.toRadians(angle));
-//         // val y1: Double = 1.3 + backwards1 * Math.sin(Math.toRadians(angle));
-//         // val x2: Double = x1 - backwards2 * Math.cos(Math.toRadians(angle));
-//         // val y2: Double = y1 + backwards2 * Math.sin(Math.toRadians(angle));
-//         // println("x2: " + x2)
-//         // println("y2: " + y2)
+    init {
 
-//         addCommands(
-//             SequentialCommandGroup (
-//                 RamseteAction(drivetrain, listOf(
-//                     Pose2d(0.0, 0.0, Rotation2d(0.0)),
-//                     Pose2d(10.0, 0.0, Rotation2d(0.0))
-//                 ), false),
-//                 RamseteAction(drivetrain, listOf(
-//                     Pose2d(0.0, 0.0, Rotation2d(0.0)),
-//                     Pose2d(-10.0, 0.0, Rotation2d(0.0))
-//                 ), true),
-//                 RamseteAction(drivetrain, listOf(
-//                     Pose2d(0.0, 0.0, Rotation2d(0.0)),
-//                     Pose2d(0.0, 0.0, Rotation2d(-90.0))
-//                 ), false)
-//             )
-//         )
-//     }
-// }
+        addCommands(
+            SequentialCommandGroup (
+                Shoot(catapult),
+                Shoot(catapult),
+                ParallelCommandGroup (
+                    MoveArm(climber, codriver, "left", false, 100.0),
+                    MoveArm(climber, codriver, "right", false, 100.0)
+                ),
+                ParallelCommandGroup (
+                    MoveArm(climber, codriver, "left", true, 100.0),
+                    MoveArm(climber, codriver, "right", true, 100.0)
+                ),
+                Deploy(intake),
+                Intake(intake),
+                Deploy(intake),
+                ValueDrive(drivetrain, 10.0, 0.0, 5.0),
+                ValueDrive(drivetrain, -10.0, 0.0, 5.0),
+                ValueDrive(drivetrain, 0.0, 10.0, 5.0),
+                ValueDrive(drivetrain, 0.0, -10.0, 5.0)
+            )
+        )
+    }
+}
