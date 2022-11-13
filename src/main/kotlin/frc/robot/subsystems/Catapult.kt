@@ -52,6 +52,7 @@ class Catapult(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun start() {
+        state = ! state
         cataSolenoid.set(state);
     }
 

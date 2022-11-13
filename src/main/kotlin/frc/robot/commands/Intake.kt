@@ -18,7 +18,6 @@ class Intake(_intake: IntakeSub) : CommandBase() {
   override fun initialize() {
     timer.reset();
     timer.start();
-    intake.intakeState = ! intake.intakeState;
     intake.intake();
   }
 

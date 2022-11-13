@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.subsystems.IntakeSub;
+import frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj.Timer
 
@@ -18,8 +19,10 @@ class Deploy(_intake: IntakeSub) : CommandBase() {
   override fun initialize() {
     timer.reset();
     timer.start();
-    intake.deployState = ! intake.deployState;
     intake.deploy();
+    if (intake.deployState == false && intake.intakeState == true) {
+      intake.intake();
+    }
   }
 
   override fun execute() {

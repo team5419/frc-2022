@@ -21,7 +21,7 @@ class ValueDrive(_drivetrain: Drivetrain, _xVal: Double, _yVal: Double, _delay: 
     }
 
     public override fun execute() {
-        drivetrain.drive(xVal, yVal);
+        drivetrain.drive(xVal, yVal, false);
     }
 
     public override fun isFinished(): Boolean {

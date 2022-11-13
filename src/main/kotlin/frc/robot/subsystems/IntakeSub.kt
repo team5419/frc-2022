@@ -75,10 +75,12 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun deploy() {
+        deployState = ! deployState
         solenoid.set(deployState)
     }
 
     public fun intake() {
+        intakeState = ! intakeState
         motor.set(if (intakeState) IntakeConstants.reversePercent else 0.0)
     }
 

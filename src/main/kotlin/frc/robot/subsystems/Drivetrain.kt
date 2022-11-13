@@ -34,8 +34,7 @@ class Drivetrain() : SubsystemBase() {
     private val rightLeader: TalonFX;
     private val rightFollower: TalonFX;
 
-    public var mod: Double;
-
+    private var mod: Double;
     
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
     // configure the motors and add to shuffleboard
@@ -72,12 +71,13 @@ class Drivetrain() : SubsystemBase() {
             }
         }
     }
-    fun drive(throttle: Double, turn : Double) {
+    fun drive(throttle: Double, turn: Double, slow: Boolean) {
         //println(throttle);
-        leftLeader.set(ControlMode.PercentOutput, (throttle - (turn * 0.5)) * mod);
-        rightLeader.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)) * mod);
-        leftFollower.set(ControlMode.PercentOutput, (throttle - (turn * 0.5)) * mod);
-        rightFollower.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)) * mod);
+        mod = if (slow) DriveConstants.slowMultiplier else 1.0
+        leftLeader.set(ControlMode.PercentOutput, ((throttle - (turn * 0.5)) * mod));
+        rightLeader.set(ControlMode.PercentOutput, ((throttle + (turn * 0.5)) * mod));
+        leftFollower.set(ControlMode.PercentOutput, ((throttle - (turn * 0.5)) * mod));
+        rightFollower.set(ControlMode.PercentOutput, ((throttle + (turn * 0.5)) * mod));
     }
 
 

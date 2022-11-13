@@ -18,7 +18,6 @@ class Shoot(_catapult: Catapult) : CommandBase() {
   override fun initialize() {
     timer.reset();
     timer.start();
-    catapult.state = !catapult.state;
     catapult.start();
   }
 

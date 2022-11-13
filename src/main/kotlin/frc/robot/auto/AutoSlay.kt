@@ -32,9 +32,15 @@ class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController, _catapult: Cat
         addCommands(
             SequentialCommandGroup (
                 Shoot(catapult),
-                Shoot(catapult)
-                // ValueDrive(drivetrain, 0.0, 0.2, 0.5),
-                // ValueDrive(drivetrain, 0.2, 0.0, 0.5)
+                Shoot(catapult),
+                ValueDrive(drivetrain, 0.0, -0.36, 0.5),
+                ParallelCommandGroup (
+                    ValueDrive(drivetrain, 0.2, 0.0, 2.0),
+                    Deploy(intake)
+                ),
+                Intake(intake)
+
+            )
                 // RamseteAction(drivetrain, listOf(
                 //     Pose2d(0.0, 0.0, Rotation2d(0.0)),
                 //     Pose2d(0.0, 0.5, Rotation2d(0.005))
@@ -47,7 +53,7 @@ class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController, _catapult: Cat
                 //     Deploy(intake),
                 //     Intake(intake)
                 // )
-            )
+        )
                 // RamseteAction(drivetrain, listOf(
                 //     Pose2d(-0.7, 0.0, Rotation2d(0.0)), 
                 //     Pose2d(-4.0, -0.6, Rotation2d.fromDegrees(45.0))
@@ -60,7 +66,5 @@ class AutoSlay(_drivetrain: Drivetrain, m_driver: XboxController, _catapult: Cat
                 //     Pose2d(x1, y1, Rotation2d.fromDegrees(-angle)),
                 //     Pose2d(x2, y2, Rotation2d.fromDegsrees(-angle))
                 // )),
-
-        )
     }
 }

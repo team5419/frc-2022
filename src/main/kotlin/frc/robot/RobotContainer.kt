@@ -50,15 +50,17 @@ class RobotContainer(tab: ShuffleboardTab) {
   }
 
   fun setDefaults(){
-    drivetrain_.setDefaultCommand(Drive(driver, drivetrain_))
+    drivetrain_.setDefaultCommand(Drive(driver, drivetrain_, false))
     climber_.setDefaultCommand(Climb(climber_, codriver))
     //intake_.setDefaultCommand(Feed(intake_, driver))
+
+    val lBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+    lBumper.whenHeld(Drive(driver, drivetrain_, true))
 
     // val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     // xButton.toggleWhenPressed(Feed(intake_, driver))
 
-    // val lBumper: JoystickButton = JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-    // lBumper.whenHeld(Slowmode(drivetrain_))
+    
 
     // val xButton: JoystickButton = JoystickButton(driver, XboxController.Button.kX.value)
     // xButton.toggleWhenPressed(Shoot(catapult_))
@@ -68,6 +70,7 @@ class RobotContainer(tab: ShuffleboardTab) {
 
     // val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
     // xButton.whenHeld(Feed(intake_))
+
     // val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
     // bButton.whenHeld(Feed(intake_, true))
 
