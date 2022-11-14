@@ -31,7 +31,7 @@ object DriveConstants {
     }
 
     const val driverPort: Int = 0
-    const val slowMultiplier: Double = 0.25
+    const val slowMultiplier: Double = 0.5
 
     object PID {
         const val P: Double = 0.0
@@ -75,9 +75,8 @@ object FeederConstants {
 object IntakeConstants {
     object Ports {
         val motor = 6;
-        val deployMotor = 15;
     }
-    val outputPercent = 1.0;
+    val outputPercent = 0.5;
     val reversePercent = -outputPercent;
     val autoSpeed: Double = 1000.0;
 }

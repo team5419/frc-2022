@@ -34,6 +34,7 @@ class Drivetrain() : SubsystemBase() {
     private val rightLeader: TalonFX;
     private val rightFollower: TalonFX;
 
+    private var mod: Double;
     
     public val gyro: PigeonIMU = PigeonIMU(DriveConstants.Ports.gyroPort)
     // configure the motors and add to shuffleboard
@@ -45,6 +46,7 @@ class Drivetrain() : SubsystemBase() {
         rightFollower = TalonFX(3)
         val motors: Array<TalonFX> = arrayOf(leftLeader, leftFollower, rightLeader, rightFollower);
         val inverted: Array<Boolean> = arrayOf(false, false, true, true);
+        mod = 1.0;
         for(i in 0..3) {
             motors[i].apply {
                 //configSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, 40.0, 0.0, 0.0), 100)
@@ -69,12 +71,13 @@ class Drivetrain() : SubsystemBase() {
             }
         }
     }
-    fun drive(throttle: Double, turn : Double) {
+    fun drive(throttle: Double, turn: Double, slow: Boolean) {
         //println(throttle);
-        leftLeader.set(ControlMode.PercentOutput, (throttle - (turn * 0.5)));
-        rightLeader.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)));
-        leftFollower.set(ControlMode.PercentOutput, (throttle - (turn * 0.5)));
-        rightFollower.set(ControlMode.PercentOutput, (throttle + (turn * 0.5)));
+        mod = if (slow) DriveConstants.slowMultiplier else 1.0
+        leftLeader.set(ControlMode.PercentOutput, ((throttle - (turn * 0.5)) * mod));
+        rightLeader.set(ControlMode.PercentOutput, ((throttle + (turn * 0.5)) * mod));
+        leftFollower.set(ControlMode.PercentOutput, ((throttle - (turn * 0.5)) * mod));
+        rightFollower.set(ControlMode.PercentOutput, ((throttle + (turn * 0.5)) * mod));
     }
 
 

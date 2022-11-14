@@ -95,7 +95,7 @@ class RamseteAction(_drivetrain: Drivetrain, m_poses: List<Pose2d>, m_reversed: 
 
     override fun end(interrupted: Boolean) {
         //println("Done driving!")
-        drivetrain.drive(0.0, 0.0)
+        drivetrain.drive(0.0, 0.0, false)
 
     }
 

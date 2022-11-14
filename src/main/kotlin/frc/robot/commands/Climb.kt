@@ -15,8 +15,8 @@ class Climb(_climber: Climber, _codriver: XboxController) : CommandBase() {
   override fun initialize() {}
 
   override fun execute() {
-    climber.setLeftArm(0, codriver.getLeftY())
-    climber.setRightArm(1, codriver.getRightY()) //r
+    climber.setLeftArm(codriver.getLeftY())
+    climber.setRightArm(codriver.getRightY()) //r
     //println("trying to climb")
   }
 

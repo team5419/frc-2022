@@ -31,8 +31,7 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
     // ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
 
-    private val layout: ShuffleboardLayout = tab.getLayout("Climber Data", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
-    private val graphLayout: ShuffleboardLayout = tab.getLayout("Climber Graphs", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
+    private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(2, 0).withSize(2, 4);
 
     //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
     //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);
@@ -47,8 +46,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // configure the motors and add to shuffleboard
     init {
 
-        leftArm = TalonFX(11)
-        rightArm = TalonFX(1)
+        leftArm = TalonFX(1)
+        rightArm = TalonFX(11)
 
         val armArray = arrayOf(leftArm, rightArm);
         for(j in 0..armArray.size - 1) {
@@ -91,18 +90,18 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
         layout.addNumber("left arm encoder", {leftArm.getSelectedSensorPosition(0)})
         layout.addNumber("right arm encoder", {rightArm.getSelectedSensorPosition(0)})
             
-        leftArm.setInverted(true);
-        rightArm.setInverted(true);
+        leftArm.setInverted(false);
+        rightArm.setInverted(false);
     }
 
 
 
-    public fun setLeftArm(left: Int, throttle: Double) {
+    public fun setLeftArm(throttle: Double) {
         val f: Double = 0.5;
         leftArm.set(ControlMode.PercentOutput, 1.5 * (-throttle * f));
     }
 
-    public fun setRightArm(right: Int, throttle: Double) {
+    public fun setRightArm(throttle: Double) {
         val f: Double = 0.5;
         rightArm.set(ControlMode.PercentOutput, 1.5 * (-throttle * f));
     }
