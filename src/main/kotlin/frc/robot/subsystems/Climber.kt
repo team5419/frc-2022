@@ -31,7 +31,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // ClimberSingle(TalonFX(ClimberConstants.Ports.left1), false, /*AnalogInput(ClimberConstants.Ports.lsensor0), */ ClimberConstants.Pair0.Left.min, ClimberConstants.Pair0.Left.max), 
     // ClimberSingle(TalonFX(ClimberConstants.Ports.right1), true, /*AnalogInput(ClimberConstants.Ports.rsensor0), */ ClimberConstants.Pair0.Right.min, ClimberConstants.Pair0.Right.max)
 
-    private val layout: ShuffleboardLayout = tab.getLayout("Climber", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
+    private val layout: ShuffleboardLayout = tab.getLayout("Climber Data", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
+    private val graphLayout: ShuffleboardLayout = tab.getLayout("Climber Graphs", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
     //private val m_constraints : TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(1.75, 0.75);
     //private val m_controller : ProfiledPIDController = ProfiledPIDController(1.3, 0.0, 0.7, m_constraints, 0.02);

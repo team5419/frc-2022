@@ -64,8 +64,10 @@ class RobotContainer(tab: ShuffleboardTab) {
     val yButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kY.value)
     yButton.toggleWhenPressed(MidBarAuto(climber_, codriver))
 
-    val aButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kA.value)
-    aButton.whenHeld(Feed(intake_, codriver))
+    val xButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kX.value)
+    xButton.whenHeld(Feed(intake_))
+    val bButton: JoystickButton = JoystickButton(codriver, XboxController.Button.kB.value)
+    bButton.whenHeld(Feed(intake_, true))
   }
 
 

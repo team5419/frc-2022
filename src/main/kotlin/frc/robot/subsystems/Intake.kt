@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets
 import com.ctre.phoenix.motorcontrol.*
 import kotlin.math.*
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-
+import edu.wpi.first.hal.simulation.CTREPCMDataJNI;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -51,7 +51,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         solenoid = DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
         solenoid.set(DoubleSolenoid.Value.kOff);
         //phCompressor = Compressor(1, PneumaticsModuleType.REVPH)
-        pcmCompressor.enableAnalog(115.0, 125.0);
+        pcmCompressor.enableDigital();
         // pcmCompressor.enableDigital();
         // pcmCompressor.disable();
 
@@ -59,7 +59,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
         // val pressureSwitch: Boolean = pcmCompressor.getPressureSwitchValue();
         // val current: Double = pcmCompressor.getCompressorCurrent();
 
-        // tab.addNumber("left arm encoder:", {leftArm.getSelectedSensorPosition(0)})
+        layout.addBoolean("pressure switch:", {pcmCompressor.getPressureSwitchValue()})
         // tab.addNumber("right arm encoder:", {rightArm.getSelectedSensorPosition(0)})
             
         // leftArm.setInverted(false);
@@ -76,6 +76,12 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
             solenoid.set(DoubleSolenoid.Value.kForward);
         }
         
+    public fun feedForward() {
+        solenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public fun feedReverse() {
+        solenoid.set(DoubleSolenoid.Value.kReverse)
     }
 
     public fun stop() {
