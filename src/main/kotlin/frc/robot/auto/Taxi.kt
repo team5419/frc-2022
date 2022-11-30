@@ -20,14 +20,7 @@ class Taxi(_drivetrain: Drivetrain, _catapult: Catapult, _intake: IntakeSub) : S
     init {
 
         addCommands(
-            SequentialCommandGroup (
-                ValueDrive(drivetrain, 0.0, -0.36, 0.5),
-                ParallelCommandGroup (
-                    ValueDrive(drivetrain, 0.2, 0.0, 2.0),
-                    Deploy(intake)
-                ),
-                Intake(intake)
-            )
+            ValueDrive(drivetrain, 0.2, 0.0, 2.0)
         )
     }
 }

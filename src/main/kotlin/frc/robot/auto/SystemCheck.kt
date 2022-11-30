@@ -23,23 +23,25 @@ class SystemCheck(_drivetrain: Drivetrain,  _catapult: Catapult, _intake: Intake
 
         addCommands(
             SequentialCommandGroup (
+                Wait(8.0),
                 Shoot(catapult),
                 Shoot(catapult),
-                ParallelCommandGroup (
-                    MoveArm(climber, codriver, "left", false, 100.0),
-                    MoveArm(climber, codriver, "right", false, 100.0)
-                ),
-                ParallelCommandGroup (
-                    MoveArm(climber, codriver, "left", true, 100.0),
-                    MoveArm(climber, codriver, "right", true, 100.0)
-                ),
+                // ParallelCommandGroup (
+                //     MoveArm(climber, codriver, "left", false, 10.0),
+                //     MoveArm(climber, codriver, "right", false, 10.0)
+                // ),
+                // ParallelCommandGroup (
+                //     MoveArm(climber, codriver, "left", true, 100.0),
+                //     MoveArm(climber, codriver, "right", true, 100.0)
+                // ),
                 Deploy(intake),
                 Intake(intake),
+                Wait(5.0),
                 Deploy(intake),
-                ValueDrive(drivetrain, 10.0, 0.0, 5.0),
-                ValueDrive(drivetrain, -10.0, 0.0, 5.0),
-                ValueDrive(drivetrain, 0.0, 10.0, 5.0),
-                ValueDrive(drivetrain, 0.0, -10.0, 5.0)
+                ValueDrive(drivetrain, 10.0, 0.0, 2.5),
+                ValueDrive(drivetrain, -10.0, 0.0, 2.5),
+                ValueDrive(drivetrain, 0.0, 10.0, 2.5),
+                ValueDrive(drivetrain, 0.0, -10.0, 2.5)
             )
         )
     }

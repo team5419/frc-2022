@@ -21,6 +21,7 @@ class OneBall(_drivetrain: Drivetrain, _catapult: Catapult, _intake: IntakeSub) 
 
         addCommands(
             SequentialCommandGroup (
+                Wait(10.0),
                 Shoot(catapult),
                 Shoot(catapult)
             )
