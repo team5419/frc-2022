@@ -4,6 +4,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Feeder;
 import frc.robot.FeederConstants;
+import frc.robot.ShooterConstants
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,8 +19,8 @@ import frc.robot.LookupEntry
 
 class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double = -1.0, _kicker: Double = -1.0, _time: Double = 0.0)  : CommandBase() {
   private val subsystems: SubsystemHolder = _subsystems
-  private val main: Double = _main;
-  private val kicker: Double = _kicker;
+  private var main: Double = _main;
+  private var kicker: Double = _kicker;
   private val time: Double = _time
   private val timer: Timer = Timer()
   private val driver: XboxController = _driver;
@@ -30,17 +31,25 @@ class ShootAndFeed(_subsystems: SubsystemHolder, _driver: XboxController, _main:
   }
 
   override fun initialize() {
-    val setpoint: LookupEntry = subsystems.vision.getShotSetpoint();
-    val calculatedMainVelocity = setpoint.mainVelocity;
-    val calculatedKickerVelocity = setpoint.kickerVelocity;
     timer.reset()
     timer.start()
     subsystems.feeder.currentVel = FeederConstants.activePercent
-    subsystems.lights.setColor(subsystems.shooter.currentColor);
-    if (main == -1.0 && kicker == -1.0)
-      subsystems.shooter.shoot(calculatedMainVelocity, calculatedKickerVelocity)
-    else
-      subsystems.shooter.shoot(main, kicker)
+
+    if (main == -1.0 && kicker == -1.0) {
+      if (subsystems.vision.isTargetFound()){
+        val setpoint: LookupEntry = subsystems.vision.getShotSetpoint();
+        main = setpoint.mainVelocity;
+        kicker = setpoint.kickerVelocity;
+        subsystems.lights.setColor(subsystems.shooter.currentColor);
+      }
+      else {
+        main = ShooterConstants.mainVelocity
+        kicker = ShooterConstants.kickerVelocity
+      }
+    }
+
+    subsystems.shooter.shoot(main, kicker)
+    
 
     // driver.setRumble(RumbleType.kLeftRumble, 1.0);
     // driver.setRumble(RumbleType.kRightRumble, 1.0);

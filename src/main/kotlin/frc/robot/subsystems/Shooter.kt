@@ -34,6 +34,9 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     public var setpointKicker = 0.0
     public var shooterMultiplier : Double = 1.0
 
+    public var mainTarget : Double = ShooterConstants.mainVelocity
+    public var kickerTarget : Double = ShooterConstants.kickerVelocity
+
     private val layout: ShuffleboardLayout = tab.getLayout("Shooter", BuiltInLayouts.kList).withPosition(6, 0).withSize(2, 4);
 
     // configure the motors and add to shuffleboard
@@ -112,6 +115,8 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
          layout.addNumber("Attempted Kicker Velocity", { setpointKicker })
          layout.addNumber("Real Main Velocity", { flyWheelVelocity(mainMotor) })
          layout.addNumber("Real Kicker Velocity", { flyWheelVelocity(kickerMotor) })
+         layout.addBoolean("Is Sped Up", { isSpedUp() })
+         
         // layout.addBoolean("Sped up", { isSpedUp() });
         // layout.addNumber("multiplier", { shooterMultiplier })
         tab.add("Main shooter velocity", 0.0)
@@ -136,9 +141,9 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     //check if flywheel velocity is at target
-    public fun isSpedUp(targetMain : Double, targetKicker : Double): Boolean {
-        val fastEnough = flyWheelVelocity(mainMotor) / shooterMultiplier >= targetMain - 600.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= targetKicker - 600.0
-        val slowEnough = flyWheelVelocity(mainMotor) / shooterMultiplier <= targetMain + 500.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier <= targetKicker + 500.0
+    public fun isSpedUp(targetMain : Double = this.mainTarget, targetKicker : Double = this.kickerTarget): Boolean {
+        val fastEnough = flyWheelVelocity(mainMotor) / shooterMultiplier >= targetMain - 750.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier >= targetKicker - 750.0
+        val slowEnough = flyWheelVelocity(mainMotor) / shooterMultiplier <= targetMain + 750.0 && flyWheelVelocity(kickerMotor) / shooterMultiplier <= targetKicker + 750.0
         return  fastEnough && slowEnough && (setpointMain != 0.0 || setpointKicker != 0.0)
     }
 
@@ -152,7 +157,12 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
     public fun shoot(main: Double, kicker: Double) {
         // set setpoint to velocity
         if(main != setpointMain) {
-            setpointMain = if (main == -1.0) this.mainVelocity else main
+            if (main == -1.0){
+                setpointMain = this.mainVelocity
+            }
+            else {
+                setpointMain = main
+            }
         }
         if(kicker != setpointKicker) {
             setpointKicker = if (kicker == -1.0) this.kickerVelocity else kicker
@@ -160,6 +170,9 @@ class Shooter(tab: ShuffleboardTab) : SubsystemBase() {
         // spin flywheel at selected velocity
         mainMotor.set(ControlMode.Velocity, setpointMain * shooterMultiplier)
         kickerMotor.set(ControlMode.Velocity, setpointKicker * shooterMultiplier)
+
+        this.mainTarget = setpointMain
+        this.kickerTarget = setpointKicker
     }
 
     override fun periodic() {

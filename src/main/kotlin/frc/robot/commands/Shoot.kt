@@ -37,7 +37,7 @@ class Shoot(_subsystems: SubsystemHolder, _driver: XboxController, _main: Double
         ParallelRaceGroup(
             Brake(subsystems.drivetrain),
             ShootAndFeed(subsystems, driver, main, kicker, time),
-            Index(subsystems)
+            Index(subsystems/* , main, kicker*/)
         )
     )
   }

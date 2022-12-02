@@ -119,8 +119,8 @@ object Ports {
 }
 
 object ShooterConstants {
-    val mainVelocity = 15000.0
-    val kickerVelocity = 15000.0
+    val mainVelocity = 14600.0
+    val kickerVelocity = 14600.0
 }
 
 object IndexerConstants {

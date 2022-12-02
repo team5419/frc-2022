@@ -19,7 +19,7 @@ class FiveBall(_subsystems: SubsystemHolder, _driver: XboxController) : Sequenti
     val driver: XboxController = _driver
     init {
         val initialTheta: Double = 24.3;
-        val firstDist: Double = 1.7;
+        val firstDist: Double = 3.0;
         addCommands(
             // x = forward/back, y = sideways
             // +x = back
@@ -36,13 +36,13 @@ class FiveBall(_subsystems: SubsystemHolder, _driver: XboxController) : Sequenti
                         AutoDriveAndAlign(subsystems, driver, firstDist * Math.cos(Util.degreesToRadians(initialTheta)), firstDist * Math.sin(Util.degreesToRadians(initialTheta)) - 0.2)
                     ),
                     ParallelCommandGroup(
-                        Shoot(subsystems, driver, 15000.0, 15000.0, 2.0),
+                        Shoot(subsystems, driver, 16000.0, 16000.0, 2.0),
                         Deploy(subsystems, 0.27, 0.75) // RETRACT INTAKE TO MAKE SURE SECOND BALL GETS GRABBED
                     ),
 
                     // DRIVE BACK TO GET BALLS FROM HUMAN LOADER
                     ParallelCommandGroup(
-                        AutoDrive(subsystems, 6.5, 1.4, 40.0),
+                        AutoDrive(subsystems, 5.927, 1.277, 40.0),
                         Deploy(subsystems, -0.15, 0.75) // PUT OUT INTAKE
                     ),
                     // AutoDrive(subsystems, 5.8, 2.0, 0.0),

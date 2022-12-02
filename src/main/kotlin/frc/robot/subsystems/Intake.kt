@@ -25,6 +25,7 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
 
     // declare motors and ports
     val motor = TalonFX(Ports.intake)
+    var reversal = 1.0
 
     // configure the motors and add to shuffleboard
     init {
@@ -58,7 +59,11 @@ class Intake(tab: ShuffleboardTab) : SubsystemBase() {
     }
 
     public fun intake(velocity: Double = 1.0) {
-        motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent * velocity)
+        motor.set(ControlMode.PercentOutput, IntakeConstants.outputPercent * velocity * reversal)
+    }
+
+    public fun reverseDirection(){
+        reversal = -reversal
     }
 
 
