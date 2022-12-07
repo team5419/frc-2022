@@ -20,7 +20,7 @@ class Deploy(_intake: IntakeSub) : CommandBase() {
     timer.reset();
     timer.start();
     intake.deploy();
-    if (intake.deployState == false && intake.intakeState == true) {
+    if (! intake.deployState && intake.intakeState) {
       intake.intake();
     }
   }

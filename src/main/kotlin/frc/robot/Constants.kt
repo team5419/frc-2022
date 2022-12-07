@@ -49,18 +49,18 @@ object ShooterConstants {
     val kickerVelocity = 15000.0
 }
 
-object IndexerConstants {
-    object Ports {
-        val motor = 22;
-        val sensor1 = 2;
-        val sensor2 = 1;
-        val sensor3 = 0;
-    }
-    val outputPercent: Double = 1.0; // x / 1
-    val ticksPerIndex: Double = 8.0;
-    val ticksDefault: Double = 5.0;
-    val autoSpeed: Double = 1000.0;
-}
+// object IndexerConstants {
+//     object Ports {
+//         val motor = 23;
+//         val sensor1 = 2;
+//         val sensor2 = 1;
+//         val sensor3 = 0;
+//     }
+//     val outputPercent: Double = 1.0; // x / 1
+//     val ticksPerIndex: Double = 8.0;
+//     val ticksDefault: Double = 5.0;
+//     val autoSpeed: Double = 1000.0;
+// }
 
 object FeederConstants {
     object Ports {
@@ -74,7 +74,7 @@ object FeederConstants {
 
 object IntakeConstants {
     object Ports {
-        val motor = 6;
+        val motor = 23;
     }
     val outputPercent = 0.5;
     val reversePercent = -outputPercent;

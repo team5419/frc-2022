@@ -81,7 +81,8 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
 
     public fun intake() {
         intakeState = ! intakeState
-        motor.set(if (intakeState) IntakeConstants.reversePercent else 0.0)
+        println(intakeState)
+        motor.set(if (intakeState) IntakeConstants.outputPercent else 0.0)
     }
 
     override fun periodic() {
