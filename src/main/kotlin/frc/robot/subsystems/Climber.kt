@@ -46,8 +46,8 @@ class Climber(tab: ShuffleboardTab) : SubsystemBase() {
     // configure the motors and add to shuffleboard
     init {
 
-        leftArm = TalonFX(1)
-        rightArm = TalonFX(11)
+        leftArm = TalonFX(11)
+        rightArm = TalonFX(1)
 
         val armArray = arrayOf(leftArm, rightArm);
         for(j in 0..armArray.size - 1) {

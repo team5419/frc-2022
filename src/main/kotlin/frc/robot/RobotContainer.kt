@@ -78,10 +78,10 @@ class RobotContainer(tab: ShuffleboardTab) {
     // bButton.whenHeld(Feed(intake_, true))
 
     val aButton: JoystickButton = JoystickButton(driver, XboxController.Button.kA.value)
-    aButton.toggleWhenPressed(Intake(intake_))
+    aButton.whenPressed(Intake(intake_))
 
     val bButton: JoystickButton = JoystickButton(driver, XboxController.Button.kB.value)
-    bButton.toggleWhenPressed(Deploy(intake_))
+    bButton.whenPressed(Deploy(intake_))
 
   }
 

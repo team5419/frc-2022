@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj.Timer
 
 class Intake(_intake: IntakeSub) : CommandBase() {
   private val intake: IntakeSub = _intake;
-  private val timer: Timer = Timer()
+  //private val timer: Timer = Timer()
 
   init {
-    addRequirements(_intake);
+    //addRequirements(_intake);
   }
 
   override fun initialize() {
-    timer.reset();
-    timer.start();
-    intake.intake();
+    // timer.reset();
+    // timer.start();
+    intake.intake123();
   }
 
   override fun execute() {
@@ -26,12 +26,12 @@ class Intake(_intake: IntakeSub) : CommandBase() {
   }
 
   override fun end(interrupted: Boolean) {
-    timer.stop()
+    //timer.stop()
     
   }
 
   override fun isFinished(): Boolean {
-    return (timer.get() >= 0.25);
+    return true//(timer.get() >= 0.25);
     
   }
 }

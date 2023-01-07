@@ -59,7 +59,14 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
             setClosedLoopRampRate(1.0)
             setControlFramePeriodMs(50)
             setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50)
-        }
+        };
+
+        val controller = motor.getPIDController();
+        controller.apply {
+            setP(1.0, 1)
+            setI(0.0, 1)
+            setD(0.0, 1)
+        };
 
         pcmCompressor = Compressor(0, PneumaticsModuleType.CTREPCM);
         solenoid = Solenoid(PneumaticsModuleType.CTREPCM, 0);
@@ -79,10 +86,10 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
         solenoid.set(deployState)
     }
 
-    public fun intake() {
+    public fun intake123() {
         intakeState = ! intakeState
         println(intakeState)
-        motor.set(if (intakeState) IntakeConstants.outputPercent else 0.0)
+        motor.set(/*if (intakeState)*/ IntakeConstants.outputPercent /*else 0.0*/)
     }
 
     override fun periodic() {
