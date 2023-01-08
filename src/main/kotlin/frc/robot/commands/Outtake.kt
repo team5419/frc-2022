@@ -7,7 +7,7 @@ import frc.robot.subsystems.IntakeSub;
 
 import edu.wpi.first.wpilibj.Timer
 
-class Intake(_intake: IntakeSub) : CommandBase() {
+class Outtake(_intake: IntakeSub) : CommandBase() {
   private val intake: IntakeSub = _intake;
   //private val timer: Timer = Timer()
 
@@ -16,7 +16,7 @@ class Intake(_intake: IntakeSub) : CommandBase() {
   }
 
   override fun initialize() {
-    intake.intake();
+    intake.outtake();
   }
 
   override fun execute() {

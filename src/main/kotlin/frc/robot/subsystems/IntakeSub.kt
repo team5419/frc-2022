@@ -42,6 +42,7 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
     private val solenoid: Solenoid;
     public var intakeState: Boolean;
     public var deployState: Boolean;
+    public var outtakeState: Boolean;
 
     private val layout: ShuffleboardLayout = tab.getLayout("Intake/Catapult", BuiltInLayouts.kList).withPosition(0, 0).withSize(2, 4);
 
@@ -79,6 +80,7 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
 
         intakeState = false;
         deployState = false;
+        outtakeState = true;
     }
 
     public fun deploy() {
@@ -86,10 +88,16 @@ class IntakeSub(tab: ShuffleboardTab) : SubsystemBase() {
         solenoid.set(deployState)
     }
 
-    public fun intake123() {
+    public fun intake() {
         intakeState = ! intakeState
         println(intakeState)
-        motor.set(/*if (intakeState)*/ IntakeConstants.outputPercent /*else 0.0*/)
+        motor.set(if (intakeState) {
+                      if (!outtakeState) IntakeConstants.outputPercent else IntakeConstants.reversePercent
+                  }  else { 0.0 })
+    }
+
+    public fun outtake() {
+        outtakeState = ! outtakeState
     }
 
     override fun periodic() {
